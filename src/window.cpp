@@ -11,7 +11,7 @@ int main() {
     sf::Clock clock;
     while (window.isOpen()) {
         sf::Event event;
-        while(window.pollEvent()) {
+        while(window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -22,6 +22,21 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             --move.y;
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            ++move.x;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            --move.x;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            ++move.y;
+        }
+        move.normilized();
+        player_pos = player_pos + move * speed * delta_time;
+        player.setPosition(player_pos.x, player_pos.y);
+        window.clear(sf::Color::Black);
+        window.draw(player);
+        window.display();
     }
-
+    return 0;
 }
