@@ -33,8 +33,7 @@ class Vec2 {
     double angle() const {
         return std::atan2(y, x);
     }
-
-  private:
+    
     double x;
     double y;
 };
