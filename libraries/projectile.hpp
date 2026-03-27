@@ -6,7 +6,7 @@ class Projectile : public Entity {
   int damage_;
   Vec2 velocity_;
  public:
-  Projectile(float x, float y, int damage, Vec2 velocity);
+  Projectile(Vec2 pos, Vec2 velocity, int damage_);
   void update(float timediff) override;
   void draw(sf::RenderWindow& window) const override;
   int GetDamage() const;
