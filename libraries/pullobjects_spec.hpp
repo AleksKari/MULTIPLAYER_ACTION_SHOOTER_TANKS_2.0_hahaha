@@ -6,7 +6,7 @@
 
 template<>
 class PullObjects<Projectile> {
- private:
+  private:
   std::queue<std::pair<Projectile, float>> objects_;
   float map_size_ = 600.0f;
  public:
@@ -15,16 +15,13 @@ class PullObjects<Projectile> {
   }
   void cleanup(float current_time) {
     while (!objects_.empty()) {
-      auto& [projectl, timestamp] = objects_.front();
-      float max_lifetime = map_size_ / projectl.GetVelocity().length();
-      if (current_time - timestamp > max_lifetime) {
+      if (objects_.front().second <= current_time - (map_size_ / objects_.front().first.GetVelocity())) {
         objects_.pop();
-      } else {
-        break;
       }
+      else break;
     }
   }
-};
+};  // ok
 
 template<>
 class PullObjects<Player> {
