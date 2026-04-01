@@ -3,6 +3,7 @@
 #include "../src/math/Vec2.h"
 
 class Projectile : public Entity {
+  Vec2 pos;
   int damage_;
   Vec2 velocity_;
  public:
