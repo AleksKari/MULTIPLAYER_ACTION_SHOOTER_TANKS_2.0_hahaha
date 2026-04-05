@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player::Player(float cord_x, float cord_y, int hp, float speed, Weapon weapon)
+Player::Player(Vec2 pos, int hp, float speed, Weapon weapon)
     : Character(cord_x, cord_y, hp, speed, weapon) {}
 
 void Player::move(float timediff) {
