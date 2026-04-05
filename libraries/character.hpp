@@ -1,6 +1,6 @@
 #pragma once
 #include "entity.hpp"
-#include "weapon.hpp"
+#include "../src/weapon/weapon.hpp"
 class Character : public Entity {
  protected:
   Weapon weapon_;
@@ -12,4 +12,5 @@ class Character : public Entity {
   virtual void move(float timediff) = 0;
   virtual void attack();
   Weapon GetWeapon() const;
+
 };

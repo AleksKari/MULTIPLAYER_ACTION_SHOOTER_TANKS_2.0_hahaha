@@ -15,3 +15,7 @@ void Player::attack() {
         weapon_.shoot(cord_x_, cord_y_);
     }
 }
+
+
+
+

@@ -3,13 +3,15 @@
 #include "../src/math/Vec2.h"
 
 class Projectile : public Entity {
-  Vec2 pos;
-  int damage_;
-  Vec2 velocity_;
- public:
-  Projectile(Vec2 pos, Vec2 velocity, int damage_);
-  void update(float timediff) override;
-  void draw(sf::RenderWindow& window) const override;
-  int GetDamage() const;
-  Vec2 GetVelocity() const;
+  public:
+    int damage_;
+    Vec2 velocity_;
+    bool dead = false;
+    Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 32);
+    void update(float timediff) override;
+    void draw(sf::RenderWindow& window) const override;
+    int GetDamage() const;
+    Vec2 GetVelocity() const;
+    bool isDead() const;
+    void kill();
 };
