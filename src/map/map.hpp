@@ -19,7 +19,7 @@ class Map {
   private:
     int width;
     int height;
-    //массив с неигровыми обьектами(стены maybe)
+    //массив с неигровыми обьектами(стены maybe)//tiles(cтены, границы, трава, и так далее)
     std::vector<Entity*> entities;
     std::vector<Projectile*> projectiles;
 };
