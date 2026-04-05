@@ -1,12 +1,11 @@
-#include "projectile.hpp"
+#include "../libraries/projectile.hpp"
 
-Projectile::Projectile(float x, float y, int damage, Vec2 velocity)
-    : Entity(x, y, 1, static_cast<float>(velocity.length())),
-      damage_(damage), velocity_(velocity) {}
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size)
+    : pos(pos), velocity_(velocity),
+      damage_(damage), size(size) {}
 
 void Projectile::update(float timediff) {
-    cord_x_ += static_cast<float>(velocity_.x * timediff);
-    cord_y_ += static_cast<float>(velocity_.y * timediff);
+    pos += Vec2(static_cast<float>(velocity_.x * timediff), static_cast<float>(velocity_.y * timediff));
 }
 
 void Projectile::draw(sf::RenderWindow& window) const {

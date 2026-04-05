@@ -4,8 +4,10 @@
 
 class Projectile : public Entity {
   public:
-    int damage_;
+    Vec2 pos;
     Vec2 velocity_;
+    int damage_;
+    int size;
     bool dead = false;
     Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 32);
     void update(float timediff) override;

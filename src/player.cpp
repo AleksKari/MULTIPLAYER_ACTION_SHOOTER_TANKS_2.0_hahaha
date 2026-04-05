@@ -1,7 +1,7 @@
-#include "player.hpp"
+#include "../libraries/player.hpp"
 
-Player::Player(Vec2 pos, int hp, float speed, Weapon weapon)
-    : Character(cord_x, cord_y, hp, speed, weapon) {}
+Player::Player(Vec2 pos, int hp, float speed, Weapon weapon, int size)
+    : pos(pos), hp(hp) {}
 
 void Player::move(float timediff) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) cord_y_ -= speed_ * timediff;
