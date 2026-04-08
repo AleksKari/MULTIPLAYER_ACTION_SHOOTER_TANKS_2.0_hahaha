@@ -1,3 +1,3 @@
 #include "entity.hpp"
 
-Entity::Entity(Vec2 pos) : pos(pos){}
+Entity::Entity(Vec2 pos) : pos(pos) {}
