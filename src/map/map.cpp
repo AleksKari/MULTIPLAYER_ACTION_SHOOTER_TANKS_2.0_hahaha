@@ -45,3 +45,15 @@ bool Map::isBreakable(int x, int y) const {
     if (!isBound(x, y)) return false;
     return tiles_[x][y].isBreakable();
 }
+//не очень понял концепцию ибо методы не реализованы но тип суть на мой взгляд
+void Map::render(Renderer& renderer) const {
+    for (int x = 0; x < width_; x++)//проходим по все ширине высоте и отрисовываем все текстурки карты
+        for (int y = 0; y < height_; y++)
+            //renderer.draw_tile(tiles_[x][y], x, y);
+
+    for (const auto& e : entities_)//отрисовываем всех игроков
+        renderer.draw_entity();
+
+    for (const auto& pr : projectiles_) // отрисовываем пульки
+        renderer.draw_projectile();
+}

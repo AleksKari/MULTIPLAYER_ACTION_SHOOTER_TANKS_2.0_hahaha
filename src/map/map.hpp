@@ -3,12 +3,12 @@
 #include "../tile/tile.hpp"
 #include "../collision/collision.hpp"
 #include "../src/render/render.hpp"
+#include "../render/render.hpp"
 #include <memory>
 
 class Map {
  public:
   Map(int width, int height);
-
   void update(double dt);
   void spawn_entity(Entity* ent);
   void spawn_projectile(Projectile* proj);
@@ -18,7 +18,7 @@ class Map {
   bool isSlow(int pos_x, int pos_y) const;//тайл замедляет
   bool isDamage(int pos_x, int pos_y) const;//тайл наносит урон
   bool isBreakable(int pos_x, int pos_y) const;//тайл разрушаем
-  
+  void render(Renderer& renderer) const;
   friend class Collision;
  private:
   int width_;
