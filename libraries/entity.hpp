@@ -5,9 +5,10 @@
 
 class Entity {
  public:
-  Vec2 pos;
+  Vec2 position;
+  int damage = 0;
   int size;
-  int damage_ = 0;
+  Entity();
   Entity(Vec2 pos, int damage_, int size = 32);
   virtual ~Entity() = default;
   virtual void update(float timediff) = 0;
