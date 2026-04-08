@@ -2,7 +2,7 @@
 
 Tile::Tile(Type type, const sf::IntRect& rect) : type(type), texture_rect(rect) {}
 bool Tile::isBreakable() const {
-    return type == Type::Wall;
+    return type == Type::Breakable;
 }
 bool Tile::isDamage() const {
     return type == Type::Damage;
