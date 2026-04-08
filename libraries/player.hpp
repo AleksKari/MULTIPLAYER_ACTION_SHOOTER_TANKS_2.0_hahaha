@@ -4,7 +4,7 @@
 
 class Player : public Entity {
   public:
-    Player(Vec2 pos, int hp, float speed, Weapon weapon, int size = 32);
+    Player(Vec2 pos, int hp, float speed, Weapon weapon);
     void move(float timediff);
     void attack();
     bool isDead() const;
@@ -14,8 +14,11 @@ class Player : public Entity {
     void update(float timediff);
     void draw(sf::RenderWindow& window);
   private:
+    Vec2 position_;
     int hp_;
     float speed_;
     Weapon weapon_;
-    
+    bool alive = true;
+    int size_ = 32;
+    sf::Texture texture_;//по сути рендер рисует но тут метод дров надо текстурку подключить
 };
