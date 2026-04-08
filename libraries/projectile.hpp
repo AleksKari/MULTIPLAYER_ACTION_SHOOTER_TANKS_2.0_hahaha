@@ -4,14 +4,13 @@
 
 class Projectile : public Entity {
   public:
-    Vec2 pos;
+    Vec2 pos_;
     Vec2 velocity_;
     int damage_;
-    int size;
+    int size_;
     bool dead = false;
     Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 32);
     void update(float timediff) override;
-    void draw(sf::RenderWindow& window) const override;
     int GetDamage() const;
     Vec2 GetVelocity() const;
     bool isDead() const;
