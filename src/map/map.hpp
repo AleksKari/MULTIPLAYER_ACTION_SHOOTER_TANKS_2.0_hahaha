@@ -14,7 +14,7 @@ class Map {
         for (auto& pr : projectiles) {
             pr->update(dt);
         }
-        //Collision::resolve(*this);
+        Collision::resolve(*this);
     }
     void spawn_entity(Entity* e);
     void spawn_projectile(Projectile* pr);
