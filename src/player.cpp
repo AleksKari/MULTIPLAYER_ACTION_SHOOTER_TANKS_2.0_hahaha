@@ -11,12 +11,9 @@ void Player::move(float timediff) {
 }
 
 void Player::attack() {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) ||
-      sf::Mouse::isButtonPressed(sf::Mouse::Left)) {  
-      sf::Vector2i mouse = sf::Mouse::getPosition();
-      Vec2 direct(mouse.x - position_.x, mouse.y - position_.y);  
-      weapon_.shoot(position_, direct.normilized());
-  }
+  sf::Vector2i mouse = sf::Mouse::getPosition();
+  Vec2 direct(mouse.x - position_.x, mouse.y - position_.y);  
+  weapon_.shoot(position_, direct.normilized());
 }
 
 bool Player::isDead() const {
@@ -44,7 +41,7 @@ void Player::update(float timediff) {
     move(timediff);
 }
 //подключить текстуру когда будет
-void Player::draw(sf::RenderWindow& window) {
+void Player::draw(sf::RenderWindow& window) const {
     sf::RectangleShape shape(sf::Vector2f(size_, size_));
     shape.setPosition(position_.x, position_.y);
     shape.setTexture(&texture_);
