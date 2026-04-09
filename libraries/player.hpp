@@ -12,7 +12,7 @@ class Player : public Entity {
     void on_wall_collision();
     void take_damage(int damage);
     void update(float timediff);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window) const;
   private:
     Vec2 position_;
     int hp_;
