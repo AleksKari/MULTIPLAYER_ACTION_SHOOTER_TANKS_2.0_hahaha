@@ -1,42 +1,38 @@
-#include <SFML/Graphics.hpp>
-#include "math/Vec2.h"
+#include "render/render.hpp"
+#include "map/map.hpp"
+#include "../libraries/player.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(600, 600), "My game");
-    
-    sf::RectangleShape player(sf::Vector2f(40, 40));//игрок это квадратик 40 на 40
-    player.setFillColor(sf::Color::Cyan);
-    Vec2 player_pos(400, 300);
-    double speed = static_cast<double>(200);
-    sf::Clock clock;
-    while (window.isOpen()) {
-        sf::Event event;
-        while(window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-        //delta_time - время между кадрами
-        double delta_time = clock.restart().asSeconds();
-        Vec2 move(0, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            --move.y;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            ++move.x;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            --move.x;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            ++move.y;
-        }
-        move.normilized();
-        player_pos = player_pos + move * speed * delta_time;
-        player.setPosition(player_pos.x, player_pos.y);
-        window.clear(sf::Color::Black);
-        window.draw(player);
-        window.display();
-    }
-    return 0;
+
+Renderer renderer(1920, 1080, 32);
+sf::Clock clock;
+
+// карта 60x33 тайла(квадрата) (1920/32 x 1080/32)
+Map map(60, 33);
+
+/*weapon пока няма
+Weapon wep;
+Player* player = new Player(Vec2(100, 100), 100, 150.0f, wep);0
+map.spawn_entity(player);*/
+
+while (renderer.window().isOpen()) {
+  // Сзакрытие окна и выстрел по событию
+  sf::Event event;
+  while (renderer.window().pollEvent(event)) {
+    if (event.type == sf::Event::Closed)
+      renderer.window().close();
+    if (event.type == sf::Event::MouseButtonPressed ||
+      (event.type == sf::Event::KeyPressed &&
+      event.key.code == sf::Keyboard::Space))
+      player->attack();
+  }
+  //  движение, коллизии
+  float dt = clock.restart().asSeconds();
+  map.update(dt);
+  //  отрисовка вроде такая логика +-
+  renderer.beginframe();   // clear
+  map.render(renderer);    // тайлы + players + снаряды
+  renderer.endframe();     // display
+}
+return 0;
 }
