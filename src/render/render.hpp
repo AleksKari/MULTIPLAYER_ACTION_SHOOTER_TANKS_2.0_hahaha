@@ -10,9 +10,9 @@ class Renderer {
     Renderer(int screen_width, int screen_height, int tile_size);
     void beginframe();
     void endframe();
-    void draw_tile();
-    void draw_entity();
-    void draw_projectile();
+    void draw_tile(const Tile& tile, int x, int y);
+    void draw_entity(const Entity& entity);
+    void draw_projectile(const Projectile& proj);
     sf::RenderWindow& window();
   private:
     sf::RenderWindow window_;

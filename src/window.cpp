@@ -10,10 +10,10 @@ sf::Clock clock;
 // карта 60x33 тайла(квадрата) (1920/32 x 1080/32)
 Map map(60, 33);
 
-/*weapon пока няма
+
 Weapon wep;
-Player* player = new Player(Vec2(100, 100), 100, 150.0f, wep);0
-map.spawn_entity(player);*/
+Player* player = new Player(Vec2(100, 100), 100, 150.0f, wep);
+map.spawn_entity(player);
 
 while (renderer.window().isOpen()) {
   // Сзакрытие окна и выстрел по событию

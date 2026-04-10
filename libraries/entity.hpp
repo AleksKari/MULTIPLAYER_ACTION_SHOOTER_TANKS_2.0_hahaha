@@ -5,6 +5,7 @@
 
 class Entity {
  public:
+  sf::IntRect texture_rect_{0, 0, 32, 32};
   Vec2 position;
   int damage = 0;
   int size;
@@ -17,4 +18,5 @@ class Entity {
   virtual void kill() = 0;
   virtual void on_wall_collision() = 0;
   virtual void take_damage(int damage) = 0;
+
 };

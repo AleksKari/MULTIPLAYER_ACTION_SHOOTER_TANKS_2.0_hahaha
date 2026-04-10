@@ -2,8 +2,9 @@
 
 class Weapon {
   public:
+    Weapon() = default;
     virtual ~Weapon() = default;
-    virtual void shoot(Map& map, Entity& owner) = 0;
+    virtual void shoot(Map& map, Player& player, int damage);
   protected:
     int damage_ = 0;
     double cooldown = 0.8;

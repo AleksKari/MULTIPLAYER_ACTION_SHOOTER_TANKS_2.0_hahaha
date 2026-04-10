@@ -1,11 +1,11 @@
 #include "../libraries/projectile.hpp"
 
-Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size)
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, sf::IntRect texture_rect = sf::)
     : pos_(pos), velocity_(velocity),
-      damage_(damage), size_(size) {}
+      damage_(damage), size_(size), texture_rect_(texture_rect) {}
 
 void Projectile::update(float timediff) {
-    pos = pos + Vec2(static_cast<float>(velocity_.x * timediff), static_cast<float>(velocity_.y * timediff));
+    this->pos_ = this->pos_ + Vec2(static_cast<float>(velocity_.x * timediff), static_cast<float>(velocity_.y * timediff));
 }
 
 int Projectile::GetDamage() const { return damage_; }
@@ -16,4 +16,7 @@ bool Projectile::isDead() const {
 }
 void Projectile::kill() {
     dead = true;
+}
+void Projectile::draw(sf::RenderWindow& window) {
+
 }

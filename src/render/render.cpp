@@ -19,6 +19,24 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
     projectile_sprite.setTexture(projectile_texture);
 }
 
+void Renderer::draw_tile(const Tile& tile, int x, int y) {
+    tile_sprite.setTextureRect(tile.texture_rect);
+    tile_sprite.setPosition(x * tile_size_, y * tile_size_);
+    window_.draw(tile_sprite);
+}
+
+void Renderer::draw_entity(const Entity& e) {
+    entity_sprite.setTextureRect(e.texture_rect_);
+    entity_sprite.setPosition(e.position.x, e.position.y);
+    window_.draw(entity_sprite);
+}
+
+void Renderer::draw_projectile(const Projectile& p) {
+    projectile_sprite.setTextureRect(p.textureRect);
+    projectile_sprite.setPosition(p.position.x, p.position.y);
+    window_.draw(projectile_sprite);
+}
+
 void Renderer::beginframe() {
     window_.clear(sf::Color::Black);
 }

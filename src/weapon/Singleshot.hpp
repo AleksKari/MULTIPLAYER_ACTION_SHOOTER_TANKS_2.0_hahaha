@@ -4,5 +4,5 @@
 
 class SingleShot : public FireMode {
   public:
-    void fire(const WeaponStates& states, const Vec2& pos, const Vec2& dir) override;
+    void shoot(Map& map, Player& owner, int damage) override;
 };

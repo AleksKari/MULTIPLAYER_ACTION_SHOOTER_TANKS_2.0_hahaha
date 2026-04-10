@@ -12,7 +12,7 @@ class Gun : public  Weapon {
     Gun() {
         damage_ = 10;
     }
-    void shoot(Map& map, Entity& owner) override {
-        
+    void shoot(Map& map, Player& owner, int damage) override {
+        fire_.shoot(map, owner, damage);
     }
-}
+};

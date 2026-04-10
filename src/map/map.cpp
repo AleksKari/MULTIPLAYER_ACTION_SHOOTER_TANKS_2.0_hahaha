@@ -12,8 +12,9 @@ void Map::spawn_entity(Entity* ent) {
   entities_.push_back(std::unique_ptr<Entity>(ent));
 }
 //отслеживаем снаряды
-void Map::spawn_projectile(Projectile* proj) {
-  projectiles_.push_back(std::unique_ptr<Projectile>(proj));
+void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
+
+  projectiles_.push_back(std::unique_ptr<Projectile>(Projectile(pos, vel, damage, size)));
 }
 
 bool Map::isBound(int pos_x, int pos_y) const {
