@@ -11,7 +11,7 @@ class Map {
   Map(int width, int height);
   void update(double dt);
   void spawn_entity(Entity* ent);
-  void spawn_projectile(Projectile* proj);
+  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
   bool isBound(int pos_x, int pos_y) const;//тайл в пределах карты
   bool isWall(int pos_x, int pos_y) const; // проверяет что текущий ТАЙЛ это стена
   bool isEmpty(int pos_x, int pos_y) const;//тайл пуст

@@ -1,12 +1,18 @@
+// ShotgunFire.cpp
 #include "ShotgunFire.hpp"
-#include "../../libraries/projectile.hpp"
-#include "../math/Vec2.h"
+#include "../../libraries/player.hpp"
 
-void ShotgunFire::fire(const WeaponStates& states, const Vec2& pos, const Vec2& dir) {
-    double part_angel = states.spread_angle / states.projectile_per_shoot;
-    double base_angel = dir.angle() - part_angel * (states.projectile_per_shoot / 2);
-    for (int i = 0; i < states.projectile_per_shoot; ++i) {
-        Projectile p(pos, (base_angel + i * part_angel) * states.projectile_speed, states.damage);
-        //Добавление в игру
+void ShotgunFire::shoot(Map& map, Player& owner, int damage) {
+    // 5 пуль веером
+    for (int i = -2; i <= 2; ++i) {
+        Vec2 dir = owner.dir().rotate(10.0 * i);
+        Vec2 vel = dir.normilized() * 400.0f;
+
+        map.spawn_projectile(
+            owner.position,
+            vel,
+            damage,
+            6 // размер пули
+        );
     }
 }

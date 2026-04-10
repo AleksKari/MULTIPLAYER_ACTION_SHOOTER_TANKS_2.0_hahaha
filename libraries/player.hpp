@@ -6,6 +6,7 @@ class Player : public Entity {
   public:
     Player(Vec2 pos, int hp, float speed, Weapon weapon);
     void move(float timediff);
+    Vec2 dir() const;
     void attack();
     bool isDead() const;
     void kill();

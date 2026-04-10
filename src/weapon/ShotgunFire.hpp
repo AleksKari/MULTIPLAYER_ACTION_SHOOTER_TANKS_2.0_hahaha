@@ -3,5 +3,6 @@
 #include "FireMode.hpp"
 
 class ShotgunFire : public FireMode {
-    void fire(const WeaponStates& states, const Vec2& pos, const Vec2& dir) override;
+  public:
+    void shoot(Map& map, Player& owner, int damage) override;
 };

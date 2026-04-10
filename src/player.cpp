@@ -10,6 +10,11 @@ void Player::move(float timediff) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) position_.x += speed_ * timediff;
 }
 
+Vec2 Player::dir() const {
+  sf::Vector2i mouse = sf::Mouse::getPosition();
+  return Vec2(mouse.x - position_.x, mouse.y - position_.y);
+}
+
 void Player::attack() {
   sf::Vector2i mouse = sf::Mouse::getPosition();
   Vec2 direct(mouse.x - position_.x, mouse.y - position_.y);  

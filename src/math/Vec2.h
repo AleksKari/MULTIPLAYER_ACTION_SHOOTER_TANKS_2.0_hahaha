@@ -33,7 +33,9 @@ class Vec2 {
     double angle() const {
         return std::atan2(y, x);
     }
-    
+    Vec2 rotate(double angle) {
+        return Vec2(x * cos(angle) + y * sin(angle), y * cos(angle) - x * sin(angle));
+    }
     double x;
     double y;
 };
