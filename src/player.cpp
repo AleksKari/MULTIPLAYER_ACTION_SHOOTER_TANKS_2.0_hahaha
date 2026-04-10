@@ -1,4 +1,5 @@
 #include "../libraries/player.hpp"
+#include "map/map.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, Weapon weapon)
     : position_(pos), hp_(hp), speed_(speed), weapon_(weapon) {}
@@ -15,10 +16,10 @@ Vec2 Player::dir() const {
   return Vec2(mouse.x - position_.x, mouse.y - position_.y);
 }
 
-void Player::attack() {
+void Player::attack(Map& map) {
   sf::Vector2i mouse = sf::Mouse::getPosition();
   Vec2 direct(mouse.x - position_.x, mouse.y - position_.y);  
-  weapon_.shoot(position_, direct.normilized());
+  // я не ебу как блять здесь эту гребанную атаку запустить
 }
 
 bool Player::isDead() const {

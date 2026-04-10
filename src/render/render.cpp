@@ -32,7 +32,7 @@ void Renderer::draw_entity(const Entity& e) {
 }
 
 void Renderer::draw_projectile(const Projectile& p) {
-    projectile_sprite.setTextureRect(p.textureRect);
+    projectile_sprite.setTextureRect({p.position.x, p.position.y, 8, 8});
     projectile_sprite.setPosition(p.position.x, p.position.y);
     window_.draw(projectile_sprite);
 }

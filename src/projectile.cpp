@@ -1,8 +1,8 @@
 #include "../libraries/projectile.hpp"
 
-Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, sf::IntRect texture_rect = sf::)
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size)
     : pos_(pos), velocity_(velocity),
-      damage_(damage), size_(size), texture_rect_(texture_rect) {}
+      damage_(damage), size_(size){}
 
 void Projectile::update(float timediff) {
     this->pos_ = this->pos_ + Vec2(static_cast<float>(velocity_.x * timediff), static_cast<float>(velocity_.y * timediff));
@@ -16,7 +16,4 @@ bool Projectile::isDead() const {
 }
 void Projectile::kill() {
     dead = true;
-}
-void Projectile::draw(sf::RenderWindow& window) {
-
 }

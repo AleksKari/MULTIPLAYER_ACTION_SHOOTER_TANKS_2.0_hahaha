@@ -7,7 +7,7 @@ class Player : public Entity {
     Player(Vec2 pos, int hp, float speed, Weapon weapon);
     void move(float timediff);
     Vec2 dir() const;
-    void attack();
+    void attack(Map& map);
     bool isDead() const;
     void kill();
     void on_wall_collision();

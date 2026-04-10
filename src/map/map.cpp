@@ -13,8 +13,7 @@ void Map::spawn_entity(Entity* ent) {
 }
 //отслеживаем снаряды
 void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
-
-  projectiles_.push_back(std::unique_ptr<Projectile>(Projectile(pos, vel, damage, size)));
+  projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size));
 }
 
 bool Map::isBound(int pos_x, int pos_y) const {
@@ -48,13 +47,15 @@ bool Map::isBreakable(int x, int y) const {
 }
 //не очень понял концепцию ибо методы не реализованы но тип суть на мой взгляд
 void Map::render(Renderer& renderer) const {
-    for (int x = 0; x < width_; x++)//проходим по все ширине высоте и отрисовываем все текстурки карты
-        for (int y = 0; y < height_; y++)
-            //renderer.draw_tile(tiles_[x][y], x, y);
-
-    for (const auto& e : entities_)//отрисовываем всех игроков
-        renderer.draw_entity();
-
-    for (const auto& pr : projectiles_) // отрисовываем пульки
-        renderer.draw_projectile();
+    for (int y = 0; y < height_; y++) {
+        for (int x = 0; x < width_; x++) {
+            renderer.draw_tile(tiles_[y][x], x, y);
+        }
+    }
+    for (const auto& e : entities_) {
+        renderer.draw_entity(*e);
+    }
+    for (const auto& pr : projectiles_) {
+        renderer.draw_projectile(*pr);
+    }
 }
