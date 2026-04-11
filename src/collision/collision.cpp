@@ -5,7 +5,7 @@ bool Collision::checkAABB(const Vec2& posA, const Vec2& sizeA,
                           const Vec2& posB, const Vec2& sizeB) {
     return !(posA.x + sizeA.x < posB.x ||
              posB.x + sizeB.x < posA.x ||
-             posA.y + sizeA.y < posA.y ||
+             posA.y + sizeA.y < posB.y ||
              posB.y + sizeB.y < posA.y);
 }
 
@@ -38,7 +38,7 @@ void Collision::resolve(Map& map) {
         if (p->isDead()) continue;
         for (auto& e : map.entities_) {
             if (e->isDead()) continue;
-            if (checkAABB(p->position, p->size, e->position, e->size)) {
+            if (checkAABB(p->position, Vec2(p->size, p->size), e->position, Vec2(e->size, e->size))) {
                 e->take_damage(e->damage);
                 p->kill();
                 break;

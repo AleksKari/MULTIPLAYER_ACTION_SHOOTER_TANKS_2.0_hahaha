@@ -17,7 +17,6 @@ class Player : public Entity {
     void update(float timediff);
     void draw(sf::RenderWindow& window) const;
   private:
-    Vec2 position_;
     int hp_;
     float speed_;
     std::unique_ptr<Weapon> weapon_;

@@ -4,7 +4,6 @@
 
 class Projectile : public Entity {
   public:
-    Vec2 pos_;
     Vec2 velocity_;
     int damage_;
     int size_;
