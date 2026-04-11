@@ -1,12 +1,42 @@
 cmake_minimum_required(VERSION 3.16)
+project(project CXX)
 
-project(SUPER_MEGA_TANKS)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_STANDART 17)
+# Пути к исходникам
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+set(LIB_DIR "${CMAKE_SOURCE_DIR}/libraries")
 
-include_directories(include)
+# Рекурсивно собираем все .cpp
+file(GLOB_RECURSE SOURCES
+    "${SRC_DIR}/*.cpp"
+    "${LIB_DIR}/*.cpp"
+)
 
-find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
+# Добавляем исполняемый файл
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-add_executable(SUPER_MEGA_TANKS src/window.cpp)
-target_link_libraries(SUPER_MEGA_TANKS sfml-graphics sfml-window sfml-system)
+# Добавляем include директории
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${SRC_DIR}
+    ${LIB_DIR}
+)
+
+# SFML
+find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+
+target_link_libraries(${PROJECT_NAME}
+    sfml-system
+    sfml-window
+    sfml-graphics
+    sfml-audio
+)
+
+# Копируем textures рядом с бинарником
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/textures"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/textures"
+)
+

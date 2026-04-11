@@ -1,8 +1,9 @@
 #include "../libraries/player.hpp"
 #include "map/map.hpp"
+#include "weapon/weapon.hpp"
 
-Player::Player(Vec2 pos, int hp, float speed, Weapon weapon)
-    : position_(pos), hp_(hp), speed_(speed), weapon_(weapon) {}
+Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
+    : position_(pos), hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) position_.y -= speed_ * timediff;
@@ -19,7 +20,7 @@ Vec2 Player::dir() const {
 void Player::attack(Map& map) {
   sf::Vector2i mouse = sf::Mouse::getPosition();
   Vec2 direct(mouse.x - position_.x, mouse.y - position_.y);  
-  // я не ебу как блять здесь эту гребанную атаку запустить
+  weapon_->shoot(map, *this, 10); // пока damage будет 10 
 }
 
 bool Player::isDead() const {

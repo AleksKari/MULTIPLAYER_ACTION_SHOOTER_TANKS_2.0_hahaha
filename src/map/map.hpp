@@ -1,3 +1,4 @@
+#pragma once
 #include "../libraries/entity.hpp"
 #include "../libraries/projectile.hpp"
 #include "../tile/tile.hpp"

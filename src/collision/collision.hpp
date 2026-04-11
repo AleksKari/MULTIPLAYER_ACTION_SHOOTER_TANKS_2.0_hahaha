@@ -4,6 +4,8 @@
 #include "../../libraries/entity.hpp"
 #include "../../libraries/projectile.hpp"
 
+class Map; //forward declaration
+
 class Collision {
   public:
     static bool checkAABB(const Vec2& posA, const Vec2& dirA,

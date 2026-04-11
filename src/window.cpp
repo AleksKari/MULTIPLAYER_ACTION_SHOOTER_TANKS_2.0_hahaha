@@ -1,6 +1,7 @@
 #include "render/render.hpp"
 #include "map/map.hpp"
 #include "../libraries/player.hpp"
+#include "weapon/gun.hpp"
 
 int main() {
 
@@ -11,8 +12,9 @@ sf::Clock clock;
 Map map(60, 33);
 
 
-Weapon wep;
-Player* player = new Player(Vec2(100, 100), 100, 150.0f, wep);
+auto wep = std::make_unique<Gun>();
+
+Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));
 map.spawn_entity(player);
 
 while (renderer.window().isOpen()) {
@@ -24,7 +26,7 @@ while (renderer.window().isOpen()) {
     if (event.type == sf::Event::MouseButtonPressed ||
       (event.type == sf::Event::KeyPressed &&
       event.key.code == sf::Keyboard::Space))
-      player->attack();
+      player->attack(map);
   }
   //  движение, коллизии
   float dt = clock.restart().asSeconds();

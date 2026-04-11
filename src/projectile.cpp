@@ -17,3 +17,12 @@ bool Projectile::isDead() const {
 void Projectile::kill() {
     dead = true;
 }
+
+void Projectile::on_wall_collision() {
+    // временная заглушка
+}
+
+void Projectile::take_damage(int dmg) {
+    // временная заглушка
+}
+

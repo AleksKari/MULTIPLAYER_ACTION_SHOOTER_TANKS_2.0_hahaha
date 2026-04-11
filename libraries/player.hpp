@@ -2,9 +2,11 @@
 #include "entity.hpp"
 #include "../src/weapon/weapon.hpp"
 
+class Weapon;
+
 class Player : public Entity {
   public:
-    Player(Vec2 pos, int hp, float speed, Weapon weapon);
+    Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon);
     void move(float timediff);
     Vec2 dir() const;
     void attack(Map& map);
@@ -18,7 +20,7 @@ class Player : public Entity {
     Vec2 position_;
     int hp_;
     float speed_;
-    Weapon weapon_;
+    std::unique_ptr<Weapon> weapon_;
     bool alive = true;
     int size_ = 32;
     sf::Texture texture_;//по сути рендер рисует но тут метод дров надо текстурку подключить
