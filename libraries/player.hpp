@@ -15,7 +15,6 @@ class Player : public Entity {
     void on_wall_collision();
     void take_damage(int damage);
     void update(float timediff);
-    void draw(sf::RenderWindow& window) const;
     void set_mouse(sf::Vector2i mouse);
   private:
     int hp_;

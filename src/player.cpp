@@ -52,10 +52,3 @@ void Player::update(float timediff) {
   move(timediff);
 }
 
-//подключить текстуру когда будет
-void Player::draw(sf::RenderWindow& window) const {
-  sf::RectangleShape shape(sf::Vector2f(size_, size_));
-  shape.setPosition(position.x, position.y);
-  shape.setTexture(&texture_);
-  window.draw(shape);
-}

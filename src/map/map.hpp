@@ -23,7 +23,6 @@ class Map {
  private:
   int width_;
   int height_;
-  int tile_size_;
   std::vector<std::vector<Tile>> tiles_;
   std::vector<std::unique_ptr<Entity>> entities_;
   std::vector<std::unique_ptr<Projectile>> projectiles_;
