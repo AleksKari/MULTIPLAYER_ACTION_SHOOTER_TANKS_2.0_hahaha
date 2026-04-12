@@ -50,5 +50,6 @@ void Player::take_damage(int damage) {
 void Player::update(float timediff) {
   prev_position_ = position;
   move(timediff);
+  cornrotate = dir().angle();
 }
 

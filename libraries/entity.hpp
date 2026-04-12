@@ -7,6 +7,7 @@ class Entity {
  public:
   sf::IntRect texture_rect_{0, 0, 32, 32};
   Vec2 position;
+  double cornrotate = 0.0;  // угол в рад
   int damage = 0;
   int size;
   Entity();

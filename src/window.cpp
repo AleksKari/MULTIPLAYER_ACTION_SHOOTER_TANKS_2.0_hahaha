@@ -8,8 +8,8 @@ int main() {
 Renderer renderer(1920, 1080, 32);
 sf::Clock clock;
 
-// карта 60x33 тайла(квадрата) (1920/32 x 1080/32)
-Map map(60, 33);
+// карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
+Map map(60, 34);
 
 
 auto wep = std::make_unique<Gun>();
