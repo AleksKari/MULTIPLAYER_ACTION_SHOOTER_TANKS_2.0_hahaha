@@ -12,14 +12,14 @@ class Vec2 {
     }
 
     // Сложение
-    Vec2 operator+(const Vec2& other) {
+    Vec2 operator+(const Vec2& other) const {
         return Vec2(x + other.x, y + other.y);
     }
     // Вычитание
-    Vec2 operator-(const Vec2& other) {
+    Vec2 operator-(const Vec2& other) const {
         return Vec2(x - other.x, y - other.y);
     }
-    Vec2 operator*(double scalar) {
+    Vec2 operator*(double scalar) const {
         return Vec2(x * scalar, y * scalar);
     }
     double length() const {
@@ -33,7 +33,7 @@ class Vec2 {
     double angle() const {
         return std::atan2(y, x);
     }
-    Vec2 rotate(double angle) {
+    Vec2 rotate(double angle) const {
         return Vec2(x * cos(angle) + y * sin(angle), y * cos(angle) - x * sin(angle));
     }
     double x;
