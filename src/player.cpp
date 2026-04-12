@@ -37,8 +37,7 @@ void Player::kill() {
 
 //не даем застрять откатывает координаты
 void Player::on_wall_collision() {
-  position.x -= position.x * 0.1f;
-  position.y -= position.y * 0.1f;
+  position = prev_position_;
 }
 
 void Player::take_damage(int damage) {
@@ -49,6 +48,7 @@ void Player::take_damage(int damage) {
 
 //есть в энтити убрать нельзя но по сути копипаст
 void Player::update(float timediff) {
+  prev_position_ = position;
   move(timediff);
 }
 

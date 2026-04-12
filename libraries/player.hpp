@@ -19,6 +19,7 @@ class Player : public Entity {
   private:
     int hp_;
     Vec2 mouse_pos_;
+    Vec2 prev_position_;
     float speed_;
     std::unique_ptr<Weapon> weapon_;
     bool alive = true;
