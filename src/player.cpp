@@ -17,7 +17,7 @@ void Player::set_mouse(sf::Vector2i mouse) {
 }
 
 Vec2 Player::dir() const {
-  Vec2 center(position.x + 63, position.y + 39);
+  Vec2 center(position.x + 16, position.y + 16);
   return Vec2(mouse_pos_.x - center.x, mouse_pos_.y - center.y);
 }
 
