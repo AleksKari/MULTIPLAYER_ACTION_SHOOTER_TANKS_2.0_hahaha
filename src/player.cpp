@@ -12,9 +12,13 @@ void Player::move(float timediff) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) position.x += speed_ * timediff;
 }
 
+void Player::set_mouse(sf::Vector2i mouse) {
+  mouse_pos_ = Vec2(mouse.x, mouse.y);
+}
+
 Vec2 Player::dir() const {
-  sf::Vector2i mouse = sf::Mouse::getPosition();
-  return Vec2(mouse.x - position.x, mouse.y - position.y);
+  Vec2 center(position.x + 63, position.y + 39);
+  return Vec2(mouse_pos_.x - center.x, mouse_pos_.y - center.y);
 }
 
 void Player::attack(Map& map) {

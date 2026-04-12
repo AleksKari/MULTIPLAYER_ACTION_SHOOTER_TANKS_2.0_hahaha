@@ -16,8 +16,10 @@ class Player : public Entity {
     void take_damage(int damage);
     void update(float timediff);
     void draw(sf::RenderWindow& window) const;
+    void set_mouse(sf::Vector2i mouse);
   private:
     int hp_;
+    Vec2 mouse_pos_;
     float speed_;
     std::unique_ptr<Weapon> weapon_;
     bool alive = true;
