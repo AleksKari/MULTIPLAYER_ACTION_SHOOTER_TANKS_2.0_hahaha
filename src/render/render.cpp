@@ -31,7 +31,7 @@ void Renderer::draw_entity(const Entity& e) {
 }
 
 void Renderer::draw_projectile(const Projectile& p) {
-  projectile_sprite.setPosition(p.position.x, p.position.y);
+  projectile_sprite.setPosition(p.position.x - 67, p.position.y - 53);
   window_.draw(projectile_sprite);
 }
 

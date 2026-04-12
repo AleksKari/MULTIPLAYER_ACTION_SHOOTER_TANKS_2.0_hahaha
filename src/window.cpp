@@ -29,6 +29,7 @@ while (renderer.window().isOpen()) {
       player->attack(map);
   }
   //  движение, коллизии
+  player->set_mouse(sf::Mouse::getPosition(renderer.window()));
   float dt = clock.restart().asSeconds();
   map.update(dt);
   //  отрисовка вроде такая логика +-
