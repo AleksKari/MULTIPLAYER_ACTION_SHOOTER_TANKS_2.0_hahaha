@@ -1,5 +1,6 @@
 #include "collision.hpp"
 #include "map/map.hpp"
+#include <iostream>
 
 bool Collision::checkAABB(const Vec2& posA, const Vec2& sizeA,
                           const Vec2& posB, const Vec2& sizeB) {
@@ -10,9 +11,11 @@ bool Collision::checkAABB(const Vec2& posA, const Vec2& sizeA,
 }
 
 bool Collision::entity_tile(const Entity& e, const Map& map) {
-  // пиксельные границы карты — проверяем все 4 угла хитбокса
-  if (e.position.x < 0 || e.position.y < 0 || e.position.x + e.size > map.width_ * 32 ||
-      e.position.y + e.size > map.height_ * 32) { return true; }
+    // пиксельные границы карты — проверяем все 4 угла хитбокса
+  if (e.position.x < 0 || e.position.y < 0 || ((e.position.x + e.size) / 32) >= map.width_ ||
+    ((e.position.y + e.size) / 32 ) >= map.height_) { return true; }
+    
+  std::cout << e.position.x << " " << e.position.y << " " << e.size <<  std::endl;
   int x0 = static_cast<int>(e.position.x) / 32;
   int y0 = static_cast<int>(e.position.y) / 32;
   int x1 = static_cast<int>(e.position.x + e.size - 1) / 32;

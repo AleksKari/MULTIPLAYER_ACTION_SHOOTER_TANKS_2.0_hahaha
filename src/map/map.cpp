@@ -27,38 +27,38 @@ void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
 }
 
 bool Map::isBound(int pos_x, int pos_y) const {
-  return pos_x >= 0 && pos_y >= 0 &&
-      pos_x < width_ && pos_y < height_;
+  return pos_x < 0 || pos_y < 0 ||
+      pos_x >= width_ || pos_y >= height_;
 }
 
 // не очень ясно как tile заполняется в этом проблема
 bool Map::isWall(int x, int y) const {
-  if (!isBound(x, y)) return true;  // край карты = стена
-  return tiles_[x][y].isWall();
+  return (isBound(x / 32, y / 32));  // край карты = стена
+  return tiles_[x / 32][y / 32].isWall();
 }
 
 bool Map::isEmpty(int pos_x, int pos_y) const {
-  if (!isBound(pos_x, pos_y)) return false;
-  return tiles_[pos_x][pos_y].isEmpty();
+  if (isBound(pos_x / 32, pos_y / 32)) return false;
+  return tiles_[pos_x / 32][pos_y / 32].isEmpty();
 }
 
 bool Map::isSlow(int pos_x, int pos_y) const {
-  if (!isBound(pos_x, pos_y)) return false;
-  return tiles_[pos_x][pos_y].isSlow();
+  if (isBound(pos_x / 32, pos_y / 32)) return false;
+  return tiles_[pos_x / 32][pos_y / 32].isSlow();
 }
 
 bool Map::isDamage(int x, int y) const {
-  if (!isBound(x, y)) return false;
-  return tiles_[x][y].isDamage();
+  if (isBound(x / 32, y / 32)) return false;
+  return tiles_[x / 32][y / 32].isDamage();
 }
 
 bool Map::isBreakable(int x, int y) const {
-  if (!isBound(x, y)) return false;
-  return tiles_[x][y].isBreakable();
+  if (isBound(x / 32, y / 32)) return false;
+  return tiles_[x / 32][y / 32].isBreakable();
 }
 
 void Map::setTile(int x, int y, Tile::Type type, sf::IntRect rect) {
-  if (isBound(x, y)) tiles_[x][y] = Tile(type, rect);
+  if (isBound(x / 32, y / 32)) tiles_[x / 32][y / 32] = Tile(type, rect);
 }
 
 //не очень понял концепцию ибо методы не реализованы но тип суть на мой взгляд
@@ -67,8 +67,8 @@ void Map::render(Renderer& renderer) const {
 
   for (int y = 0; y < height_; y++) {
     for (int x = 0; x < width_; x++) {
-      if (!tiles_[x][y].isEmpty())                   // 2. только стены
-        renderer.draw_tile(tiles_[x][y], x, y);
+      if (!tiles_[x / 32][y / 32].isEmpty())                   // 2. только стены
+        renderer.draw_tile(tiles_[x / 32][y / 32], x, y);
     }
   }
 
