@@ -1,7 +1,7 @@
 #include "../libraries/projectile.hpp"
 
 Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size)
-    : Entity(pos, damage, size), velocity_(velocity), damage_(damage), size_(size) {}
+    : Entity(pos, damage, size), velocity_(velocity), damage_(damage), size_(size), created(std::chrono::steady_clock::now()) {}
 
 Projectile::~Projectile() = default;
 
@@ -21,6 +21,11 @@ void Projectile::kill() {
 
 void Projectile::on_wall_collision() {
    dead = true;
+}
+
+double Projectile::lifetime() const {
+  if (this->dead) return 0;
+  else return std::chrono::duration<double>(std::chrono::steady_clock::now() - created).count();  
 }
 
 void Projectile::take_damage(int dmg) {
