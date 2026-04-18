@@ -28,12 +28,14 @@ void Renderer::draw_tile(const Tile& tile, int x, int y) {
 }
 
 void Renderer::draw_entity(const Entity& e) {
+  if (e.isDead()) return;
   entity_sprite.setPosition(e.position.x + 16, e.position.y + 16);
   entity_sprite.setRotation(e.cornrotate * 180.0 / M_PI);
   window_.draw(entity_sprite);
 }
 
 void Renderer::draw_projectile(const Projectile& p) {
+  if (p.isDead()) return;
   projectile_sprite.setPosition(p.position.x - 67, p.position.y - 53);
   window_.draw(projectile_sprite);
 }

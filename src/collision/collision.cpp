@@ -5,7 +5,7 @@
 bool Collision::checkAABB(const Vec2& posA, const int sizeA,
                           const Vec2& posB, const int sizeB) {
     double dist = sqrt((posA.x - posB.x) * (posA.x - posB.x) + (posA.y - posB.y) * (posA.y - posB.y));
-    return (dist - sizeA - sizeB > 0);
+    return (dist - ((sizeA + sizeB) / 2.0) > 0); // проверка ведется как будто это 2 круга. Возвраща. что обьекты не пересекаются
 }
 
 bool Collision::entity_tile(const Player& e, const Map& map) {

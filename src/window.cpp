@@ -29,7 +29,7 @@ int main() {
       if (event.type == sf::Event::MouseButtonPressed ||
         (event.type == sf::Event::KeyPressed &&
         event.key.code == sf::Keyboard::Space))
-        player->attack(map);
+        if (!player->isDead()) player->attack(map);
     }
     //  движение, коллизии
     player->set_mouse(sf::Mouse::getPosition(renderer.window()));
