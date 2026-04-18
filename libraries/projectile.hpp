@@ -9,6 +9,7 @@ class Projectile : public Entity {
     int size_;
     bool dead = false;
     Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 32);
+    ~Projectile();
     void update(float timediff) override;
     int GetDamage() const;
     Vec2 GetVelocity() const;

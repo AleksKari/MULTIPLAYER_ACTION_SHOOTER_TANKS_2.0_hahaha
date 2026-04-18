@@ -1,15 +1,17 @@
 #pragma once
-#include "../libraries/entity.hpp"
+#include "../libraries/player.hpp"
 #include "../libraries/projectile.hpp"
 #include "../tile/tile.hpp"
 #include "../render/render.hpp"
 #include <memory>
 
+class Player;
+
 class Map {
  public:
   Map(int width, int height);
   void update(double dt);
-  void spawn_entity(Entity* ent);
+  void spawn_entity(Player* ent);
   void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
   bool isBound(int pos_x, int pos_y) const;
   bool isWall(int pos_x, int pos_y) const;
@@ -24,7 +26,7 @@ class Map {
   int width_;
   int height_;
   std::vector<std::vector<Tile>> tiles_;
-  std::vector<std::unique_ptr<Entity>> entities_;
+  std::vector<std::unique_ptr<Player>> entities_;
   std::vector<std::unique_ptr<Projectile>> projectiles_;
   sf::Texture background_texture_;
   mutable sf::Sprite  background_sprite_;

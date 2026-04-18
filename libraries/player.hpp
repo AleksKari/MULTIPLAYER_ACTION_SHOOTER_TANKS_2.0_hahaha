@@ -1,8 +1,10 @@
 #pragma once
 #include "entity.hpp"
 #include "../src/weapon/weapon.hpp"
+#include <memory>
 
 class Weapon;
+class Map;
 
 class Player : public Entity {
   public:

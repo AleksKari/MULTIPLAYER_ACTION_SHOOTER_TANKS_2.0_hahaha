@@ -17,8 +17,8 @@ void Map::update(double dt) {
 }
 
 //отслеживаем игроков
-void Map::spawn_entity(Entity* ent) {
-  entities_.push_back(std::unique_ptr<Entity>(ent));
+void Map::spawn_entity(Player* ent) {
+  entities_.push_back(std::unique_ptr<Player>(std::move(ent)));
 }
 
 //отслеживаем снаряды
