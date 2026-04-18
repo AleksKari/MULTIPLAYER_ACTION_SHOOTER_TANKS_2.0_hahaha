@@ -2,6 +2,7 @@
 #include "map/map.hpp"
 #include "../libraries/player.hpp"
 #include "weapon/gun.hpp"
+#include "weapon/shotgun.hpp"
 
 int main() {
 
@@ -12,7 +13,7 @@ sf::Clock clock;
 Map map(57, 31);
 
 
-auto wep = std::make_unique<Gun>();
+auto wep = std::make_unique<ShotGun>();
 
 Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));
 map.spawn_entity(player);

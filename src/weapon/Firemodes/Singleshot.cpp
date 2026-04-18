@@ -1,6 +1,6 @@
 #include "Singleshot.hpp"
-#include "../../libraries/projectile.hpp"
-#include "../map/map.hpp"
+#include "../../../libraries/projectile.hpp"
+#include "../../map/map.hpp"
 
 void SingleShot::shoot(Map& map, Player& owner, int damage) {
   Vec2 center(owner.position.x + 16, owner.position.y + 16);

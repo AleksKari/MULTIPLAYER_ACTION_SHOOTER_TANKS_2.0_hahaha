@@ -1,15 +1,15 @@
 #include "weapon.hpp"
-#include "Firemodes/Singleshot.hpp"
+#include "Firemodes/ShotgunFire.hpp"
 #include "../../libraries/entity.hpp"
 #include "../map/map.hpp"
 
-class Gun : public  Weapon {
+class ShotGun : public  Weapon {
   private:
     int damage_ = 0;
     double cooldown = 0.8;
-    SingleShot fire_;
+    ShotgunFire fire_;
   public:
-    Gun() {
+    ShotGun() {
         damage_ = 10;
     }
     void shoot(Map& map, Player& owner, int damage) override {
