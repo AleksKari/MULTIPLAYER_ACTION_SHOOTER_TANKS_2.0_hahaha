@@ -16,3 +16,7 @@ bool Tile::isSlow() const {
 bool Tile::isWall() const {
     return type == Type::Wall;
 }
+
+bool Tile::isWeapon() const {
+    return type == Type::Weapon;
+}

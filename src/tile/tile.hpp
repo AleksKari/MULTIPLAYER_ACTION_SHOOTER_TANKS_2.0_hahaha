@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+
+// требует полной переработка. Каждый тип tile должен обрадать своими уникальными характеристиками(жизни, урон, собственная текстура)
 class Tile {
   public:
     enum class Type {
@@ -9,7 +11,8 @@ class Tile {
         Wall,
         Breakable,
         Slow,
-        Damage
+        Damage,
+        Weapon
     };    
     Tile(Type type = Type::Empty, const sf::IntRect& rect = sf::IntRect());
     bool isEmpty() const;
@@ -17,6 +20,7 @@ class Tile {
     bool isBreakable() const;
     bool isSlow() const;
     bool isDamage() const;
+    bool isWeapon() const;
     Type type;
     sf::IntRect texture_rect;
 };

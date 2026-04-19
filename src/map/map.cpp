@@ -1,6 +1,15 @@
+#include <iostream>
+#include <random>
+#include <variant>
+#include <concepts>
+#include <type_traits>
 #include "map.hpp"
 #include "../collision/collision.hpp"
-#include <iostream>
+#include "../weapon/gun.hpp"
+#include "../weapon/shotgun.hpp"
+
+template <typename T>
+concept is_weapon = std::derived_from<T, Weapon>;
 
 Map::Map(int width, int height) : width_(width), height_(height) {
   tiles_.resize(width_, std::vector<Tile>(height_));
@@ -13,6 +22,7 @@ Map::Map(int width, int height) : width_(width), height_(height) {
 void Map::update(double dt) {
   for (auto& ent : entities_) { ent->update(dt); }
   for (auto& pr : projectiles_) { pr->update(dt); }
+  //this->generation_weapon;
   Collision::resolve(*this);
 }
 
@@ -24,6 +34,10 @@ void Map::spawn_entity(Player* ent) {
 //отслеживаем снаряды
 void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
   projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size));
+}
+
+void Map::spawn_tile(Vec2 pos, Tile tl) {
+  tiles_[pos.x][pos.y] = tl;
 }
 
 bool Map::isBound(int pos_x, int pos_y) const {
@@ -78,4 +92,31 @@ void Map::render(Renderer& renderer) const {
   for (const auto& pr : projectiles_) {
     renderer.draw_projectile(*pr);                   // 4. пули
   }
+}
+
+void Map::generate_weapon() {
+  std::mt19937 mt(std::time(nullptr));
+  if (mt() % 50) return;  
+  std::vector<Vec2> empty_tiles;
+  for (int i = 0; i < tiles_.size(); ++i) {
+    for (int j = 0; j < tiles_[i].size(); ++j) {
+      if (tiles_[i][j].isEmpty()) {
+        empty_tiles.push_back(Vec2(i, j));
+      }
+    }
+  }
+  int number_tile = mt() % empty_tiles.size();
+  int weapon_number = mt() % 2;
+  std::vector<std::variant<Gun, ShotGun>> mixed_weapon;
+  auto shotgun = std::make_unique<ShotGun>();
+  auto gun = std::make_unique<Gun>();
+  mixed_weapon.push_back(std::move(*gun));
+  mixed_weapon.push_back(std::move(*shotgun));
+  //this->spawn_tile(empty_tiles[number_tile], mixed_weapon[weapon_number]); // 
+
+}
+
+template <is_weapon T>
+Tile convert_to_tile(const T& weapon) {
+  
 }

@@ -13,6 +13,7 @@ class Map {
   void update(double dt);
   void spawn_entity(Player* ent);
   void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
+  void spawn_tile(Vec2 pos, Tile tl);
   bool isBound(int pos_x, int pos_y) const;
   bool isWall(int pos_x, int pos_y) const;
   bool isEmpty(int pos_x, int pos_y) const;
@@ -21,6 +22,7 @@ class Map {
   bool isBreakable(int pos_x, int pos_y) const;
   void setTile(int x, int y, Tile::Type type, sf::IntRect rect = {0,0,32,32});
   void render(Renderer& renderer) const;
+  void generate_weapon();
   friend class Collision;
  private:
   int width_;
