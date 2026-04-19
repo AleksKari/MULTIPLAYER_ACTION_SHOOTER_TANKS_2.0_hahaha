@@ -43,7 +43,7 @@ void Collision::resolve(Map& map) {
     int cnt = 0;
     for (auto& p : map.projectiles_) {
         if (p->isDead()) continue;
-        if (p->lifetime() < 0.5) continue;
+        if (p->lifetime() < 0.1) continue;
         for (auto& e : map.entities_) {
             if (e->isDead()) continue;
             if (!checkAABB(p->position, p->size, e->position, e->size)) {
