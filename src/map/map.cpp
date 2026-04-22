@@ -118,5 +118,5 @@ void Map::generate_weapon() {
 
 template <is_weapon T>
 Tile convert_to_tile(const T& weapon) {
-  
+
 }
