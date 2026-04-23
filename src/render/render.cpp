@@ -20,13 +20,7 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   entity_sprite.setOrigin(16, 16);  // центр 32×32 текстуры
   projectile_sprite.setTexture(projectile_texture);
 }
-template<typename T>
-//T должен кастится к Tile
-void Renderer::draw_tile(const T& tile, int x, int y) {
-  tile_sprite.setTextureRect(tile.texture_rect_);
-  tile_sprite.setPosition(x * tile_size_, y * tile_size_);
-  window_.draw(tile_sprite);
-}
+
 
 void Renderer::draw_entity(const Entity& e) {
   if (e.isDead()) return;

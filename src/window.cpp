@@ -4,6 +4,7 @@
 #include "weapon/gun.hpp"
 #include "weapon/shotgun.hpp"
 #include <iostream>
+#include "tile/EmptyTile.hpp"
 
 int main() {
 
@@ -19,6 +20,11 @@ int main() {
   Player* weak = new Player(Vec2(500, 500), 100, 150.0f, std::move(wep));
   map.spawn_entity(player);
   map.spawn_entity(weak);
+  for (int i = 0; i <= 57; ++i) {
+    for (int j = 0; j <= 31; ++j) {
+      map.spawn_tile(Vec2(i,j), EmptyTile());
+    }
+  }
   while (renderer.window().isOpen()) {
     // Сзакрытие окна и выстрел по событию
     sf::Event event;

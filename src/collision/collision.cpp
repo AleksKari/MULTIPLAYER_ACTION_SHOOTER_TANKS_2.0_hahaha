@@ -9,6 +9,7 @@ bool Collision::checkAABB(const Vec2& posA, const int sizeA,
 }
 
 bool Collision::entity_tile(const Player& e, const Map& map) {
+    std::cout << "IM HERE\n";
     // пиксельные границы карты — проверяем все 4 угла хитбокса
   if (e.position.x < 0 || e.position.y < 0 || ((e.position.x + e.size) / 32) >= map.width_ ||
     ((e.position.y + e.size) / 32 ) >= map.height_) { return true; }
@@ -18,8 +19,11 @@ bool Collision::entity_tile(const Player& e, const Map& map) {
   int y0 = static_cast<int>(e.position.y) / 32;
   int x1 = static_cast<int>(e.position.x + e.size - 1) / 32;
   int y1 = static_cast<int>(e.position.y + e.size - 1) / 32;
-  return map.tiles_[x0][y0].isWall() || map.tiles_[x1][y0].isWall() ||
-          map.tiles_[x0][y1].isWall() || map.tiles_[x1][y1].isWall();
+  std::cout << x0 << " " << y0 << " " << x1 << " " << y1 << "\n";
+  std::cout << map.tiles_.size() << " " << map.tiles_[0].size() << std::endl;
+
+  return (map.tiles_[x0][y0] && map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y0]->is_wall()) ||
+          (map.tiles_[x0][y0] && map.tiles_[x0][y1]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y1]->is_wall());
 }
 
 bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
@@ -29,17 +33,19 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
   int y0 = static_cast<int>(proj.position.y) / 32;
   int x1 = static_cast<int>(proj.position.x + proj.size - 1) / 32;
   int y1 = static_cast<int>(proj.position.y + proj.size - 1) / 32;
-  return map.tiles_[x0][y0].isWall() || map.tiles_[x1][y0].isWall() ||
-          map.tiles_[x0][y1].isWall() || map.tiles_[x1][y1].isWall();
+  return (map.tiles_[x0][y0] && map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y0]->is_wall()) ||
+          (map.tiles_[x0][y0] && map.tiles_[x0][y1]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y1]->is_wall());
 }
 
 void Collision::resolve(Map& map) {
+    std::cout << "Collision start\n";
     for (auto& p : map.projectiles_) {
         if (projectile_tile(*p, map)) {
             p->kill();
             continue;
         }
     }
+    std::cout << "projectiles end\n"; 
     int cnt = 0;
     for (auto& p : map.projectiles_) {
         if (p->isDead()) continue;
@@ -56,11 +62,13 @@ void Collision::resolve(Map& map) {
             }
         }
     }
-    //std::cout << "ALIVE\n";
+
+    std::cout << "ALIVE\n";
     for (auto& e : map.entities_) {
         if (entity_tile(*e, map)) {
+            std::cout << "NU\n";
             e->on_wall_collision();
         }
     }
-
+    std::cout << "COLLISION OKEY \n";
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include "tile.hpp"
 
 class WeaponTile : public Tile {
