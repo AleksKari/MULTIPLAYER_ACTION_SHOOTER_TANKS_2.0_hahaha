@@ -6,11 +6,11 @@ class Map;
 class Player;
 
 class Weapon {
-  public:
-    virtual ~Weapon();
-    virtual void shoot(Map& map, Player& player, int damage) = 0;
-  protected:
-    int damage_ = 0;
-    double cooldown = 0.8;
-    double cooldown_timer = 0;
+ public:
+  virtual ~Weapon();
+  virtual void shoot(Map& map, Player& player, int damage) = 0;
+ protected:
+  int damage_ = 0;
+  double cooldown = 0.8;
+  sf::Clock shot_clock;
 };
