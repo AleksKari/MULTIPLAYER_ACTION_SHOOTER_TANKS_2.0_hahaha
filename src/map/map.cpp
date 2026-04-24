@@ -7,15 +7,20 @@
 #include "../collision/collision.hpp"
 #include "../weapon/gun.hpp"
 #include "../weapon/shotgun.hpp"
+#include "../tile/BreakableTile.hpp"
+#include "../tile/EmptyTile.hpp" 
+#include "../render/render.hpp"
+#include "../../libraries/projectile.hpp"
 
 Map::Map(int width, int height) : width_(width), height_(height) {
-  tiles_.resize(width_);
+  tiles_.resize(width_ + 1);
   for (auto& column : tiles_) {
-    column.resize(height_);
+    column.resize(height_ + 1);
   }
   
-  for (int i = 0; i < width_; ++i) {
-    for (int j = 0; j < height_; ++j) {
+  for (int i = 0; i <= width_; ++i) {
+    for (int j = 0; j <= height_; ++j) {
+      if (i + j == 10) {tiles_[i][j] = std::make_unique<BreakableTile>(); continue; }
       std::cout << i << "  " << j << std::endl;  
       tiles_[i][j] = std::make_unique<EmptyTile>();
     }
@@ -83,12 +88,12 @@ void Map::setTile(int x, int y, Tile::Type type, sf::IntRect rect) {
 */ 
 //не очень понял концепцию ибо методы не реализованы но тип суть на мой взгляд
 void Map::render(Renderer& renderer) const {
-  renderer.window().draw(background_sprite_);        // 1. фон
+ // std::cout << "Start render\n";
+ // renderer.window().draw(background_sprite_);        // 1. фон
 
-  for (int y = 0; y < height_; y++) {
-    for (int x = 0; x < width_; x++) {
-      if (!tiles_[x / 32][y / 32]->is_empty())                   // 2. только стены
-        renderer.draw_tile((*tiles_[x / 32][y / 32]), x, y);
+  for (int y = 0; y <= height_; ++y) {
+    for (int x = 0; x <= width_; ++x) {               // 2. только стены
+      tiles_[x][y]->draw(renderer, Vec2(x, y));
     }
   }
 

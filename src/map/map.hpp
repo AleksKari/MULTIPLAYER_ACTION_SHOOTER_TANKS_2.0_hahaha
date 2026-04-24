@@ -1,12 +1,16 @@
 #pragma once
-#include "../libraries/player.hpp"
-#include "../libraries/projectile.hpp"
-#include "../tile/EmptyTile.hpp"
-#include "../render/render.hpp"
 #include <memory>
 #include <concepts>
+#include <vector>
+#include "../tile/is_tile.hpp"
+#include "../math/Vec2.h"
 
 class Player;
+class Projectile;
+class EmptyTile;
+class Renderer;
+class Tile;
+
 
 class Map {
  public:
@@ -15,9 +19,9 @@ class Map {
   void spawn_entity(Player* ent);
   void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
   template<is_tile T>
-  void set_tile(Vec2 pos, const T& tl);
+  void set_tile(Vec2& pos, const T& tl);
   bool isBound(int pos_x, int pos_y) const;
-  bool isWall(int pos_x, int pos_y) const;
+  bool isWall(int pos_x, int pos_y) const;  
   bool isEmpty(int pos_x, int pos_y) const;
   bool isSlow(int pos_x, int pos_y) const;
   bool isDamage(int pos_x, int pos_y) const;
@@ -37,6 +41,6 @@ class Map {
 };
 
 template <is_tile T>
-void Map::set_tile(Vec2 pos, const T& tl) {
-  tiles_[pos.x][pos.y] = std::make_unique<T>(tl);
+void Map::set_tile(Vec2& pos, const T& tl) {
+  tiles_[pos.x][pos.y] = std::make_unique<T>(std::move(tl));
 }

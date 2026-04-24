@@ -5,6 +5,7 @@
 #include "weapon/shotgun.hpp"
 #include <iostream>
 #include "tile/EmptyTile.hpp"
+#include "../libraries/projectile.hpp"
 
 int main() {
 

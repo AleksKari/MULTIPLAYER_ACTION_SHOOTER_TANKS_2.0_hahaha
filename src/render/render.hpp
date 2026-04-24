@@ -1,13 +1,14 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../tile/tile.hpp"
-#include "../../libraries/entity.hpp"
-#include "../../libraries/projectile.hpp"
 #include <concepts>
+#include "../math/Vec2.h"
+#include "../tile/is_tile.hpp"
 
-template<typename T>
-concept is_tile = std::derived_from<T, Tile> || std::same_as<T, Tile>;
+
+class Tile;
+class Entity;
+class Projectile;
 
 class Renderer {
   public:
@@ -15,7 +16,7 @@ class Renderer {
     void beginframe();
     void endframe();
     template<is_tile T>
-    void draw_tile(const T& tile, int x, int y);
+    void draw_tile(const T& tile, Vec2 pos);
     void draw_entity(const Entity& entity);
     void draw_projectile(const Projectile& proj);
     sf::RenderWindow& window();
@@ -30,9 +31,12 @@ class Renderer {
     sf::Sprite projectile_sprite;
 };
 
-template <is_tile T>
-void Renderer::draw_tile(const T& tile, int x, int y) {
+template <is_tile T>  // в зависимости от того какой тайл пришел тот и отрисовывать
+void Renderer::draw_tile(const T& tile, Vec2 pos) {
+  static_assert(!std::same_as<T, Tile>);
+  tile_texture = tile.texture_;
+  tile_sprite.setTexture(tile_texture);
   tile_sprite.setTextureRect({0, 0, 32, 32});
-  tile_sprite.setPosition(x * 32, y * 32);
+  tile_sprite.setPosition(pos.x * 32, pos.y * 32);
   window_.draw(tile_sprite);
 }
