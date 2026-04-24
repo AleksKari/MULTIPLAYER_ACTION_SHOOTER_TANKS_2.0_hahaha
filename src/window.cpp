@@ -13,18 +13,13 @@ int main() {
 
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
   Map map(57, 31);
-
+  std::cout << "THIS\n";
+  
   auto wep = std::make_unique<ShotGun>();
-
   Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));
   Player* weak = new Player(Vec2(500, 500), 100, 150.0f, std::move(wep));
   map.spawn_entity(player);
   map.spawn_entity(weak);
-  for (int i = 0; i <= 57; ++i) {
-    for (int j = 0; j <= 31; ++j) {
-      map.spawn_tile(Vec2(i,j), EmptyTile());
-    }
-  }
   while (renderer.window().isOpen()) {
     // Сзакрытие окна и выстрел по событию
     sf::Event event;

@@ -13,6 +13,14 @@ Map::Map(int width, int height) : width_(width), height_(height) {
   for (auto& column : tiles_) {
     column.resize(height_);
   }
+  
+  for (int i = 0; i < width_; ++i) {
+    for (int j = 0; j < height_; ++j) {
+      std::cout << i << "  " << j << std::endl;  
+      tiles_[i][j] = std::make_unique<EmptyTile>();
+    }
+  }
+  std::cout << "START\n";
   if (!background_texture_.loadFromFile("textures/map.png")) {
     std::cout << "failed to load background\n";
   }
@@ -35,6 +43,7 @@ void Map::spawn_entity(Player* ent) {
 void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
   projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size));
 }
+
 
 
 bool Map::isBound(int pos_x, int pos_y) const {

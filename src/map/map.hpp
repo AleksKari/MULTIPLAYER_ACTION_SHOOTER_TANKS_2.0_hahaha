@@ -15,7 +15,7 @@ class Map {
   void spawn_entity(Player* ent);
   void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
   template<is_tile T>
-  void spawn_tile(Vec2 pos, const T& tl);
+  void set_tile(Vec2 pos, const T& tl);
   bool isBound(int pos_x, int pos_y) const;
   bool isWall(int pos_x, int pos_y) const;
   bool isEmpty(int pos_x, int pos_y) const;
@@ -37,6 +37,6 @@ class Map {
 };
 
 template <is_tile T>
-void Map::spawn_tile(Vec2 pos, const T& tl) {
-  tiles_[pos.x / 32][pos.y / 32] = std::make_unique<EmptyTile>(); 
+void Map::set_tile(Vec2 pos, const T& tl) {
+  tiles_[pos.x][pos.y] = std::make_unique<T>(tl);
 }
