@@ -23,7 +23,6 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   projectile_sprite.setTexture(projectile_texture);
 }
 
-//что это за ебанные костыли?
 void Renderer::draw_entity(const Entity& e) {
   if (e.isDead()) return;
   entity_sprite.setPosition(e.position.x + 16, e.position.y + 16); // 16 16
@@ -33,7 +32,7 @@ void Renderer::draw_entity(const Entity& e) {
 
 void Renderer::draw_projectile(const Projectile& p) {
   if (p.isDead()) return;
-  projectile_sprite.setPosition(p.position.x - 67, p.position.y - 53);//67 53
+  projectile_sprite.setPosition(p.position.x, p.position.y);
   window_.draw(projectile_sprite);
 }
 
