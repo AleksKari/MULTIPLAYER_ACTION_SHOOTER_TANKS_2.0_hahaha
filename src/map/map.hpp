@@ -17,7 +17,7 @@ class Map {
   Map(int width, int height);
   void update(double dt);
   void spawn_entity(Player* ent);
-  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size);
+  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1);
   template<is_tile T>
   void set_tile(Vec2& pos, const T& tl);
   bool isBound(int pos_x, int pos_y) const;

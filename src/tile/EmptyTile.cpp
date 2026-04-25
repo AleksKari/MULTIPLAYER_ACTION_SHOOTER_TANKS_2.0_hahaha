@@ -1,4 +1,3 @@
-#pragma once
 #include "../tile/EmptyTile.hpp"
 #include "../render/render.hpp"
 #include "../math/Vec2.h"

@@ -1,11 +1,13 @@
 #include "../libraries/projectile.hpp"
 
-Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size)
-    : Entity(pos, damage, size), velocity_(velocity), damage_(damage), size_(size), created(std::chrono::steady_clock::now()) {}
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp)
+    : Entity(pos, damage, size), velocity_(velocity), damage_(damage), 
+    size_(size), hp_(hp), prev_position_(pos), created(std::chrono::steady_clock::now()) {}
 
 Projectile::~Projectile() = default;
 
 void Projectile::update(float timediff) {
+  prev_position_ = position;
   position = position + Vec2(velocity_.x * timediff, velocity_.y * timediff);
 }
 

@@ -9,6 +9,7 @@
 #include "../weapon/shotgun.hpp"
 #include "../tile/BreakableTile.hpp"
 #include "../tile/EmptyTile.hpp" 
+#include "../tile/WallTile.hpp" 
 #include "../render/render.hpp"
 #include "../../libraries/projectile.hpp"
 
@@ -21,6 +22,8 @@ Map::Map(int width, int height) : width_(width), height_(height) {
   for (int i = 0; i <= width_; ++i) {
     for (int j = 0; j <= height_; ++j) {
       if (i + j == 10) {tiles_[i][j] = std::make_unique<BreakableTile>(); continue; }
+      //костыль для теста
+      if (i + j == 20) {tiles_[i][j] = std::make_unique<WallTile>(); continue; }
       std::cout << i << "  " << j << std::endl;  
       tiles_[i][j] = std::make_unique<EmptyTile>();
     }
@@ -45,8 +48,8 @@ void Map::spawn_entity(Player* ent) {
 }
 
 //отслеживаем снаряды
-void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size) {
-  projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size));
+void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp) {
+  projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size, hp));
 }
 
 
