@@ -13,13 +13,10 @@ bool Collision::entity_tile(const Player& e, const Map& map) {
   if (e.position.x < 0 || e.position.y < 0 || ((e.position.x + e.size) / 32) >= map.width_ ||
     ((e.position.y + e.size) / 32 ) >= map.height_) { return true; }
     
-  //std::cout << e.position.x << " " << e.position.y << " " << e.size <<  std::endl;
   int x0 = static_cast<int>(e.position.x) / 32;
   int y0 = static_cast<int>(e.position.y) / 32;
   int x1 = static_cast<int>(e.position.x + e.size - 1) / 32;
   int y1 = static_cast<int>(e.position.y + e.size - 1) / 32;
-  std::cout << x0 << " " << y0 << " " << x1 << " " << y1 << "\n";
-  std::cout << map.tiles_.size() << " " << map.tiles_[0].size() << std::endl;
 
   return (map.tiles_[x0][y0] && map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y0]->is_wall()) ||
           (map.tiles_[x0][y0] && map.tiles_[x0][y1]->is_wall()) || (map.tiles_[x0][y0] && map.tiles_[x1][y1]->is_wall());
@@ -37,7 +34,6 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
 }
 
 void Collision::resolve(Map& map) {
-    std::cout << "Collision start\n";
     for (auto& p : map.projectiles_) {
         if (projectile_tile(*p, map)) {
             p->kill();
