@@ -22,10 +22,6 @@ Map::Map(int width, int height) : width_(width), height_(height) {
   
   for (int i = 0; i <= width_; ++i) {
     for (int j = 0; j <= height_; ++j) {
-      if (i + j == 10) {tiles_[i][j] = std::make_unique<BreakableTile>(); continue; }
-      //костыль для теста
-      if (i + j == 20) {tiles_[i][j] = std::make_unique<WallTile>(); continue; }
-      std::cout << i << "  " << j << std::endl;  
       tiles_[i][j] = std::make_unique<EmptyTile>();
     }
   }
@@ -110,7 +106,7 @@ void Map::render(Renderer& renderer) const {
 
 void Map::generate_weapon() {
   std::mt19937 mt(std::time(nullptr));
-  if (mt() % 3) return;  
+  if (mt() % 10) return;  
   std::vector<Vec2> empty_tiles;
   for (int i = 0; i < tiles_.size(); ++i) {
     for (int j = 0; j < tiles_[i].size(); ++j) {
@@ -119,6 +115,7 @@ void Map::generate_weapon() {
       }
     }
   }
+  if (empty_tiles.size() == 0) return;
   int number_tile = mt() % empty_tiles.size();
   int weapon_number = mt() % 2;
   std::vector<std::unique_ptr<WeaponTile>> mixed_weapon;
