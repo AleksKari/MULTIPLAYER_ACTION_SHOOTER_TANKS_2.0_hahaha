@@ -29,7 +29,6 @@ Map::Map(int width, int height) : width_(width), height_(height) {
       tiles_[i][j] = std::make_unique<EmptyTile>();
     }
   }
-  std::cout << "START\n";
   if (!background_texture_.loadFromFile("textures/map.png")) {
     std::cout << "failed to load background\n";
   }
@@ -39,7 +38,7 @@ Map::Map(int width, int height) : width_(width), height_(height) {
 void Map::update(double dt) {
   for (auto& ent : entities_) { ent->update(dt); }
   for (auto& pr : projectiles_) { pr->update(dt); }
-  //this->generation_weapon;
+  this->generate_weapon();
   Collision::resolve(*this);
 }
 
@@ -111,7 +110,7 @@ void Map::render(Renderer& renderer) const {
 
 void Map::generate_weapon() {
   std::mt19937 mt(std::time(nullptr));
-  if (mt() % 50) return;  
+  if (mt() % 3) return;  
   std::vector<Vec2> empty_tiles;
   for (int i = 0; i < tiles_.size(); ++i) {
     for (int j = 0; j < tiles_[i].size(); ++j) {
@@ -122,16 +121,8 @@ void Map::generate_weapon() {
   }
   int number_tile = mt() % empty_tiles.size();
   int weapon_number = mt() % 2;
-  std::vector<std::variant<WeaponShotgunTile>> mixed_weapon;
-  WeaponShotgunTile tl = WeaponShotgunTile();
-  mixed_weapon.push_back(std::move(*gun));
-  mixed_weapon.push_back(std::move(*shotgun));
-  //this->spawn_tile(empty_tiles[number_tile], mixed_weapon[weapon_number]); // 
+  std::vector<std::unique_ptr<WeaponTile>> mixed_weapon;
+  mixed_weapon.push_back(std::make_unique<WeaponShotgunTile>());
+  this->set_tile(empty_tiles[number_tile], std::move(mixed_weapon[0])); // пока ток 1
 
 }
-/*
-template <is_weapon T>
-Tile convert_to_tile(const T& weapon) {
-
-}
-*/

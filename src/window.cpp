@@ -14,7 +14,6 @@ int main() {
 
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
   Map map(57, 31);
-  std::cout << "THIS\n";
   
   auto wep = std::make_unique<ShotGun>();
   Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));

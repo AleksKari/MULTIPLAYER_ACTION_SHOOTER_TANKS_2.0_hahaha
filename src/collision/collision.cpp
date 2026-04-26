@@ -9,7 +9,6 @@ bool Collision::checkAABB(const Vec2& posA, const int sizeA,
 }
 
 bool Collision::entity_tile(const Player& e, const Map& map) {
-    std::cout << "IM HERE\n";
     // пиксельные границы карты — проверяем все 4 угла хитбокса
   if (e.position.x < 0 || e.position.y < 0 || ((e.position.x + e.size) / 32) >= map.width_ ||
     ((e.position.y + e.size) / 32 ) >= map.height_) { return true; }
@@ -45,7 +44,6 @@ void Collision::resolve(Map& map) {
             continue;
         }
     }
-    std::cout << "projectiles end\n"; 
     int cnt = 0;
     for (auto& p : map.projectiles_) {
         if (p->isDead()) continue;
@@ -54,21 +52,17 @@ void Collision::resolve(Map& map) {
             if (e->isDead()) continue;
             if (!checkAABB(p->position, p->size, e->position, e->size)) {
                 e->take_damage(p->damage);
-                p->kill();
-                std::cout << "ТОЧНО В ЦЕЛЬ" << cnt << '\n';  // при проверке игра считает игрока, выпустившего пули, 
+                p->kill(); // при проверке игра считает игрока, выпустившего пули, 
                                                              //за того кто их потом в лоб получает                        
                 cnt++;
                 break;
             }
         }
     }
-
-    std::cout << "ALIVE\n";
     for (auto& e : map.entities_) {
         if (entity_tile(*e, map)) {
             std::cout << "NU\n";
             e->on_wall_collision();
         }
     }
-    std::cout << "COLLISION OKEY \n";
 }
