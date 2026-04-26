@@ -1,3 +1,4 @@
+#pragma once
 #include "../tile/tile.hpp"
 
 class SlowTile : public Tile {
