@@ -13,7 +13,7 @@ int main() {
   sf::Clock clock;
 
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
-  Map map(60, 34);
+  Map map(57, 31);
   std::cout << "THIS\n";
   
   auto wep = std::make_unique<ShotGun>();

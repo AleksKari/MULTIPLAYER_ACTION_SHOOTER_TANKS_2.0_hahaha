@@ -1,5 +1,5 @@
 #pragma once
-#include "tile.hpp"
+#include "../tile/tile.hpp"
 
 class WeaponTile : public Tile {
   public:

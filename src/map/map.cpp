@@ -10,6 +10,7 @@
 #include "../tile/BreakableTile.hpp"
 #include "../tile/EmptyTile.hpp" 
 #include "../tile/WallTile.hpp" 
+#include "../tile/WeaponShotgunTile.hpp"
 #include "../render/render.hpp"
 #include "../../libraries/projectile.hpp"
 
@@ -121,9 +122,8 @@ void Map::generate_weapon() {
   }
   int number_tile = mt() % empty_tiles.size();
   int weapon_number = mt() % 2;
-  std::vector<std::variant<Gun, ShotGun>> mixed_weapon;
-  auto shotgun = std::make_unique<ShotGun>();
-  auto gun = std::make_unique<Gun>();
+  std::vector<std::variant<WeaponShotgunTile>> mixed_weapon;
+  WeaponShotgunTile tl = WeaponShotgunTile();
   mixed_weapon.push_back(std::move(*gun));
   mixed_weapon.push_back(std::move(*shotgun));
   //this->spawn_tile(empty_tiles[number_tile], mixed_weapon[weapon_number]); // 
