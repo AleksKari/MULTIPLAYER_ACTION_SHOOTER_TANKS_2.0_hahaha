@@ -34,8 +34,7 @@ class Renderer {
 template <is_tile T>  // в зависимости от того какой тайл пришел тот и отрисовывать
 void Renderer::draw_tile(const T& tile, Vec2 pos) {
   static_assert(!std::same_as<T, Tile>);
-  tile_texture = tile.texture_;
-  tile_sprite.setTexture(tile_texture);
+  tile_sprite.setTexture(tile.texture_);
   tile_sprite.setTextureRect({0, 0, 32, 32});
   tile_sprite.setPosition(pos.x * 32, pos.y * 32);
   window_.draw(tile_sprite);
