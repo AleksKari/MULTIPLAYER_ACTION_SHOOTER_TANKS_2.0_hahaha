@@ -2,7 +2,8 @@
 #include "map/map.hpp"
 #include "../libraries/player.hpp"
 #include "weapon/gun.hpp"
-#include "weapon/shotgun.hpp"
+//#include "weapon/shotgun.hpp"
+#include "weapon/ricochetGun.hpp"
 #include <iostream>
 #include "tile/EmptyTile.hpp"
 #include "../libraries/projectile.hpp"
@@ -15,7 +16,7 @@ int main() {
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
   Map map(57, 31);
   
-  auto wep = std::make_unique<ShotGun>();
+  auto wep = std::make_unique<RicochetGun>();
   Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));
   Player* weak = new Player(Vec2(500, 500), 100, 150.0f, std::move(wep));
   map.spawn_entity(player);

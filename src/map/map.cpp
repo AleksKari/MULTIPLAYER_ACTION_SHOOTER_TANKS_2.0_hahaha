@@ -85,10 +85,8 @@ void Map::setTile(int x, int y, Tile::Type type, sf::IntRect rect) {
   if (isBound(x / 32, y / 32)) tiles_[x / 32][y / 32] = Tile(type, rect);
 }
 */ 
-//не очень понял концепцию ибо методы не реализованы но тип суть на мой взгляд
+
 void Map::render(Renderer& renderer) const {
- // std::cout << "Start render\n";
- // renderer.window().draw(background_sprite_);        // 1. фон
 
   for (int y = 0; y <= height_; ++y) {
     for (int x = 0; x <= width_; ++x) {               // 2. только стены
