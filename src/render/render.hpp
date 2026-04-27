@@ -9,7 +9,7 @@
 class Tile;
 class Entity;
 class Projectile;
-
+class Player;
 class Renderer {
   public:
     Renderer(int screen_width, int screen_height, int tile_size);
@@ -19,6 +19,7 @@ class Renderer {
     void draw_tile(const T& tile, Vec2 pos);
     void draw_entity(const Entity& entity);
     void draw_projectile(const Projectile& proj);
+    void draw_hp_bar(const Player& p);
     sf::RenderWindow& window();
   private:
     sf::RenderWindow window_;

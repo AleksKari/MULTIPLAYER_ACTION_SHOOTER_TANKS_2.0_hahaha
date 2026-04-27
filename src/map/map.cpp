@@ -13,6 +13,7 @@
 #include "../tile/WeaponShotgunTile.hpp"
 #include "../render/render.hpp"
 #include "../../libraries/projectile.hpp"
+#include "../../libraries/player.hpp"
 
 Map::Map(int width, int height) : width_(width), height_(height) {
   tiles_.resize(width_ + 1);
@@ -96,6 +97,7 @@ void Map::render(Renderer& renderer) const {
 
   for (const auto& e : entities_) {
     renderer.draw_entity(*e);                        // 3. танки
+    renderer.draw_hp_bar(*e);   
   }
   for (const auto& pr : projectiles_) {
     renderer.draw_projectile(*pr);                   // 4. пули

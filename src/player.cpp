@@ -3,7 +3,7 @@
 #include "weapon/weapon.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
-    : Entity(pos, 0, 32), hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
+    : Entity(pos, 0, 32), hp_(hp), max_hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) position.y -= speed_ * timediff;

@@ -3,6 +3,7 @@
 #include "render.hpp"
 #include "../../libraries/entity.hpp"
 #include "../../libraries/projectile.hpp"
+#include "../../libraries/player.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -36,6 +37,19 @@ void Renderer::draw_projectile(const Projectile& p) {
   window_.draw(projectile_sprite);
 }
 
+void Renderer::draw_hp_bar(const Player& p) {
+  if(p.isDead()) return;
+  float perct = (float)p.hp_ / p.max_hp_;
+//  std::cout << "hp=" << p.hp_ << " max=" << p.max_hp_ << " pct=" << (float)p.hp_/p.max_hp_ << "\n";
+  sf::RectangleShape backgr_for_hp({32.f, 4.f});
+  backgr_for_hp.setFillColor(sf::Color(80, 80, 80));
+  backgr_for_hp.setPosition(p.position.x, p.position.y - 7.f);//выше танка 5 px
+  window_.draw(backgr_for_hp);
+  sf::RectangleShape green_hp({32.f * perct, 4.f});
+  green_hp.setFillColor(sf::Color(50, 200, 50));
+  green_hp.setPosition(p.position.x, p.position.y - 7.f);
+  window_.draw(green_hp);
+}
 
 
 void Renderer::beginframe() {
