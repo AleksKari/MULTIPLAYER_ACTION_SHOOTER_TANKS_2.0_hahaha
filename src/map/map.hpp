@@ -26,7 +26,6 @@ class Map {
   bool isSlow(int pos_x, int pos_y) const;
   bool isDamage(int pos_x, int pos_y) const;
   bool isBreakable(int pos_x, int pos_y) const;
-  //void setTile(int x, int y, Tile::Type type, sf::IntRect rect = {0, 0, 32, 32});
   void render(Renderer& renderer) const;
   void generate_weapon();
   friend class Collision;
@@ -42,5 +41,5 @@ class Map {
 
 template <is_tile T>
 void Map::set_tile(const Vec2& pos, std::unique_ptr<T> tl) {
-  tiles_[pos.x][pos.y] = std::move(tl);
+  tiles_[pos.x][pos.y] = std::move(tl); 
 }

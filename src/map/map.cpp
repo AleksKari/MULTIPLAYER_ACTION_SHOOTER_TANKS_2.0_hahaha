@@ -106,7 +106,7 @@ void Map::render(Renderer& renderer) const {
 
 void Map::generate_weapon() {
   std::mt19937 mt(std::time(nullptr));
-  if (mt() % 10) return;  
+  if (mt() % 100) return;  
   std::vector<Vec2> empty_tiles;
   for (int i = 0; i < tiles_.size(); ++i) {
     for (int j = 0; j < tiles_[i].size(); ++j) {
@@ -120,6 +120,6 @@ void Map::generate_weapon() {
   int weapon_number = mt() % 2;
   std::vector<std::unique_ptr<WeaponTile>> mixed_weapon;
   mixed_weapon.push_back(std::make_unique<WeaponShotgunTile>());
-  this->set_tile(empty_tiles[number_tile], std::move(mixed_weapon[0])); // пока ток 1
+  this->set_tile(empty_tiles[number_tile], std::move(std::make_unique<WallTile>())); // пока ток 1
 
 }
