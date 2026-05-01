@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <random>
 #include <variant>
 #include <concepts>
@@ -81,11 +82,6 @@ bool Map::isBreakable(int x, int y) const {
   if (isBound(x / 32, y / 32)) return false;
   return tiles_[x / 32][y / 32]->is_breakable();
 }
-/* нужно конструктор свои и оператор копирования
-void Map::setTile(int x, int y, Tile::Type type, sf::IntRect rect) {
-  if (isBound(x / 32, y / 32)) tiles_[x / 32][y / 32] = Tile(type, rect);
-}
-*/ 
 
 void Map::render(Renderer& renderer) const {
 
@@ -105,9 +101,11 @@ void Map::render(Renderer& renderer) const {
 }
 
 void Map::generate_weapon() {
-  std::mt19937 mt(std::time(nullptr));
-  if (mt() % 100) return;  
-  std::vector<Vec2> empty_tiles;
+  std::mt19937 mt(std::chrono::steady_clock::now().time_since_epoch().count());
+  long long random_number = mt();
+  if (random_number % 1000) return;
+  std::cout << random_number << '\n'; 
+  std::vector<Vec2> empty_tiles;  
   for (int i = 0; i < tiles_.size(); ++i) {
     for (int j = 0; j < tiles_[i].size(); ++j) {
       if (tiles_[i][j]->is_empty()) {
@@ -116,7 +114,7 @@ void Map::generate_weapon() {
     }
   }
   if (empty_tiles.size() == 0) return;
-  int number_tile = mt() % empty_tiles.size();
+  int number_tile = random_number % empty_tiles.size();
   int weapon_number = mt() % 2;
   std::vector<std::unique_ptr<WeaponTile>> mixed_weapon;
   mixed_weapon.push_back(std::make_unique<WeaponShotgunTile>());
