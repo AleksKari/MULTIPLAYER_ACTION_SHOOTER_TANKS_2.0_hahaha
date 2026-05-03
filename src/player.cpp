@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../libraries/player.hpp"
 #include "map/map.hpp"
 #include "weapon/weapon.hpp"
@@ -51,5 +52,17 @@ void Player::update(float timediff) {
   prev_position_ = position;
   move(timediff);
   cornrotate = dir().angle();
-}
 
+  sprite_.setPosition(position.x, position.y);
+  sprite_.setRotation(cornrotate);
+}
+// загрузка скина 
+void Player::loadSkin(const std::string& path) {
+  if (!texture_.loadFromFile(path)) {
+      std::cerr << "Error loading skin: " << path << "\n";
+  }
+  sprite_.setTexture(texture_); 
+  sf::FloatRect bounds = sprite_.getLocalBounds();
+  sprite_.setOrigin(bounds.width / 2.0f, bounds.height / 2.0f);
+  sprite_.setScale(1.0f, 1.0f);
+}
