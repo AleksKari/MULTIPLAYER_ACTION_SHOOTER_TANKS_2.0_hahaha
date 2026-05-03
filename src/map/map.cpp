@@ -88,19 +88,20 @@ void Map::setTile(int x, int y, Tile::Type type, sf::IntRect rect) {
 */ 
 
 void Map::render(Renderer& renderer) const {
-
+  // отрисовка тайлов
   for (int y = 0; y <= height_; ++y) {
-    for (int x = 0; x <= width_; ++x) {               // 2. только стены
+    for (int x = 0; x <= width_; ++x) {
       tiles_[x][y]->draw(renderer, Vec2(x, y));
     }
   }
-
+  // танков
   for (const auto& e : entities_) {
-    renderer.draw_entity(*e);                        // 3. танки
+    renderer.window().draw(e->getSprite()); 
     renderer.draw_hp_bar(*e);   
   }
+  // пуль
   for (const auto& pr : projectiles_) {
-    renderer.draw_projectile(*pr);                   // 4. пули
+    renderer.draw_projectile(*pr);
   }
 }
 
