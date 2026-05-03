@@ -56,9 +56,9 @@ bool Map::isBound(int pos_x, int pos_y) const {
       pos_x >= width_ || pos_y >= height_;
 }
 
-// не очень ясно как tile заполняется в этом проблема
+// не доходило до тайла добавил проверку
 bool Map::isWall(int x, int y) const {
-  return (isBound(x / 32, y / 32));  // край карты = стена
+  if (isBound(x / 32, y / 32)) return true;  // край карты = стена
   return tiles_[x / 32][y / 32]->is_wall();
 }
 
