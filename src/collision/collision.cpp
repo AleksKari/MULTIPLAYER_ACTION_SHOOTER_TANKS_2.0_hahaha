@@ -37,36 +37,33 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
   int y0 = static_cast<int>(proj.position.y) / 32;
   int x1 = static_cast<int>(proj.position.x + proj.size) / 32;
   int y1 = static_cast<int>(proj.position.y + proj.size) / 32;
-  return (map.tiles_[x0][y0] && map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x1][y0]->is_wall()) ||
-        (map.tiles_[x0][y1] && map.tiles_[x0][y1]->is_wall()) ||(map.tiles_[x1][y1]->is_wall());
+  return (map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x1][y0]->is_wall()) ||
+        (map.tiles_[x0][y1]->is_wall()) ||(map.tiles_[x1][y1]->is_wall());
+}
+
+void Collision::ricochet(Projectile& projectile, const Map& map) {
+  if (projectile.lifetime() > 7) { projectile.kill(); return; }//больше 7 секунд живет умирает
+  bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * 32;//если выходит за пределы карты по x
+  bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * 32;// если выходт за пределы карты по y
+  if (not_on_map_x || not_on_map_y) {// выходит за пределы карты  меняем  направление скорости
+    if (not_on_map_x) projectile.velocity_.x = -projectile.velocity_.x;
+    if (not_on_map_y) projectile.velocity_.y = -projectile.velocity_.y;
+  } else {//если тайлы отличаются смотрим текущий предыдущий и по изменению меняем скорость по кординате изменившейся при столкновении
+    bool is_changed_by_x = (static_cast<int>(projectile.position.x) / 32 != static_cast<int>(projectile.prev_position_.x) / 32) ||
+                      (static_cast<int>(projectile.position.x + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.x + projectile.size) / 32);
+    bool is_changed_by_y = (static_cast<int>(projectile.position.y) / 32 != static_cast<int>(projectile.prev_position_.y) / 32) ||
+                      (static_cast<int>(projectile.position.y + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.y + projectile.size) / 32);
+    if (is_changed_by_x) projectile.velocity_.x = -projectile.velocity_.x;
+    if (is_changed_by_y) projectile.velocity_.y = -projectile.velocity_.y;
+  }
+  projectile.position = projectile.prev_position_;//откатываем позицию чтобы не застрял  в стене
+  projectile.take_damage(1);
 }
 
 void Collision::resolve(Map& map) {
   for (auto& projectile : map.projectiles_) {
     if (!projectile_tile(*projectile, map)) continue;
-    if (projectile->hp_ > 1) {
-      if (projectile->lifetime() > 7) { projectile->kill(); continue; }
-      bool not_on_map_x = projectile->position.x < 0 || projectile->position.x + projectile->size > map.width_ * 32;
-      bool not_on_map_y = projectile->position.y < 0 || projectile->position.y + projectile->size > map.height_ * 32;
-      if (not_on_map_x || not_on_map_y) {
-        if (not_on_map_x) projectile->velocity_.x = -projectile->velocity_.x;
-        if (not_on_map_y) projectile->velocity_.y = -projectile->velocity_.y;
-      } else {
-        int curr_projectile_x = static_cast<int>(projectile->position.x + projectile->size) / 32;
-        int curr_projectile_y = static_cast<int>(projectile->position.y + projectile->size) / 32;
-        int prev_projectile_x = static_cast<int>(projectile->prev_position_.x + projectile->size) / 32;
-        int prev_projectile_y = static_cast<int>(projectile->prev_position_.y + projectile->size) / 32;
-        if (curr_projectile_x != prev_projectile_x) projectile->velocity_.x = -projectile->velocity_.x;
-        else if (curr_projectile_y != prev_projectile_y) projectile->velocity_.y = -projectile->velocity_.y;
-        if (curr_projectile_x == prev_projectile_x && curr_projectile_y == prev_projectile_y) {
-          projectile->velocity_.x = -projectile->velocity_.x;
-          projectile->velocity_.y = -projectile->velocity_.y;
-        }
-      }
-      projectile->position = projectile->prev_position_;
-      projectile->position.x += projectile->velocity_.x > 0 ? 1 : -1;
-      projectile->position.y += projectile->velocity_.y > 0 ? 1 : -1;
-      projectile->take_damage(1);
+    if (projectile->hp_ > 1) {ricochet(*projectile, map);
     } else {
       projectile->kill();
     }
