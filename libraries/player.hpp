@@ -20,6 +20,9 @@ class Player : public Entity {
   void take_damage(int damage);
   void update(float timediff);
   void set_mouse(sf::Vector2i mouse);
+  void loadSkin(const std::string& path);
+  sf::Sprite& getSprite() { return sprite_; }
+  const sf::Sprite& getSprite() const { return sprite_; }
  private:
   Vec2 mouse_pos_;
   Vec2 prev_position_;
@@ -28,4 +31,5 @@ class Player : public Entity {
   bool alive = true;
   int size_ = 32;
   sf::Texture texture_;
+  sf::Sprite sprite_;
 };
