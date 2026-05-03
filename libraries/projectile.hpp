@@ -12,7 +12,7 @@ class Projectile : public Entity {
     int size_;
     bool dead = false;
     std::chrono::steady_clock::time_point created;
-    Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 32, int hp = 1);
+    Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 6, int hp = 1);
     ~Projectile();
     void update(float timediff) override;
     int GetDamage() const;
