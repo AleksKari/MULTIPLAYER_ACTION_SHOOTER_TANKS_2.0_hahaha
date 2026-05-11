@@ -58,8 +58,8 @@ bool Map::is_bound(double pos_x, double pos_y) const {
 }
 
 // не доходило до тайла добавил проверку
-bool Map::isWall(int x, int y) const {
-  if (isBound(x / 32, y / 32)) return true;  // край карты = стена
+bool Map::is_wall(double x, double y) const {
+  if (is_bound(x / 32, y / 32)) return true;  // край карты = стена
   return tiles_[x / 32][y / 32]->is_wall();
 }
 
