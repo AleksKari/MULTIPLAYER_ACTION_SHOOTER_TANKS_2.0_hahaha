@@ -31,5 +31,5 @@ double Projectile::lifetime() const {
 }
 
 void Projectile::take_damage(int dmg) {
-    //Временная заглушка
+    hp_ -= dmg;
 }

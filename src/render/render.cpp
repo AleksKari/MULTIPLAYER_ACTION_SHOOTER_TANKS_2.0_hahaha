@@ -22,18 +22,19 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   entity_sprite.setTexture(entity_texture);
   entity_sprite.setOrigin(16, 16);  // центр 32×32 текстуры
   projectile_sprite.setTexture(projectile_texture);
+  projectile_sprite.setOrigin(16, 16);
 }
 
 void Renderer::draw_entity(const Entity& e) {
   if (e.isDead()) return;
-  entity_sprite.setPosition(e.position.x + 16, e.position.y + 16); // 16 16
+  entity_sprite.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0); // 16 16
   entity_sprite.setRotation(e.cornrotate * 180.0 / M_PI);
   window_.draw(entity_sprite);
 }
 
 void Renderer::draw_projectile(const Projectile& p) {
   if (p.isDead()) return;
-  projectile_sprite.setPosition(p.position.x, p.position.y);
+  projectile_sprite.setPosition(p.position.x + p.size / 2.0, p.position.y + p.size / 2.0);
   window_.draw(projectile_sprite);
 }
 
