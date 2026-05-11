@@ -24,13 +24,14 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 # SFML
-find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+find_package(SFML 2.5 COMPONENTS system window graphics audio network REQUIRED)
 
 target_link_libraries(${PROJECT_NAME}
     sfml-system
     sfml-window
     sfml-graphics
     sfml-audio
+    sfml-network
 )
 
 # Копируем textures рядом с бинарником
