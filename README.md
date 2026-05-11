@@ -3,6 +3,7 @@
 
 Чтоб запустить проект выполните:
 ```
+sudo apt install libsfml-dev
 mkdir build
 cd build
 cmake ..
