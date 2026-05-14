@@ -1,6 +1,7 @@
 #include "../libraries/player.hpp"
 #include "map/map.hpp"
 #include "weapon/weapon.hpp"
+#include "weapon/gun.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
     : Entity(pos, 0, 32), hp_(hp), max_hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
@@ -26,6 +27,11 @@ Vec2 Player::dir() const {
 void Player::attack(Map& map) {
   if (!weapon_) return;
   weapon_->shoot(map, *this, 10); // пока damage будет 10
+  if (weapon_->no_ammo()) weapon_ = std::make_unique<Gun>();
+}
+
+void Player::set_weapon(std::unique_ptr<Weapon> weapon) {
+  weapon_ = std::move(weapon);
 }
 
 bool Player::isDead() const {
