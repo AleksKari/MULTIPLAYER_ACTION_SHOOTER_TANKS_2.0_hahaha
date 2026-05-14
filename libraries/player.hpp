@@ -20,6 +20,7 @@ class Player : public Entity {
   void take_damage(int damage);
   void update(float timediff);
   void set_mouse(sf::Vector2i mouse);
+  void set_weapon(std::unique_ptr<Weapon> weapon);
  private:
   Vec2 mouse_pos_;
   Vec2 prev_position_;

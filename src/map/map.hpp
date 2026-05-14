@@ -2,7 +2,7 @@
 #include <memory>
 #include <concepts>
 #include <vector>
-#include "../tile/is_tile.hpp"
+#include "../tile/concept_tile.hpp"
 #include "../math/Vec2.h"
 
 class Player;

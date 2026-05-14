@@ -1,3 +1,4 @@
+#pragma once
 #include "weapon.hpp"
 #include "Firemodes/Singleshot.hpp"
 #include "../../libraries/entity.hpp"

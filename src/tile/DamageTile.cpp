@@ -1,6 +1,7 @@
 #include "DamageTile.hpp"
 #include "../render/render.hpp"
 #include "../math/Vec2.h"
+#include "../../libraries/player.hpp"
     
 DamageTile::DamageTile() {
     texture_.loadFromFile("textures/map.png"); //должна быть своя текстура
@@ -10,3 +11,6 @@ void DamageTile::draw(Renderer& renderer, Vec2 pos) {
   renderer.draw_tile(*this, pos);
 }
 DamageTile::~DamageTile() = default;
+void DamageTile::interact(Player& player, Map& map, const Vec2& pos) {
+    player.take_damage(1);
+}

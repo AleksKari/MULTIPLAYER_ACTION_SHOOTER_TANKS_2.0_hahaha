@@ -1,6 +1,7 @@
 #include "WeaponTile.hpp"
 #include "../render/render.hpp"
 #include "../math/Vec2.h"
+#include "../weapon/shotgun.hpp"
 
 class WeaponShotgunTile : public WeaponTile {
   public:
@@ -11,4 +12,9 @@ class WeaponShotgunTile : public WeaponTile {
     void draw(Renderer& render, Vec2 pos) {
       render.draw_tile(*this, pos);
     }
+    void interact(Player& player, Map& map, const Vec2& pos) override {
+      player.set_weapon(std::make_unique<ShotGun>());
+      map.set_tile(pos, std::make_unique<EmptyTile>());
+    }
 };
+

@@ -7,5 +7,6 @@ class WallTile : public Tile {
     WallTile();
     bool is_wall() override ;
     void draw(Renderer& renderer, Vec2 pos) override;
+    void interact(Player& player, Map& map, const Vec2& pos) override;
     ~WallTile();
 };

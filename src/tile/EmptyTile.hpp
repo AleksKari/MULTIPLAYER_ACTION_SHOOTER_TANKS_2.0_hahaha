@@ -7,5 +7,6 @@ class EmptyTile : public Tile {
     EmptyTile();
     bool is_empty() override;
     void draw(Renderer& renderer, Vec2 pos) override;
+    void interact(Player& player, Map& map, const Vec2& pos) override;
     ~EmptyTile();
 };

@@ -1,15 +1,18 @@
 #include "../libraries/player.hpp"
 #include "map/map.hpp"
 #include "weapon/weapon.hpp"
+#include "weapon/gun.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
     : Entity(pos, 0, 32), hp_(hp), max_hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) position.y -= speed_ * timediff;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) position.y += speed_ * timediff;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) position.x -= speed_ * timediff;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) position.x += speed_ * timediff;
+  Vec2 dir(0, 0);
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) dir.y -= 1;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) dir.y += 1;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) dir.x -= 1;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) dir.x += 1;
+  position = position + dir.normilized() * speed_ * timediff;
 }
 
 void Player::set_mouse(sf::Vector2i mouse) {
@@ -24,6 +27,11 @@ Vec2 Player::dir() const {
 void Player::attack(Map& map) {
   if (!weapon_) return;
   weapon_->shoot(map, *this, 10); // пока damage будет 10
+  if (weapon_->no_ammo()) weapon_ = std::make_unique<Gun>();
+}
+
+void Player::set_weapon(std::unique_ptr<Weapon> weapon) {
+  weapon_ = std::move(weapon);
 }
 
 bool Player::isDead() const {

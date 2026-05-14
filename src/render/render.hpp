@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <concepts>
 #include "../math/Vec2.h"
-#include "../tile/is_tile.hpp"
+#include "../tile/concept_tile.hpp"
 
 
 class Tile;
