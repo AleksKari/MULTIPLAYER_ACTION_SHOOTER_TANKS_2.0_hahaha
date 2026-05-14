@@ -17,28 +17,33 @@ bool Collision::entity_projectile(const Vec2& pos_projectile, const int size_pro
   return distance_between_projectile_and_entity < minimum_distance_between_projectile_and_entity;
 }
 // x0 x1 y0 y1 координаты в тайлах где находится плеер
-bool Collision::entity_tile (const Player& entity, const Map& map) {
+void Collision::entity_tile (Player& entity, Map& map) {
   if (entity.position.x < 0 || entity.position.y < 0 ||
       ((entity.position.x + entity.size) / 32) >= map.width_ ||
-      ((entity.position.y + entity.size) / 32) >= map.height_) { return true; }
+      ((entity.position.y + entity.size) / 32) >= map.height_) {
+        entity.on_wall_collision();
+        return;
+      }
   int x0 = static_cast<int>(entity.position.x) / 32;
   int y0 = static_cast<int>(entity.position.y) / 32;
   int x1 = static_cast<int>(entity.position.x + entity.size) / 32;
   int y1 = static_cast<int>(entity.position.y + entity.size) / 32;
-  return (map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x1][y0]->is_wall()) ||
-        (map.tiles_[x0][y1]->is_wall()) || (map.tiles_[x1][y1]->is_wall());
+  map.tiles_[x0][y0]->interact(entity, map, Vec2(x0, y0));
+  if (x1 != x0) map.tiles_[x1][y0]->interact(entity, map, Vec2(x1, y0));
+  if (y1 != y0) map.tiles_[x0][y1]->interact(entity, map, Vec2(x0, y1));
+  if (x1 != x0 && y1 != y0) map.tiles_[x1][y1]->interact(entity, map, Vec2(x1, y1));
 }
 //x0 x1 y0 y1 также для пули
 bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
   if (proj.position.x < 0 || proj.position.y < 0 ||
-      proj.position.x + proj.size > map.width_ * 32 ||
-      proj.position.y + proj.size > map.height_ * 32) { return true; }
+    proj.position.x + proj.size > map.width_ * 32 ||
+    proj.position.y + proj.size > map.height_ * 32) { return true; }
   int x0 = static_cast<int>(proj.position.x) / 32;
   int y0 = static_cast<int>(proj.position.y) / 32;
   int x1 = static_cast<int>(proj.position.x + proj.size) / 32;
   int y1 = static_cast<int>(proj.position.y + proj.size) / 32;
   return (map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x1][y0]->is_wall()) ||
-        (map.tiles_[x0][y1]->is_wall()) ||(map.tiles_[x1][y1]->is_wall());
+  (map.tiles_[x0][y1]->is_wall()) ||(map.tiles_[x1][y1]->is_wall());
 }
 
 void Collision::ricochet(Projectile& projectile, const Map& map) {
@@ -50,9 +55,9 @@ void Collision::ricochet(Projectile& projectile, const Map& map) {
     if (not_on_map_y) projectile.velocity_.y = -projectile.velocity_.y;
   } else {//если тайлы отличаются смотрим текущий предыдущий и по изменению меняем скорость по кординате изменившейся при столкновении
     bool is_changed_by_x = (static_cast<int>(projectile.position.x) / 32 != static_cast<int>(projectile.prev_position_.x) / 32) ||
-                      (static_cast<int>(projectile.position.x + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.x + projectile.size) / 32);
+    (static_cast<int>(projectile.position.x + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.x + projectile.size) / 32);
     bool is_changed_by_y = (static_cast<int>(projectile.position.y) / 32 != static_cast<int>(projectile.prev_position_.y) / 32) ||
-                      (static_cast<int>(projectile.position.y + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.y + projectile.size) / 32);
+    (static_cast<int>(projectile.position.y + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.y + projectile.size) / 32);
     if (is_changed_by_x) projectile.velocity_.x = -projectile.velocity_.x;
     if (is_changed_by_y) projectile.velocity_.y = -projectile.velocity_.y;
   }
@@ -81,8 +86,6 @@ void Collision::resolve(Map& map) {
     }
   }
   for (auto& entity : map.entities_) {
-    if (entity_tile(*entity, map)) {
-      entity->on_wall_collision();
-    }
+    entity_tile(*entity, map);
   }
 }
