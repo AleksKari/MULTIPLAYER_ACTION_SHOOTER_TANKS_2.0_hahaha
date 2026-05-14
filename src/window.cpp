@@ -17,7 +17,7 @@ int main() {
   Map map(57, 31);
   
   auto wep = std::make_unique<RicochetGun>();
-  Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep));
+  Player* player = new Player(Vec2(100, 100), 100, 300.0f, std::move(wep));
   //Player* weak = new Player(Vec2(500, 500), 100, 150.0f, std::move(wep));
   map.spawn_entity(player);
  // map.spawn_entity(weak);
