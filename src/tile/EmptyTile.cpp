@@ -10,3 +10,4 @@ void EmptyTile::draw(Renderer& renderer, Vec2 pos) {
     renderer.draw_tile(*this, pos);
 }
 EmptyTile::~EmptyTile() = default;
+void EmptyTile::interact(Player& player, Map& map, const Vec2& pos) {}

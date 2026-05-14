@@ -12,4 +12,9 @@ class WeaponGunTile : public WeaponTile {
     void draw(Renderer& render, Vec2 pos) {
       render.draw_tile(*this, pos);
     }
+    void interact(Player& player, Map& map, const Vec2& pos) override {
+      //player.set_weapon(*this);
+      map.set_tile(pos, std::make_unique<EmptyTile>());
+    }
 };
+

@@ -8,4 +8,5 @@ class WeaponTile : public Tile {
     sf::Texture texture_;
     WeaponTile() = default;
     virtual void draw(Renderer& renderer, Vec2 pos) = 0;
+    virtual void interact(Player& player, Map& map, const Vec2& pos) = 0;
 };
