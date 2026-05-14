@@ -5,7 +5,6 @@
 class Renderer;
 class Vec2;
 
-// требует полной переработка. Каждый тип tile должен обрадать своими уникальными характеристиками(жизни, урон, собственная текстура)
 class Tile {
   public: 
     virtual ~Tile() = default;
@@ -17,11 +16,3 @@ class Tile {
     virtual bool is_weapon() {return false;}
     virtual void draw(Renderer& renderer, Vec2 pos) = 0;
 };
-/*
-Empty,
-Wall,
-Breakable,
-Slow,
-Damage,
-Weapon
-*/
