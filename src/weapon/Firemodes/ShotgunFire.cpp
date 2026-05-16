@@ -1,9 +1,9 @@
-// ShotgunFire.cpp
 #include "ShotgunFire.hpp"
 #include <Player.hpp>
+#include <numbers>
 
-double rad(double degrees) {
-  return degrees * 3.14159265358979323846 / 180.0;
+static double rad(double degrees) {
+  return degrees * std::numbers::pi / 180.0;
 }
 
 void ShotgunFire::shoot(Map& map, Player& owner, int damage) {

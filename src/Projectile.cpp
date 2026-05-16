@@ -46,8 +46,8 @@ bool Projectile::crossed_tile_y() const {
          (static_cast<int>(position.y + size) / 32 != static_cast<int>(prev_position_.y + size) / 32);
 }
 
-void Projectile::reflect(bool x, bool y) {
-  if (x) velocity_.x = -velocity_.x;
-  if (y) velocity_.y = -velocity_.y;
+void Projectile::reflect(bool coord_x, bool coord_y) {
+  if (coord_x) velocity_.x = -velocity_.x;
+  if (coord_y) velocity_.y = -velocity_.y;
   position = prev_position_;
 }
