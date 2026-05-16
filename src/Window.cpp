@@ -7,6 +7,7 @@
 #include <iostream>
 #include "tile/EmptyTile.hpp"
 #include <Projectile.hpp>
+#include <collision/Collision.hpp>
 
 int main() {
 
@@ -36,11 +37,12 @@ int main() {
     player->set_mouse(sf::Mouse::getPosition(renderer.window()));
     float dt = clock.restart().asSeconds();
     map.update(dt);
+    Collision::resolve(map);
     //  отрисовка вроде такая логика +-
     renderer.beginframe();   // clear
     map.render(renderer);    // тайлы + players + снаряды
     renderer.endframe();     // display
-
+q
   }
   return 0;
 }
