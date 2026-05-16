@@ -24,16 +24,14 @@ class Map {
   bool is_empty(double pos_x, double pos_y) const;
   bool is_slow(double pos_x, double pos_y) const;
   bool is_damage(double pos_x, double pos_y) const;
-  bool is_breakable(double pos_x, double pos_y) const;
   void render(Renderer& renderer) const;
   void generate_weapon();
-  //friend class Collision;
- private:
   int width_;
   int height_;
   std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
   std::vector<std::unique_ptr<Player>> entities_;
   std::vector<std::unique_ptr<Projectile>> projectiles_;
+ private:
   sf::Texture background_texture_;
   mutable sf::Sprite background_sprite_;
 };
