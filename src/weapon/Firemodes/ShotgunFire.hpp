@@ -3,6 +3,6 @@
 #include "FireMode.hpp"
 
 class ShotgunFire : public FireMode {
-  public:
-    void shoot(Map& map, Player& owner, int damage) override;
+ public:
+  void shoot(Map& map, Player& owner, int damage) override;
 };

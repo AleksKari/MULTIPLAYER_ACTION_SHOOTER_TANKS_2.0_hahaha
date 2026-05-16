@@ -7,9 +7,19 @@ class Weapon;
 class Map;
 
 class Player : public Entity {
+ private:
+  Vec2 mouse_pos_;
+  Vec2 prev_position_;
+  float speed_;
+  std::unique_ptr<Weapon> weapon_;
+  bool alive = true;
+  int size_ = 32;
+  sf::Texture texture_;
+
  public:
   int max_hp_;
   int hp_;
+
   Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon);
   void move(float timediff);
   Vec2 dir() const;
@@ -21,12 +31,4 @@ class Player : public Entity {
   void update(float timediff);
   void set_mouse(sf::Vector2i mouse);
   void set_weapon(std::unique_ptr<Weapon> weapon);
- private:
-  Vec2 mouse_pos_;
-  Vec2 prev_position_;
-  float speed_;
-  std::unique_ptr<Weapon> weapon_;
-  bool alive = true;
-  int size_ = 32;
-  sf::Texture texture_;
 };

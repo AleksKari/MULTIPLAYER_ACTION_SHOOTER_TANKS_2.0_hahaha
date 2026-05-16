@@ -31,5 +31,7 @@ double Projectile::lifetime() const {
 }
 
 void Projectile::take_damage(int dmg) {
-    hp_ -= dmg;
+  hp_ -= dmg;
 }
+
+bool Projectile::can_ricochet() const { return hp_ > 1; }

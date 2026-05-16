@@ -47,13 +47,13 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
 }
 
 void Collision::ricochet(Projectile& projectile, const Map& map) {
-  if (projectile.lifetime() > 7) { projectile.kill(); return; }//больше 7 секунд живет умирает
-  bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * 32;//если выходит за пределы карты по x
-  bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * 32;// если выходт за пределы карты по y
-  if (not_on_map_x || not_on_map_y) {// выходит за пределы карты  меняем  направление скорости
+  if (projectile.lifetime() > 7) { projectile.kill(); return; }
+  bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * 32;
+  bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * 32;
+  if (not_on_map_x || not_on_map_y) {
     if (not_on_map_x) projectile.velocity_.x = -projectile.velocity_.x;
     if (not_on_map_y) projectile.velocity_.y = -projectile.velocity_.y;
-  } else {//если тайлы отличаются смотрим текущий предыдущий и по изменению меняем скорость по кординате изменившейся при столкновении
+  } else {
     bool is_changed_by_x = (static_cast<int>(projectile.position.x) / 32 != static_cast<int>(projectile.prev_position_.x) / 32) ||
     (static_cast<int>(projectile.position.x + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.x + projectile.size) / 32);
     bool is_changed_by_y = (static_cast<int>(projectile.position.y) / 32 != static_cast<int>(projectile.prev_position_.y) / 32) ||
@@ -61,14 +61,14 @@ void Collision::ricochet(Projectile& projectile, const Map& map) {
     if (is_changed_by_x) projectile.velocity_.x = -projectile.velocity_.x;
     if (is_changed_by_y) projectile.velocity_.y = -projectile.velocity_.y;
   }
-  projectile.position = projectile.prev_position_;//откатываем позицию чтобы не застрял  в стене
+  projectile.position = projectile.prev_position_;
   projectile.take_damage(1);
 }
 
 void Collision::resolve(Map& map) {
   for (auto& projectile : map.projectiles_) {
     if (!projectile_tile(*projectile, map)) continue;
-    if (projectile->hp_ > 1) {ricochet(*projectile, map);
+    if (projectile->can_ricochet()) { ricochet(*projectile, map);
     } else {
       projectile->kill();
     }

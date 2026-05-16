@@ -5,7 +5,7 @@
 #include <player.hpp>
 
 class FireMode {
-  public:
-    virtual ~FireMode() = default;
-    virtual void shoot(Map& map, Player& owner, int damage) = 0;
+ public:
+  virtual ~FireMode() = default;
+  virtual void shoot(Map& map, Player& owner, int damage) = 0;
 };
