@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-class Vec2 {
+struct Vec2 {
   public:
     Vec2() : x(0), y(0) {}
     Vec2(double x, double y): x(x), y(y) {}
