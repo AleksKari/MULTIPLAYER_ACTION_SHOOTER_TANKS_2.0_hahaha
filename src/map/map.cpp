@@ -36,7 +36,7 @@ void Map::update(double diff) {
   for (auto& ent : entities_) { ent->update(diff); }
   for (auto& pr : projectiles_) { pr->update(diff); }
   this->generate_weapon();
-  Collision::resolve(*this);
+  //Collision::resolve(*this);
 }
 
 //отслеживаем игроков

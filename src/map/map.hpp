@@ -27,7 +27,7 @@ class Map {
   bool is_breakable(double pos_x, double pos_y) const;
   void render(Renderer& renderer) const;
   void generate_weapon();
-  friend class Collision;
+  //friend class Collision;
  private:
   int width_;
   int height_;
