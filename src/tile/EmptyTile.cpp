@@ -1,6 +1,6 @@
-#include "../tile/EmptyTile.hpp"
-#include "../render/render.hpp"
-#include "../math/Vec2.h"
+#include <tile/EmptyTile.hpp>
+#include <render/render.hpp>
+#include <math/Vec2.h>
 
 EmptyTile::EmptyTile() {
     texture_.loadFromFile("textures/grass.png");

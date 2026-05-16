@@ -5,16 +5,16 @@
 #include <concepts>
 #include <type_traits>
 #include "map.hpp"
-#include "../collision/collision.hpp"
-#include "../weapon/gun.hpp"
-#include "../weapon/shotgun.hpp"
-#include "../tile/EmptyTile.hpp" 
-#include "../tile/WallTile.hpp" 
-#include "../tile/WeaponShotgunTile.hpp"
-#include "../tile/WeaponRicochetTile.hpp"
-#include "../render/render.hpp"
-#include "../../libraries/projectile.hpp"
-#include "../../libraries/player.hpp"
+#include <collision/collision.hpp>
+#include <weapon/gun.hpp>
+#include <weapon/shotgun.hpp>
+#include <tile/EmptyTile.hpp>
+#include <tile/WallTile.hpp>
+#include <tile/WeaponShotgunTile.hpp>
+#include <tile/WeaponRicochetTile.hpp>
+#include <render/render.hpp>
+#include <projectile.hpp>
+#include <player.hpp>
 
 
 // конструктор карты

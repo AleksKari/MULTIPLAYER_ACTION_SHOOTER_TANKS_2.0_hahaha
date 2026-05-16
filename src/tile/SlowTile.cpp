@@ -1,6 +1,6 @@
 #include "SlowTIle.hpp"
-#include "../render/render.hpp"
-#include "../math/Vec2.h"
+#include <render/render.hpp>
+#include <math/Vec2.h>
 
 SlowTile::SlowTile() {
   texture_.loadFromFile("textures/map.png"); //должна быть своя текстура

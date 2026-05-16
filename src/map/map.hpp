@@ -2,8 +2,8 @@
 #include <memory>
 #include <concepts>
 #include <vector>
-#include "../tile/concept_tile.hpp"
-#include "../math/Vec2.h"
+#include <tile/concept_tile.hpp>
+#include <math/Vec2.h>
 
 class Player;
 class Projectile;

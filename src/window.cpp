@@ -1,12 +1,12 @@
 #include "render/render.hpp"
 #include "map/map.hpp"
-#include "../libraries/player.hpp"
+#include <player.hpp>
 #include "weapon/gun.hpp"
 //#include "weapon/shotgun.hpp"
 //#include "weapon/ricochetGun.hpp"
 #include <iostream>
 #include "tile/EmptyTile.hpp"
-#include "../libraries/projectile.hpp"
+#include <projectile.hpp>
 
 int main() {
 

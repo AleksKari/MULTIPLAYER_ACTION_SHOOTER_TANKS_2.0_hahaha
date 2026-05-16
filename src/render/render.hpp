@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <concepts>
-#include "../math/Vec2.h"
-#include "../tile/concept_tile.hpp"
+#include <math/Vec2.h>
+#include <tile/concept_tile.hpp>
 
 
 class Tile;

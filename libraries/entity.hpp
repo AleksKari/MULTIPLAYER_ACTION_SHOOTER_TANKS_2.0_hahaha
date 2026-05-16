@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../src/math/Vec2.h"
+#include <math/Vec2.h>
 
 
 class Entity {

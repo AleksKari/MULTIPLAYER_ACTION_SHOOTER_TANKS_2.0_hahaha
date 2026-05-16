@@ -1,6 +1,6 @@
 // ShotgunFire.cpp
 #include "ShotgunFire.hpp"
-#include "../../../libraries/player.hpp"
+#include <player.hpp>
 
 double rad(double degrees) {
   return degrees * 3.14159265358979323846 / 180.0;

@@ -1,6 +1,6 @@
 #include "WeaponTile.hpp"
-#include "../render/render.hpp"
-#include "../math/Vec2.h"
+#include <render/render.hpp>
+#include <math/Vec2.h>
 
 class WeaponGunTile : public WeaponTile {
   public:

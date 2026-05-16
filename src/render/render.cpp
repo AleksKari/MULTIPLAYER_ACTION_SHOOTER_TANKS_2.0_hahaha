@@ -1,9 +1,9 @@
 //класс отрисовки
 
 #include "render.hpp"
-#include "../../libraries/entity.hpp"
-#include "../../libraries/projectile.hpp"
-#include "../../libraries/player.hpp"
+#include <entity.hpp>
+#include <projectile.hpp>
+#include <player.hpp>
 #include <cmath>
 #include <iostream>
 

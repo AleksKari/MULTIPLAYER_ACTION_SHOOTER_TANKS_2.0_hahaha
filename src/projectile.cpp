@@ -1,4 +1,4 @@
-#include "../libraries/projectile.hpp"
+#include <projectile.hpp>
 
 Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp)
     : Entity(pos, damage, size), velocity_(velocity), damage_(damage), 

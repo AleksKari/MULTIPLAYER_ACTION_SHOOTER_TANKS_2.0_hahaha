@@ -1,7 +1,7 @@
 #include "WeaponTile.hpp"
-#include "../render/render.hpp"
-#include "../math/Vec2.h"
-#include "../weapon/ricochetGun.hpp"
+#include <render/render.hpp>
+#include <math/Vec2.h>
+#include <weapon/ricochetGun.hpp>
 
 class WeaponRicochetTile : public WeaponTile {
   public:

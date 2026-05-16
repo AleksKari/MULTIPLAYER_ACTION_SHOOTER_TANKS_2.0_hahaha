@@ -1,6 +1,6 @@
 #pragma once
 #include "entity.hpp"
-#include "../src/math/Vec2.h"
+#include <math/Vec2.h>
 #include <chrono>
 
 class Projectile : public Entity {

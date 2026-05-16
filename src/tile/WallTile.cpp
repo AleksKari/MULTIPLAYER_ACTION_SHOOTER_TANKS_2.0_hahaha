@@ -1,7 +1,7 @@
-#include "../tile/WallTile.hpp"
-#include "../render/render.hpp"
-#include "../math/Vec2.h"
-#include "../../libraries/player.hpp"
+#include <tile/WallTile.hpp>
+#include <render/render.hpp>
+#include <math/Vec2.h>
+#include <player.hpp>
 
 WallTile::WallTile() {
   texture_.loadFromFile("textures/stone.png");

@@ -1,8 +1,8 @@
 #pragma once
 #include "weapon.hpp"
 #include "Firemodes/ShotgunFire.hpp"
-#include "../../libraries/entity.hpp"
-#include "../map/map.hpp"
+#include <entity.hpp>
+#include <map/map.hpp>
 
 class ShotGun : public  Weapon {
  private:

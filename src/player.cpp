@@ -1,4 +1,4 @@
-#include "../libraries/player.hpp"
+#include <player.hpp>
 #include "map/map.hpp"
 #include "weapon/weapon.hpp"
 #include "weapon/gun.hpp"
