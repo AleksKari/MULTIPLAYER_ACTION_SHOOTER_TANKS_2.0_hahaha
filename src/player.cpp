@@ -1,4 +1,6 @@
+#include <iostream>
 #include <player.hpp>
+#include "../libraries/player.hpp"
 #include "map/map.hpp"
 #include "weapon/weapon.hpp"
 #include "weapon/gun.hpp"
@@ -20,7 +22,7 @@ void Player::set_mouse(sf::Vector2i mouse) {
 }
 
 Vec2 Player::dir() const {
-  Vec2 center(position.x + 16, position.y + 16);
+Vec2 center(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
   return Vec2(mouse_pos_.x - center.x, mouse_pos_.y - center.y);
 }
 
@@ -54,10 +56,27 @@ void Player::take_damage(int damage) {
   }
 }
 
-//есть в энтити убрать нельзя но по сути копипаст
 void Player::update(float timediff) {
   prev_position_ = position;
   move(timediff);
   cornrotate = dir().angle();
+
+  sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
+  sprite_.setRotation(cornrotate);
+}
+
+void Player::loadSkin(const std::string& path) {
+  if (!texture_.loadFromFile(path)) {
+      std::cerr << "Error loading skin: " << path << "\n";
+      return;
+  }
+  sprite_.setTexture(texture_); 
+  sf::FloatRect bounds = sprite_.getLocalBounds();
+  
+  sprite_.setOrigin(bounds.width / 2.0f, bounds.height / 2.0f);
+  sprite_.setScale(
+      static_cast<float>(size_) / bounds.width,
+      static_cast<float>(size_) / bounds.height
+  );
 }
 
