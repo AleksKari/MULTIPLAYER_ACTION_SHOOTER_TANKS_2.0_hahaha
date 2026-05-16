@@ -1,4 +1,4 @@
-#include <projectile.hpp>
+#include <Projectile.hpp>
 
 Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp)
     : Entity(pos, damage, size), velocity_(velocity), damage_(damage), 
@@ -35,3 +35,19 @@ void Projectile::take_damage(int dmg) {
 }
 
 bool Projectile::can_ricochet() const { return hp_ > 1; }
+
+bool Projectile::crossed_tile_x() const {
+  return (static_cast<int>(position.x) / 32 != static_cast<int>(prev_position_.x) / 32) ||
+         (static_cast<int>(position.x + size) / 32 != static_cast<int>(prev_position_.x + size) / 32);
+}
+
+bool Projectile::crossed_tile_y() const {
+  return (static_cast<int>(position.y) / 32 != static_cast<int>(prev_position_.y) / 32) ||
+         (static_cast<int>(position.y + size) / 32 != static_cast<int>(prev_position_.y + size) / 32);
+}
+
+void Projectile::reflect(bool x, bool y) {
+  if (x) velocity_.x = -velocity_.x;
+  if (y) velocity_.y = -velocity_.y;
+  position = prev_position_;
+}

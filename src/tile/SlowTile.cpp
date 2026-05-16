@@ -1,5 +1,5 @@
-#include "SlowTIle.hpp"
-#include <render/render.hpp>
+#include "SlowTile.hpp"
+#include <render/Render.hpp>
 #include <math/Vec2.h>
 
 SlowTile::SlowTile() {

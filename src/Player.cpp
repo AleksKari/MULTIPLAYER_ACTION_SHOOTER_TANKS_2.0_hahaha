@@ -1,7 +1,7 @@
-#include <player.hpp>
-#include "map/map.hpp"
-#include "weapon/weapon.hpp"
-#include "weapon/gun.hpp"
+#include <Player.hpp>
+#include "map/Map.hpp"
+#include "weapon/Weapon.hpp"
+#include "weapon/Gun.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
     : Entity(pos, 0, 32), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}

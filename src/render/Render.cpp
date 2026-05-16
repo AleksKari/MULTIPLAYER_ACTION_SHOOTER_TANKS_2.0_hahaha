@@ -1,8 +1,8 @@
 //класс отрисовки
 
-#include "render.hpp"
-#include <projectile.hpp>
-#include <player.hpp>
+#include "Render.hpp"
+#include <Projectile.hpp>
+#include <Player.hpp>
 #include <cmath>
 #include <iostream>
 

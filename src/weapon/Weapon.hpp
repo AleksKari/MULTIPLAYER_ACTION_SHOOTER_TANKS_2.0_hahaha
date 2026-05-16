@@ -1,6 +1,6 @@
 #pragma once
-#include "map/map.hpp"
-#include "player.hpp"
+#include "map/Map.hpp"
+#include "Player.hpp"
 
 class Map;
 class Player;

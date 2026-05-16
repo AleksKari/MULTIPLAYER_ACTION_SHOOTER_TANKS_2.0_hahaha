@@ -1,6 +1,6 @@
 #pragma once
-#include "entity.hpp"
-#include <weapon/weapon.hpp>
+#include "Entity.hpp"
+#include <weapon/Weapon.hpp>
 #include <memory>
 
 class Weapon;

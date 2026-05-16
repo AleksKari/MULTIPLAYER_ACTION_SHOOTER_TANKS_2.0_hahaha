@@ -1,8 +1,8 @@
 #pragma once
 #include "WeaponTile.hpp"
-#include <render/render.hpp>
+#include <render/Render.hpp>
 #include <math/Vec2.h>
-#include <weapon/shotgun.hpp>
+#include <weapon/Shotgun.hpp>
 
 class WeaponShotgunTile : public WeaponTile {
  public:

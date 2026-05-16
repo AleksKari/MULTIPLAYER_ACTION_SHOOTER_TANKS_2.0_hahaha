@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <concepts>
 #include <math/Vec2.h>
-#include <tile/concept_tile.hpp>
-#include <entity/concept_entity.hpp>
+#include <tile/ConceptTile.hpp>
+#include <entity/ConceptEntity.hpp>
 
 
 class Tile;

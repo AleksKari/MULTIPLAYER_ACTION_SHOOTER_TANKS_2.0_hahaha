@@ -1,8 +1,8 @@
 #pragma once
 #include "WeaponTile.hpp"
-#include <render/render.hpp>
+#include <render/Render.hpp>
 #include <math/Vec2.h>
-#include <weapon/ricochetGun.hpp>
+#include <weapon/RicochetGun.hpp>
 
 class WeaponRicochetTile : public WeaponTile {
  public:

@@ -1,6 +1,6 @@
 #pragma once
 #include "WeaponTile.hpp"
-#include <render/render.hpp>
+#include <render/Render.hpp>
 #include <math/Vec2.h>
 
 class WeaponGunTile : public WeaponTile {

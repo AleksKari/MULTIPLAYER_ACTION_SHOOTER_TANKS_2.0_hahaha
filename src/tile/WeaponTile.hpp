@@ -1,5 +1,5 @@
 #pragma once
-#include <tile/tile.hpp>
+#include <tile/Tile.hpp>
 class Renderer;
 class Vec2;
 

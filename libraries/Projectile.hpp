@@ -1,13 +1,9 @@
 #pragma once
-#include "entity.hpp"
+#include "Entity.hpp"
 #include <math/Vec2.h>
 #include <chrono>
 
-class Collision;
-
 class Projectile : public Entity {
-  friend class Collision;
-
  private:
   Vec2 velocity_;
   Vec2 prev_position_;
@@ -28,4 +24,7 @@ class Projectile : public Entity {
   bool is_dead() const;
   bool can_ricochet() const;
   double lifetime() const;
+  bool crossed_tile_x() const;
+  bool crossed_tile_y() const;
+  void reflect(bool x, bool y);
 };

@@ -1,5 +1,5 @@
-#include "collision.hpp"
-#include "map/map.hpp"
+#include "Collision.hpp"
+#include "map/Map.hpp"
 #include <iostream>
 
 
@@ -70,20 +70,15 @@ void Collision::ricochet(Projectile& projectile, const Map& map) {
   bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * 32;
   bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * 32;
 
+  bool reflect_x, reflect_y;
   if (not_on_map_x || not_on_map_y) {
-    if (not_on_map_x) projectile.velocity_.x = -projectile.velocity_.x;
-    if (not_on_map_y) projectile.velocity_.y = -projectile.velocity_.y;
+    reflect_x = not_on_map_x;
+    reflect_y = not_on_map_y;
   } else {
-    bool is_changed_by_x = (static_cast<int>(projectile.position.x) / 32 != static_cast<int>(projectile.prev_position_.x) / 32) ||
-    (static_cast<int>(projectile.position.x + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.x + projectile.size) / 32);
-
-    bool is_changed_by_y = (static_cast<int>(projectile.position.y) / 32 != static_cast<int>(projectile.prev_position_.y) / 32) ||
-    (static_cast<int>(projectile.position.y + projectile.size) / 32 != static_cast<int>(projectile.prev_position_.y + projectile.size) / 32);
-
-    if (is_changed_by_x) projectile.velocity_.x = -projectile.velocity_.x;
-    if (is_changed_by_y) projectile.velocity_.y = -projectile.velocity_.y;
+    reflect_x = projectile.crossed_tile_x();
+    reflect_y = projectile.crossed_tile_y();
   }
-  projectile.position = projectile.prev_position_;
+  projectile.reflect(reflect_x, reflect_y);
   projectile.take_damage(1);
 }
 

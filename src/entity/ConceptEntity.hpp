@@ -1,5 +1,5 @@
 #pragma once
-#include <entity.hpp>
+#include <Entity.hpp>
 #include <concepts>
 
 template<typename T>

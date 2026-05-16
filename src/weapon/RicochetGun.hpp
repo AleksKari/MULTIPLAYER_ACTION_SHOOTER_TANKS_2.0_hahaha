@@ -1,8 +1,8 @@
 #pragma once
-#include "weapon.hpp"
+#include "Weapon.hpp"
 #include "Firemodes/RicochetShot.hpp"
-#include <entity.hpp>
-#include <map/map.hpp>
+#include <Entity.hpp>
+#include <map/Map.hpp>
 
 class RicochetGun : public Weapon {
  private:

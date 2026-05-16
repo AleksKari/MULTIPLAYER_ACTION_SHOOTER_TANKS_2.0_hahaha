@@ -1,7 +1,7 @@
 #include "DamageTile.hpp"
-#include <render/render.hpp>
+#include <render/Render.hpp>
 #include <math/Vec2.h>
-#include <player.hpp>
+#include <Player.hpp>
     
 DamageTile::DamageTile() {
     texture_.loadFromFile("textures/map.png"); //должна быть своя текстура

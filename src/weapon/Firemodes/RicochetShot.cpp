@@ -1,6 +1,6 @@
 #include "RicochetShot.hpp"
-#include <projectile.hpp>
-#include <map/map.hpp>
+#include <Projectile.hpp>
+#include <map/Map.hpp>
 
 void RicochetShot::shoot(Map& map, Player& owner, int damage) {
   Vec2 vel = owner.dir().normilized() * 800.0f;

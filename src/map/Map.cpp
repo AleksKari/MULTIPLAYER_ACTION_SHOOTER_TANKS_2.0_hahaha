@@ -4,17 +4,17 @@
 #include <variant>
 #include <concepts>
 #include <type_traits>
-#include "map.hpp"
-#include <collision/collision.hpp>
-#include <weapon/gun.hpp>
-#include <weapon/shotgun.hpp>
+#include "Map.hpp"
+#include <collision/Collision.hpp>
+#include <weapon/Gun.hpp>
+#include <weapon/Shotgun.hpp>
 #include <tile/EmptyTile.hpp>
 #include <tile/WallTile.hpp>
 #include <tile/WeaponShotgunTile.hpp>
 #include <tile/WeaponRicochetTile.hpp>
-#include <render/render.hpp>
-#include <projectile.hpp>
-#include <player.hpp>
+#include <render/Render.hpp>
+#include <Projectile.hpp>
+#include <Player.hpp>
 
 
 // конструктор карты

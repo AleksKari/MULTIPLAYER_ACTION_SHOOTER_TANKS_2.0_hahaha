@@ -2,7 +2,7 @@
 #include <memory>
 #include <concepts>
 #include <vector>
-#include <tile/concept_tile.hpp>
+#include <tile/ConceptTile.hpp>
 #include <math/Vec2.h>
 
 class Player;
@@ -20,7 +20,7 @@ class Map {
   template<is_tile T>
   void set_tile(const Vec2& pos, std::unique_ptr<T> tl);
   bool is_bound(double pos_x, double pos_y) const;
-  bool is_wall(double pos_x, double pos_y) const;  
+  bool is_wall(double pos_x, double pos_y) const;
   bool is_empty(double pos_x, double pos_y) const;
   bool is_slow(double pos_x, double pos_y) const;
   bool is_damage(double pos_x, double pos_y) const;
