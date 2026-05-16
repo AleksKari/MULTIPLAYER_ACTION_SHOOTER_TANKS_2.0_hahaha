@@ -3,7 +3,7 @@
 #include <math/Vec2.h>
 
 SlowTile::SlowTile() {
-  texture_.loadFromFile("textures/map.png"); //должна быть своя текстура
+  texture_.loadFromFile("textures/slow.png");
 }
 bool SlowTile::is_slow() {return true;}
 void SlowTile::draw(Renderer& renderer, Vec2 pos) {

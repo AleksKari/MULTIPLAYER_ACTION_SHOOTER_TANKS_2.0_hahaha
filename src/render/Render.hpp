@@ -4,7 +4,7 @@
 #include <concepts>
 #include <math/Vec2.h>
 #include <tile/ConceptTile.hpp>
-#include <entity/ConceptEntity.hpp>
+#include <Entity.hpp>
 
 
 class Tile;

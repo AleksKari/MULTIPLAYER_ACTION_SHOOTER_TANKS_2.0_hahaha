@@ -4,7 +4,7 @@
 #include <Player.hpp>
     
 DamageTile::DamageTile() {
-    texture_.loadFromFile("textures/map.png"); //должна быть своя текстура
+    texture_.loadFromFile("textures/damage.png");
 }
 bool DamageTile::is_damage() {return true;}
 void DamageTile::draw(Renderer& renderer, Vec2 pos) {
