@@ -36,14 +36,12 @@ int main() {
   GameState currentState = GameState::Menu;
  
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
-  Map map(57, 31);
+  Map map(59, 33);
   
-  // каждому игроку создаем свое оружие
-  auto wep1 = std::make_unique<Gun>();
-  auto wep2 = std::make_unique<Gun>();
+  auto wep = std::make_unique<Gun>();
 
-  Player* player = new Player(Vec2(100, 100), 100, 150.0f, std::move(wep1));
-  Player* weak = new Player(Vec2(500, 500), 100, 150.0f, std::move(wep2));
+  Player* player = new Player(Vec2(100, 100), 100, 300.0f, std::move(wep));
+  Player* weak = new Player(Vec2(500, 500), 100, 300.0f, std::move(wep));
 
   map.spawn_entity(player);
   map.spawn_entity(weak);
@@ -68,7 +66,7 @@ int main() {
       }
       else if (currentState == GameState::Gaming) {
         if (event.type == sf::Event::MouseButtonPressed ||
-           (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)) {
+            (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)) {
           if (!player->is_dead()) player->attack(map);
         }
       }

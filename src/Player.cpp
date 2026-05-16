@@ -8,11 +8,10 @@ Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
     : Entity(pos, 0, TILESIZE), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
-  Vec2 dir(0, 0);
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) dir.y -= 1;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) dir.y += 1;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) dir.x -= 1;
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) dir.x += 1;
+  Vec2 dir(
+    sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A),
+    sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+  );
   position = position + dir.normilized() * speed_ * timediff;
 }
 

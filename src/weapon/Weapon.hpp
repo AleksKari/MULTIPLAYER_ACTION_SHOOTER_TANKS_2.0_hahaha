@@ -7,7 +7,7 @@ class Player;
 
 class Weapon {
  public:
-  virtual ~Weapon();
+  virtual ~Weapon() = default;
   virtual void shoot(Map& map, Player& player, int damage) = 0;
   bool no_ammo() const { return shots_left_ == 0; }
  protected:
