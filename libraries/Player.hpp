@@ -2,6 +2,7 @@
 #include "Entity.hpp"
 #include <weapon/Weapon.hpp>
 #include <memory>
+#include <string>
 
 class Weapon;
 class Map;
@@ -14,6 +15,9 @@ class Player : public Entity {
   int size_ = TILESIZE;
   std::unique_ptr<Weapon> weapon_;
   sf::Texture texture_;
+  sf::Sprite sprite_;
+  sf::Sprite& getSprite() { return sprite_; }
+  const sf::Sprite& getSprite() const { return sprite_; }
 
  public:
   int max_hp;
@@ -28,6 +32,7 @@ class Player : public Entity {
   void take_damage(int damage);
   void update(float timediff);
   void set_mouse(sf::Vector2i mouse);
+  void loadSkin(const std::string& path);
   void set_weapon(std::unique_ptr<Weapon> weapon);
   bool is_dead() const;
 };
