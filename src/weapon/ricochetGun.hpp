@@ -6,7 +6,7 @@
 
 class RicochetGun : public Weapon {
  private:
-  double cooldown = 1;
+  double cooldown_ = 1;
   RicochetShot fire_;
  public:
   RicochetGun() {
@@ -14,8 +14,8 @@ class RicochetGun : public Weapon {
     shots_left_ = 5;
   }
   void shoot(Map& map, Player& owner, int damage) override {
-    if (shot_clock.getElapsedTime().asSeconds() < cooldown) return;
-    shot_clock.restart();
+    if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) return;
+    shot_clock_.restart();
     fire_.shoot(map, owner, damage);
     shots_left_--;
   }

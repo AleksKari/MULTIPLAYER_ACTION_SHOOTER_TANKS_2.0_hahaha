@@ -25,19 +25,19 @@ class Renderer {
  private:
   sf::RenderWindow window_;
   int tile_size_;
-  sf::Texture tile_texture;
-  sf::Texture entity_texture;
-  sf::Texture projectile_texture;
-  sf::Sprite tile_sprite;
-  sf::Sprite entity_sprite;
-  sf::Sprite projectile_sprite;
+  sf::Texture tile_texture_;
+  sf::Texture entity_texture_;
+  sf::Texture projectile_texture_;
+  sf::Sprite tile_sprite_;
+  sf::Sprite entity_sprite_;
+  sf::Sprite projectile_sprite_;
 };
 
 template <is_tile T>  // в зависимости от того какой тайл пришел тот и отрисовывать
 void Renderer::draw_tile(const T& tile, Vec2 pos) {
   static_assert(!std::same_as<T, Tile>);
-  tile_sprite.setTexture(tile.texture_);
-  tile_sprite.setTextureRect({0, 0, 32, 32});
-  tile_sprite.setPosition(pos.x * 32, pos.y * 32);
-  window_.draw(tile_sprite);
+  tile_sprite_.setTexture(tile.texture_);
+  tile_sprite_.setTextureRect({0, 0, 32, 32});
+  tile_sprite_.setPosition(pos.x * 32, pos.y * 32);
+  window_.draw(tile_sprite_);
 }

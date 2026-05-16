@@ -74,10 +74,10 @@ void Collision::resolve(Map& map) {
     }
   }
   for (auto& projectile : map.projectiles_) {
-    if (projectile->isDead()) continue;
+    if (projectile->is_dead()) continue;
     if (projectile->lifetime() < 0.1) continue;
     for (auto& entity : map.entities_) {
-      if (entity->isDead()) continue;
+      if (entity->is_dead()) continue;
       if (entity_projectile(projectile->position, projectile->size, entity->position, entity->size)) {
         entity->take_damage(projectile->damage);
         projectile->kill();

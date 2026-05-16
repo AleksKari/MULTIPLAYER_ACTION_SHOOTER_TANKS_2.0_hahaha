@@ -4,7 +4,7 @@
 #include "weapon/gun.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
-    : Entity(pos, 0, 32), hp_(hp), max_hp_(hp), speed_(speed), weapon_(std::move(weapon)) {}
+    : Entity(pos, 0, 32), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
   Vec2 dir(0, 0);
@@ -34,13 +34,13 @@ void Player::set_weapon(std::unique_ptr<Weapon> weapon) {
   weapon_ = std::move(weapon);
 }
 
-bool Player::isDead() const {
-  return hp_ <= 0;
+bool Player::is_dead() const {
+  return hp <= 0;
 }
 
 //вроде так но если что снос alive
 void Player::kill() {
-  hp_ = 0;
+  hp = 0;
 }
 
 //не даем застрять откатывает координаты
@@ -49,8 +49,8 @@ void Player::on_wall_collision() {
 }
 
 void Player::take_damage(int damage) {
-  if (hp_ > 0) {
-    hp_ -= damage;
+  if (hp > 0) {
+    hp -= damage;
   }
 }
 

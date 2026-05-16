@@ -4,19 +4,19 @@
 #include <entity.hpp>
 #include <map/map.hpp>
 
-class ShotGun : public  Weapon {
+class Shotgun : public Weapon {
  private:
   int damage_ = 0;
-  double cooldown = 1;
+  double cooldown_ = 1;
   ShotgunFire fire_;
  public:
-  ShotGun() {
+  Shotgun() {
     damage_ = 10;
     shots_left_ = 5;
   }
   void shoot(Map& map, Player& owner, int damage) override {
-    if (shot_clock.getElapsedTime().asSeconds() < cooldown) return;
-    shot_clock.restart();
+    if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) return;
+    shot_clock_.restart();
     fire_.shoot(map, owner, damage);
     shots_left_--;
   }

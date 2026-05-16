@@ -4,7 +4,7 @@
 #include <player.hpp>
 #include <projectile.hpp>
 
-class Map; //forward declaration
+class Map;
 
 class Collision {
  public:

@@ -13,6 +13,6 @@ class Weapon {
  protected:
   int shots_left_ = -1; // бесконечно
   int damage_ = 0;
-  double cooldown = 0.8;
-  sf::Clock shot_clock;
+  double cooldown_ = 0.8;
+  sf::Clock shot_clock_;
 };
