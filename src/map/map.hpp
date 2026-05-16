@@ -7,7 +7,6 @@
 
 class Player;
 class Projectile;
-class EmptyTile;
 class Renderer;
 class Tile;
 
