@@ -2,9 +2,12 @@
 #include "map/Map.hpp"
 #include <iostream>
 
+static constexpr double MAX_RICOCHET_LIFETIME = 7.0;
+static constexpr double MIN_PROJECTILE_LIFETIME = 0.1;
+
 
 bool Collision::entity_projectile(const Vec2& pos_projectile, const int size_projectile, 
-  const Vec2& pos_entity, const int size_entity = 32) {
+  const Vec2& pos_entity, const int size_entity = TILESIZE) {
 
   double center_projectile_x = pos_projectile.x + (size_projectile / 2.0);
   double center_projectile_y = pos_projectile.y + (size_projectile / 2.0);
@@ -30,16 +33,16 @@ bool Collision::entity_projectile(const Vec2& pos_projectile, const int size_pro
 void Collision::entity_tile (Player& entity, Map& map) {
 
   if (entity.position.x < 0 || entity.position.y < 0 ||
-      ((entity.position.x + entity.size) / 32) >= map.width_ ||
-      ((entity.position.y + entity.size) / 32) >= map.height_) {
+      ((entity.position.x + entity.size) / TILESIZE) >= map.width_ ||
+      ((entity.position.y + entity.size) / TILESIZE) >= map.height_) {
         entity.on_wall_collision();
         return;
       }
-  int x0 = static_cast<int>(entity.position.x) / 32;
-  int y0 = static_cast<int>(entity.position.y) / 32;
+  int x0 = static_cast<int>(entity.position.x) / TILESIZE;
+  int y0 = static_cast<int>(entity.position.y) / TILESIZE;
 
-  int x1 = static_cast<int>(entity.position.x + entity.size) / 32;
-  int y1 = static_cast<int>(entity.position.y + entity.size) / 32;
+  int x1 = static_cast<int>(entity.position.x + entity.size) / TILESIZE;
+  int y1 = static_cast<int>(entity.position.y + entity.size) / TILESIZE;
 
   map.tiles_[x0][y0]->interact(entity, map, Vec2(x0, y0));
 
@@ -50,14 +53,14 @@ void Collision::entity_tile (Player& entity, Map& map) {
  //x0 x1 y0 y1 также для пули
 bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
   if (proj.position.x < 0 || proj.position.y < 0 ||
-    proj.position.x + proj.size > map.width_ * 32 ||
+    proj.position.x + proj.size > map.width_ * TILESIZE ||
     proj.position.y + proj.size > map.height_ * 32) { return true; }
 
-  int x0 = static_cast<int>(proj.position.x) / 32;
-  int y0 = static_cast<int>(proj.position.y) / 32;
+  int x0 = static_cast<int>(proj.position.x) / TILESIZE;
+  int y0 = static_cast<int>(proj.position.y) / TILESIZE;
 
-  int x1 = static_cast<int>(proj.position.x + proj.size) / 32;
-  int y1 = static_cast<int>(proj.position.y + proj.size) / 32;
+  int x1 = static_cast<int>(proj.position.x + proj.size) / TILESIZE;
+  int y1 = static_cast<int>(proj.position.y + proj.size) / TILESIZE;
 
   return (map.tiles_[x0][y0]->is_wall()) || (map.tiles_[x1][y0]->is_wall()) ||
   (map.tiles_[x0][y1]->is_wall()) ||(map.tiles_[x1][y1]->is_wall());
@@ -65,10 +68,10 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
 
 void Collision::ricochet(Projectile& projectile, const Map& map) {
 
-  if (projectile.lifetime() > 7) { projectile.kill(); return; }
+  if (projectile.lifetime() > MAX_RICOCHET_LIFETIME) { projectile.kill(); return; }
 
-  bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * 32;
-  bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * 32;
+  bool not_on_map_x = projectile.position.x < 0 || projectile.position.x + projectile.size > map.width_ * TILESIZE;
+  bool not_on_map_y = projectile.position.y < 0 || projectile.position.y + projectile.size > map.height_ * TILESIZE;
 
   bool reflect_x, reflect_y;
   if (not_on_map_x || not_on_map_y) {
@@ -93,7 +96,7 @@ void Collision::resolve(Map& map) {
 
   for (auto& projectile : map.projectiles_) {
     if (projectile->is_dead()) continue;
-    if (projectile->lifetime() < 0.1) continue;
+    if (projectile->lifetime() < MIN_PROJECTILE_LIFETIME) continue;
 
     for (auto& entity : map.entities_) {
       if (entity->is_dead()) continue;

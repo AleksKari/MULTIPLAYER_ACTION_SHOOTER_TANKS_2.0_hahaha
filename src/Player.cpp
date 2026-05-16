@@ -4,7 +4,7 @@
 #include "weapon/Gun.hpp"
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
-    : Entity(pos, 0, 32), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}
+    : Entity(pos, 0, TILESIZE), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}
 
 void Player::move(float timediff) {
   Vec2 dir(0, 0);

@@ -38,8 +38,8 @@ template <is_tile T>
 void Renderer::draw_tile(const T& tile, Vec2 pos) {
   static_assert(!std::same_as<T, Tile>);
   tile_sprite_.setTexture(tile.texture_);
-  tile_sprite_.setTextureRect({0, 0, 32, 32});
-  tile_sprite_.setPosition(pos.x * 32, pos.y * 32);
+  tile_sprite_.setTextureRect({0, 0, TILESIZE, TILESIZE});
+  tile_sprite_.setPosition(pos.x * TILESIZE, pos.y * TILESIZE);
   window_.draw(tile_sprite_);
 }
 

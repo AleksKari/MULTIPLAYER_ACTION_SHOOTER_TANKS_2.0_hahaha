@@ -42,7 +42,6 @@ int main() {
     renderer.beginframe();   // clear
     map.render(renderer);    // тайлы + players + снаряды
     renderer.endframe();     // display
-q
   }
   return 0;
 }

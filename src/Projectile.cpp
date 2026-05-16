@@ -37,13 +37,13 @@ void Projectile::take_damage(int dmg) {
 bool Projectile::can_ricochet() const { return hp_ > 1; }
 
 bool Projectile::crossed_tile_x() const {
-  return (static_cast<int>(position.x) / 32 != static_cast<int>(prev_position_.x) / 32) ||
-         (static_cast<int>(position.x + size) / 32 != static_cast<int>(prev_position_.x + size) / 32);
+  return (static_cast<int>(position.x) / TILESIZE != static_cast<int>(prev_position_.x) / TILESIZE) ||
+         (static_cast<int>(position.x + size) / TILESIZE != static_cast<int>(prev_position_.x + size) / TILESIZE);
 }
 
 bool Projectile::crossed_tile_y() const {
-  return (static_cast<int>(position.y) / 32 != static_cast<int>(prev_position_.y) / 32) ||
-         (static_cast<int>(position.y + size) / 32 != static_cast<int>(prev_position_.y + size) / 32);
+  return (static_cast<int>(position.y) / TILESIZE != static_cast<int>(prev_position_.y) / TILESIZE) ||
+         (static_cast<int>(position.y + size) / TILESIZE != static_cast<int>(prev_position_.y + size) / TILESIZE);
 }
 
 void Projectile::reflect(bool coord_x, bool coord_y) {

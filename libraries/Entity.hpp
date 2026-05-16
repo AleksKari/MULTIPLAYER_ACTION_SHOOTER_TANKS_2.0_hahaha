@@ -2,10 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <math/Vec2.h>
 
+const int TILESIZE = 32;
 
 class Entity {
  private:
-  sf::IntRect texture_rect_{0, 0, 32, 32};
+  sf::IntRect texture_rect_{0, 0, TILESIZE, TILESIZE};
 
  public:
   Vec2 position;
@@ -14,6 +15,6 @@ class Entity {
   int size;
 
   Entity();
-  Entity(Vec2 pos, int damage_, int size = 32);
+  Entity(Vec2 pos, int damage_, int size = TILESIZE);
   ~Entity() = default;
 };

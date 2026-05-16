@@ -11,7 +11,7 @@ class Player : public Entity {
   Vec2 mouse_pos_;
   Vec2 prev_position_;
   float speed_;
-  int size_ = 32;
+  int size_ = TILESIZE;
   std::unique_ptr<Weapon> weapon_;
   sf::Texture texture_;
 

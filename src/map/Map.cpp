@@ -17,7 +17,6 @@
 #include <Player.hpp>
 
 
-const int TILE_SIZE = 32;
 const int RANDOM_GENERATE_INDEX = 5000;
 const int WEAPON_CNT = 2;
 
@@ -62,27 +61,27 @@ bool Map::is_bound(double pos_x, double pos_y) const {
 
 // не доходило до тайла добавил проверку
 bool Map::is_wall(double x, double y) const {
-  if (is_bound(x / TILE_SIZE, y / TILE_SIZE)) return true;  // край карты = стена
-  return tiles_[x / TILE_SIZE][y / TILE_SIZE]->is_wall();
+  if (is_bound(x / TILESIZE, y / TILESIZE)) return true;  // край карты = стена
+  return tiles_[x / TILESIZE][y / TILESIZE]->is_wall();
 }
 
 //пустой 
 bool Map::is_empty(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILE_SIZE, pos_y / TILE_SIZE)) return false;
-  return tiles_[pos_x / TILE_SIZE][pos_y / TILE_SIZE]->is_empty();
+  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) return false;
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_empty();
 }
 
 
 //замедляющий
 bool Map::is_slow(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILE_SIZE, pos_y / TILE_SIZE)) return false;
-  return tiles_[pos_x / TILE_SIZE][pos_y / TILE_SIZE]->is_slow();
+  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) return false;
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_slow();
 }
 
 // наносящий урон
 bool Map::is_damage(double x, double y) const {
-  if (is_bound(x / TILE_SIZE, y / TILE_SIZE)) return false;
-  return tiles_[x / TILE_SIZE][y / TILE_SIZE]->is_damage();
+  if (is_bound(x / TILESIZE, y / TILESIZE)) return false;
+  return tiles_[x / TILESIZE][y / TILESIZE]->is_damage();
 }
 
 // отрисовка объектов 
