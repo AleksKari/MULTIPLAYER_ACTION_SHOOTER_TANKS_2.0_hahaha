@@ -1,7 +1,6 @@
 //класс отрисовки
 
 #include "render.hpp"
-#include <entity.hpp>
 #include <projectile.hpp>
 #include <player.hpp>
 #include <cmath>
@@ -23,13 +22,6 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   entity_sprite_.setOrigin(16, 16);  // центр 32×32 текстуры
   projectile_sprite_.setTexture(projectile_texture_);
   projectile_sprite_.setOrigin(16, 16);
-}
-
-void Renderer::draw_entity(const Entity& e) {
-  if (e.is_dead()) return;
-  entity_sprite_.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0); // 16 16
-  entity_sprite_.setRotation(e.cornrotate * 180.0 / M_PI);
-  window_.draw(entity_sprite_);
 }
 
 void Renderer::draw_projectile(const Projectile& p) {

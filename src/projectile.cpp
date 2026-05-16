@@ -15,19 +15,19 @@ int Projectile::get_damage() const { return damage_; }
 Vec2 Projectile::get_velocity() const { return velocity_; }
 
 bool Projectile::is_dead() const {
-  return dead_;
+  return hp_ <= 0;
 }
 void Projectile::kill() {
-  dead_ = true;
+  hp_ = 0;
 }
 
 void Projectile::on_wall_collision() {
-   dead_ = true;
+  hp_ = 0;
 }
 
 double Projectile::lifetime() const {
-  if (this->dead_) return 0;
-  else return std::chrono::duration<double>(std::chrono::steady_clock::now() - created_).count();  
+  if (hp_ <= 0) return 0;
+  return std::chrono::duration<double>(std::chrono::steady_clock::now() - created_).count();
 }
 
 void Projectile::take_damage(int dmg) {

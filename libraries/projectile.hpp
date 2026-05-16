@@ -14,14 +14,13 @@ class Projectile : public Entity {
   int hp_;
   int damage_;
   int size_;
-  bool dead_ = false;
   std::chrono::steady_clock::time_point created_;
 
  public:
   Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 6, int hp = 1);
   ~Projectile();
   Vec2 get_velocity() const;
-  void update(float timediff) override;
+  void update(float timediff);
   void kill();
   void on_wall_collision();
   void take_damage(int damage);

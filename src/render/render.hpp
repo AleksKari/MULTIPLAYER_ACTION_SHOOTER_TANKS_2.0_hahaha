@@ -4,10 +4,10 @@
 #include <concepts>
 #include <math/Vec2.h>
 #include <tile/concept_tile.hpp>
+#include <entity/concept_entity.hpp>
 
 
 class Tile;
-class Entity;
 class Projectile;
 class Player;
 class Renderer {
@@ -17,7 +17,8 @@ class Renderer {
   void endframe();
   template<is_tile T>
   void draw_tile(const T& tile, Vec2 pos);
-  void draw_entity(const Entity& entity);
+  template<is_entity T>
+  void draw_entity(const T& entity);
   void draw_projectile(const Projectile& proj);
   void draw_hp_bar(const Player& p);
   sf::RenderWindow& window();
@@ -33,11 +34,19 @@ class Renderer {
   sf::Sprite projectile_sprite_;
 };
 
-template <is_tile T>  // в зависимости от того какой тайл пришел тот и отрисовывать
+template <is_tile T>
 void Renderer::draw_tile(const T& tile, Vec2 pos) {
   static_assert(!std::same_as<T, Tile>);
   tile_sprite_.setTexture(tile.texture_);
   tile_sprite_.setTextureRect({0, 0, 32, 32});
   tile_sprite_.setPosition(pos.x * 32, pos.y * 32);
   window_.draw(tile_sprite_);
+}
+
+template<is_entity T>
+void Renderer::draw_entity(const T& e) {
+  if (e.is_dead()) return;
+  entity_sprite_.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
+  entity_sprite_.setRotation(e.cornrotate * 180.0 / M_PI);
+  window_.draw(entity_sprite_);
 }
