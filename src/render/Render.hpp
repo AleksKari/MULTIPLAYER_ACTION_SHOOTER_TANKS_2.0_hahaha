@@ -5,11 +5,10 @@
 #include <math/Vec2.h>
 #include <tile/ConceptTile.hpp>
 #include <Entity.hpp>
-
+#include <Player.hpp>
 
 class Tile;
 class Projectile;
-class Player;
 class Renderer {
  public:
   Renderer(int screen_width, int screen_height, int tile_size);
@@ -46,7 +45,18 @@ void Renderer::draw_tile(const T& tile, Vec2 pos) {
 template<is_entity T>
 void Renderer::draw_entity(const T& e) {
   if (e.is_dead()) return;
-  entity_sprite_.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
-  entity_sprite_.setRotation(e.cornrotate * 180.0 / M_PI);
-  window_.draw(entity_sprite_);
+
+  // является ли сущность игроком
+  const Player* p = dynamic_cast<const Player*>(&e);
+  
+  if (p) {
+    sf::Sprite draw_sprite = p->getSprite();
+    draw_sprite.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
+    draw_sprite.setRotation(e.cornrotate * 180.0 / M_PI);
+    window_.draw(draw_sprite);
+  } else {
+    entity_sprite_.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
+    entity_sprite_.setRotation(e.cornrotate * 180.0 / M_PI);
+    window_.draw(entity_sprite_);
+  }
 }

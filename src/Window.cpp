@@ -57,8 +57,11 @@ int main() {
           if (event.key.code == sf::Keyboard::Left)  selected = 1;
           if (event.key.code == sf::Keyboard::Right) selected = 2;
           if (event.key.code == sf::Keyboard::Enter) {
-            std::string skinPath = (selected == 1) ? "textures/player.png" : "textures/pink_player.png";
-            player->loadSkin(skinPath);
+            std::string playerSkin = (selected == 1) ? "textures/player.png" : "textures/pink_player.png";
+            player->loadSkin(playerSkin);
+
+            weak->loadSkin("textures/player.png");
+            
             currentState = GameState::Gaming;
             clock.restart();
           }
@@ -90,9 +93,14 @@ int main() {
       renderer.window().draw(preview1);
       renderer.window().draw(preview2);
     } else {
+      static sf::Texture green_t, pink_t;
+      static bool init = ([](){
+        green_t.loadFromFile("textures/player.png");
+        pink_t.loadFromFile("textures/pink_player.png");
+        return true;
+      })();
       map.render(renderer);
     }
-    
     renderer.endframe();
   }
   return 0;

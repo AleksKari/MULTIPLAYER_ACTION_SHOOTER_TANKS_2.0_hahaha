@@ -18,12 +18,12 @@ class Player : public Entity {
   std::unique_ptr<Weapon> weapon_;
   sf::Texture texture_;
   sf::Sprite sprite_;
-  sf::Sprite& getSprite() { return sprite_; }
-  const sf::Sprite& getSprite() const { return sprite_; }
 
  public:
   int max_hp;
   int hp;
+  sf::Sprite& getSprite() { return sprite_; }
+  const sf::Sprite& getSprite() const { return sprite_; }
 
   Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon);
   Vec2 dir() const;
