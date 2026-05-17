@@ -41,18 +41,18 @@ TEST(Vec2, LengthZeroVector) {
 }
 
 TEST(Vec2, NormalizedLength) {
-    Vec2 n = Vec2(3.0, 4.0).normilized();
+    Vec2 n = Vec2(3.0, 4.0).normalized();
     EXPECT_NEAR(n.length(), 1.0, 1e-9);
 }
 
 TEST(Vec2, NormalizedDirection) {
-    Vec2 n = Vec2(3.0, 4.0).normilized();
+    Vec2 n = Vec2(3.0, 4.0).normalized();
     EXPECT_NEAR(n.x, 0.6, 1e-9);
     EXPECT_NEAR(n.y, 0.8, 1e-9);
 }
 
 TEST(Vec2, NormalizedZeroVectorReturnsZero) {
-    Vec2 n = Vec2(0.0, 0.0).normilized();
+    Vec2 n = Vec2(0.0, 0.0).normalized();
     EXPECT_DOUBLE_EQ(n.x, 0.0);
     EXPECT_DOUBLE_EQ(n.y, 0.0);
 }

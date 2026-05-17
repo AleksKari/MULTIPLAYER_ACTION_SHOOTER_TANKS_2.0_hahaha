@@ -12,7 +12,7 @@ void Player::move(float timediff) {
     sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A),
     sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W)
   );
-  position = position + dir.normilized() * speed_ * slow_coeff_ * timediff;
+  position = position + dir.normalized() * speed_ * slow_coeff_ * timediff;
 }
 
 void Player::set_mouse(sf::Vector2i mouse) {
