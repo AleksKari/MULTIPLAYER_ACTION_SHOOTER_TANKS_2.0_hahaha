@@ -1,24 +1,25 @@
 #pragma once
 #include <memory>
-#include <concepts>
 #include <vector>
-#include <tile/ConceptTile.hpp>
-#include <math/Vec2.h>
+#include "math/Vec2.h"
+#include "tile/ConceptTile.hpp"
+#include <SFML/Network.hpp>
 
 class Player;
 class Projectile;
 class Renderer;
 class Tile;
 
-
 class Map {
  public:
   Map(int width, int height);
   void update(double dt);
   void spawn_entity(Player* ent);
-  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1);
+  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1, const Player* source = nullptr);
+  
   template<is_tile T>
   void set_tile(const Vec2& pos, std::unique_ptr<T> tl);
+  
   bool is_bound(double pos_x, double pos_y) const;
   bool is_wall(double pos_x, double pos_y) const;
   bool is_empty(double pos_x, double pos_y) const;
@@ -26,6 +27,13 @@ class Map {
   bool is_damage(double pos_x, double pos_y) const;
   void render(Renderer& renderer) const;
   void generate_weapon();
+
+  // Сетевые методы для NetworkManager
+  void update_remote_player(sf::Uint32 id, sf::Packet& packet);
+  void spawn_remote_projectile(sf::Packet& packet);
+  void update_player_hp(sf::Uint32 id, int hp);
+  void spawn_weapon_at(int x, int y, int type);
+
   int width_;
   int height_;
   std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;

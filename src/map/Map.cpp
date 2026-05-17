@@ -83,8 +83,8 @@ void Map::spawn_entity(Player* ent) {
 }
 
 //отслеживаем снаряды
-void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp) {
-  projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size, hp));
+void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp, const Player* source) {
+  projectiles_.push_back(std::make_unique<Projectile>(pos, vel, damage, size, hp, source));
 }
 
 
@@ -167,4 +167,37 @@ void Map::generate_weapon() {
   mixed_weapon.push_back(std::make_unique<WeaponRicochetTile>());
 
   this->set_tile(empty_tiles[number_tile], std::move(mixed_weapon[weapon_number]));
+}
+void Map::update_remote_player(sf::Uint32 id, sf::Packet& packet) {
+    for (auto& entity : entities_) {
+        if (entity->network_id == id) {
+            entity->deserialize(packet);
+            return;
+        }
+    }
+}
+
+void Map::spawn_remote_projectile(sf::Packet& packet) {
+    float px, py, vx, vy; int dmg, sz, hp; sf::Uint32 owner_id;
+    packet >> px >> py >> vx >> vy >> dmg >> sz >> hp >> owner_id;
+    
+    const Player* src = nullptr;
+    for (auto& entity : entities_) {
+        if (entity->network_id == owner_id) { src = entity.get(); break; }
+    }
+    spawn_projectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
+}
+
+void Map::update_player_hp(sf::Uint32 id, int hp) {
+    for (auto& entity : entities_) {
+        if (entity->network_id == id) {
+            entity->hp = hp;
+            if (hp <= 0) entity->kill();
+            return;
+        }
+    }
+}
+
+void Map::spawn_weapon_at(int x, int y, int type) {
+    // Временная заглушка для генерации
 }

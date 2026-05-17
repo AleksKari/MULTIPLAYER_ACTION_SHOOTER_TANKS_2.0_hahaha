@@ -3,6 +3,7 @@
 #include <weapon/Weapon.hpp>
 #include <memory>
 #include <string>
+#include <SFML/Network.hpp>
 
 class Weapon;
 class Map;
@@ -22,6 +23,10 @@ class Player : public Entity {
  public:
   int max_hp;
   int hp;
+  sf::Uint32 network_id = 0;
+  bool is_local = false;
+  bool input_w = false, input_a = false, input_s = false, input_d = false;
+
   sf::Sprite& getSprite() { return sprite_; }
   const sf::Sprite& getSprite() const { return sprite_; }
 
@@ -39,4 +44,8 @@ class Player : public Entity {
   bool is_dead() const;
   void slow_down();
   void take_tile_damage(int damage);
+
+  void serialize(sf::Packet& packet) const;
+  void deserialize(sf::Packet& packet);
+  void set_input(bool w, bool a, bool s, bool d);
 };

@@ -1,8 +1,8 @@
 #include <Projectile.hpp>
 
-Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp)
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp, const Player* source)
     : Entity(pos, damage, size), velocity_(velocity), damage_(damage), 
-    size_(size), hp_(hp), prev_position_(pos), created_(std::chrono::steady_clock::now()) {}
+    size_(size), hp_(hp), prev_position_(pos), created_(std::chrono::steady_clock::now()), owner(source) {}
 
 Projectile::~Projectile() = default;
 

@@ -20,13 +20,13 @@ void Player::set_mouse(sf::Vector2i mouse) {
 }
 
 Vec2 Player::dir() const {
-Vec2 center(position.x + 16, position.y + 16);
+  Vec2 center(position.x + 16, position.y + 16);
   return Vec2(mouse_pos_.x - center.x, mouse_pos_.y - center.y);
 }
 
 void Player::attack(Map& map) {
   if (!weapon_) return;
-  weapon_->shoot(map, *this, 10); // пока damage будет 10
+  weapon_->shoot(map, *this, 10); 
   if (weapon_->no_ammo()) weapon_ = std::make_unique<Gun>();
 }
 
@@ -38,12 +38,10 @@ bool Player::is_dead() const {
   return hp <= 0;
 }
 
-//вроде так но если что снос alive
 void Player::kill() {
   hp = 0;
 }
 
-//не даем застрять откатывает координаты
 void Player::on_wall_collision() {
   position = prev_position_;
 }
@@ -90,3 +88,17 @@ void Player::loadSkin(const std::string& path) {
   );
 }
 
+void Player::serialize(sf::Packet& packet) const {
+  packet << network_id << position.x << position.y << cornrotate << static_cast<sf::Int32>(hp) << input_w << input_a << input_s << input_d << mouse_pos_.x << mouse_pos_.y;
+}
+
+void Player::deserialize(sf::Packet& packet) {
+  sf::Int32 remote_hp;
+  packet >> position.x >> position.y >> cornrotate >> remote_hp >> input_w >> input_a >> input_s >> input_d >> mouse_pos_.x >> mouse_pos_.y;
+  hp = remote_hp;
+  if (hp <= 0) kill();
+}
+
+void Player::set_input(bool w, bool a, bool s, bool d) {
+  input_w = w; input_a = a; input_s = s; input_d = d;
+}
