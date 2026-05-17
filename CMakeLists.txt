@@ -40,6 +40,10 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_SOURCE_DIR}/textures"
     "$<TARGET_FILE_DIR:${PROJECT_NAME}>/textures"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/sounds"
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/sounds"
 )
 
 # Библиотека для тестов (все исходники без main)

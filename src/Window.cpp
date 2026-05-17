@@ -8,6 +8,7 @@
 #include <tile/EmptyTile.hpp>
 #include <Projectile.hpp>
 #include <collision/Collision.hpp>
+#include <SFML/Audio.hpp>
 
 enum class GameState { Menu, Gaming };
 
@@ -34,7 +35,25 @@ int main() {
   preview2.setPosition(1100, 400);
   int selected = 1;
   GameState currentState = GameState::Menu;
- 
+
+  sf::Music bgMusic;
+  if (!bgMusic.openFromFile("sounds/background_sound.wav")) {
+    if (!bgMusic.openFromFile("background_sound.wav")) {
+      bgMusic.openFromFile("../sounds/background_sound.wav");
+    }
+  }
+    bgMusic.setLoop(true);
+    bgMusic.setVolume(20.f);
+
+  sf::SoundBuffer shotBuffer;
+  sf::Sound shotSound;
+  if (shotBuffer.loadFromFile("sounds/shot_sound.wav")) {
+    shotSound.setBuffer(shotBuffer);
+    shotSound.setVolume(40.f);
+  } else {
+    std::cout << "failed to load shot_sound.wav\n";
+  }
+
   // карта 60x34 тайла(квадрата) (1920/32 x 1080/32)
   Map map(59, 33);
   
@@ -59,8 +78,9 @@ int main() {
           if (event.key.code == sf::Keyboard::Enter) {
             std::string playerSkin = (selected == 1) ? "textures/player.png" : "textures/pink_player.png";
             player->loadSkin(playerSkin);
-
             weak->loadSkin("textures/player.png");
+
+            bgMusic.play();
             
             currentState = GameState::Gaming;
             clock.restart();
@@ -70,7 +90,14 @@ int main() {
       else if (currentState == GameState::Gaming) {
         if (event.type == sf::Event::MouseButtonPressed ||
             (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)) {
-          if (!player->is_dead()) player->attack(map);
+          if (!player->is_dead()) {
+            player->attack(map);
+
+            if (shotSound.getStatus() == sf::Sound::Playing) {
+              shotSound.stop();
+            }
+            shotSound.play();
+          }
         }
       }
     }
