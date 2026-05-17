@@ -15,8 +15,8 @@ class Entity {
   int damage = 0;
   int size;
 
-  Entity();
-  Entity(Vec2 pos, int damage_, int size = TILESIZE);
+  Entity() : position(Vec2()), size(TILESIZE)  {}
+  Entity(Vec2 pos, int dmg, int sz = TILESIZE) : position(pos), damage(dmg), size(sz) {}
   ~Entity() = default;
 };
 
