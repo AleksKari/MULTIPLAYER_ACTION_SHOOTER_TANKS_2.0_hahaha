@@ -31,9 +31,6 @@ class Map {
   std::vector<std::vector<std::unique_ptr<Tile>>> tiles_;
   std::vector<std::unique_ptr<Player>> entities_;
   std::vector<std::unique_ptr<Projectile>> projectiles_;
- private:
-  sf::Texture background_texture_;
-  mutable sf::Sprite background_sprite_;
 };
 
 template <is_tile T>
