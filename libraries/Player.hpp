@@ -12,6 +12,8 @@ class Player : public Entity {
   Vec2 mouse_pos_;
   Vec2 prev_position_;
   float speed_;
+  float slow_coeff_ = 1.0f;
+  float tile_damage_cooldown_ = 0.0f;
   int size_ = TILESIZE;
   std::unique_ptr<Weapon> weapon_;
   sf::Texture texture_;
@@ -35,4 +37,6 @@ class Player : public Entity {
   void loadSkin(const std::string& path);
   void set_weapon(std::unique_ptr<Weapon> weapon);
   bool is_dead() const;
+  void slow_down();
+  void take_tile_damage(int damage);
 };

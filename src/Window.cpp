@@ -40,7 +40,7 @@ int main() {
   
   auto wep = std::make_unique<Gun>();
 
-  Player* player = new Player(Vec2(100, 100), 100, 300.0f, std::move(wep));
+  Player* player = new Player(Vec2(200, 200), 100, 300.0f, std::move(wep));
   Player* weak = new Player(Vec2(500, 500), 100, 300.0f, std::move(wep));
 
   map.spawn_entity(player);
@@ -92,7 +92,7 @@ int main() {
     } else {
       map.render(renderer);
     }
-
+    
     renderer.endframe();
   }
   return 0;

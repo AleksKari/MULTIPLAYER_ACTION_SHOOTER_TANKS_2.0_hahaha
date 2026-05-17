@@ -12,7 +12,7 @@ void Player::move(float timediff) {
     sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A),
     sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W)
   );
-  position = position + dir.normilized() * speed_ * timediff;
+  position = position + dir.normilized() * speed_ * slow_coeff_ * timediff;
 }
 
 void Player::set_mouse(sf::Vector2i mouse) {
@@ -54,9 +54,21 @@ void Player::take_damage(int damage) {
   }
 }
 
+void Player::slow_down() {
+  slow_coeff_ = 0.4f;
+}
+
+void Player::take_tile_damage(int damage) {
+  if (tile_damage_cooldown_ > 0.0f) return;
+  take_damage(damage);
+  tile_damage_cooldown_ = 0.5f;
+}
+
 void Player::update(float timediff) {
+  if (tile_damage_cooldown_ > 0.0f) tile_damage_cooldown_ -= timediff;
   prev_position_ = position;
   move(timediff);
+  slow_coeff_ = 1.0f;
   cornrotate = dir().angle();
 
   sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);

@@ -1,6 +1,7 @@
 #include "SlowTile.hpp"
 #include <render/Render.hpp>
 #include <math/Vec2.h>
+#include <Player.hpp>
 
 SlowTile::SlowTile() {
   texture_.loadFromFile("textures/slow.png");
@@ -10,5 +11,5 @@ void SlowTile::draw(Renderer& renderer, Vec2 pos) {
   renderer.draw_tile(*this, pos);
 }
 void SlowTile::interact(Player& player, Map& map, const Vec2& pos) {
-    //player.slow_down();
+  player.slow_down();
 }

@@ -31,18 +31,18 @@ bool Collision::entity_projectile(const Vec2& pos_projectile, const int size_pro
 }
  // x0 x1 y0 y1 координаты в тайлах где находится плеер
 void Collision::entity_tile (Player& entity, Map& map) {
-
+ // для проезда в зазор 1 блок уменьшаем счиатемый размер на 1 
   if (entity.position.x < 0 || entity.position.y < 0 ||
-      ((entity.position.x + entity.size) / TILESIZE) >= map.width_ ||
-      ((entity.position.y + entity.size) / TILESIZE) >= map.height_) {
+      ((entity.position.x + entity.size - 1) / TILESIZE) >= map.width_ ||
+      ((entity.position.y + entity.size - 1) / TILESIZE) >= map.height_) {
         entity.on_wall_collision();
         return;
       }
   int x0 = static_cast<int>(entity.position.x) / TILESIZE;
   int y0 = static_cast<int>(entity.position.y) / TILESIZE;
 
-  int x1 = static_cast<int>(entity.position.x + entity.size) / TILESIZE;
-  int y1 = static_cast<int>(entity.position.y + entity.size) / TILESIZE;
+  int x1 = static_cast<int>(entity.position.x + entity.size - 1) / TILESIZE;
+  int y1 = static_cast<int>(entity.position.y + entity.size - 1) / TILESIZE;
 
   map.tiles_[x0][y0]->interact(entity, map, Vec2(x0, y0));
 
