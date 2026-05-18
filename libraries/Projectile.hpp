@@ -25,6 +25,7 @@ class Projectile : public Entity {
   void on_wall_collision();
   void take_damage(int damage);
   int get_damage() const;
+  int get_hp() const;
   bool is_dead() const;
   bool can_ricochet() const;
   double lifetime() const;

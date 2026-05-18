@@ -4,6 +4,7 @@
 #include <variant>
 #include <concepts>
 #include <type_traits>
+#include <algorithm>
 #include "Map.hpp"
 #include <collision/Collision.hpp>
 #include <weapon/Gun.hpp>
@@ -73,8 +74,12 @@ Map::Map(int width, int height) : width_(width), height_(height) {
 void Map::update(double diff) {
   for (auto& ent : entities_) { ent->update(diff); }
   for (auto& pr : projectiles_) { pr->update(diff); }
-  this->generate_weapon();
-  //Collision::resolve(*this);
+  projectiles_.erase(
+    std::remove_if(projectiles_.begin(), projectiles_.end(), [](const auto& projectile) {
+      return projectile->is_dead();
+    }),
+    projectiles_.end()
+  );
 }
 
 //отслеживаем игроков
@@ -139,12 +144,12 @@ void Map::render(Renderer& renderer) const {
 
 }
 // генерация оружия
-void Map::generate_weapon() {
+std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
 
   std::mt19937 mt(std::chrono::steady_clock::now().time_since_epoch().count());
   long long random_number = mt();
 
-  if (random_number % RANDOM_GENERATE_INDEX) return;
+  if (random_number % RANDOM_GENERATE_INDEX) return std::nullopt;
 
   std::vector<Vec2> empty_tiles;
 
@@ -156,17 +161,14 @@ void Map::generate_weapon() {
     }
   }
 
-  if (empty_tiles.size() == 0) return;
+  if (empty_tiles.size() == 0) return std::nullopt;
 
   int number_tile = random_number % empty_tiles.size();
   int weapon_number = mt() % WEAPON_CNT;
 
-  std::vector<std::unique_ptr<WeaponTile>> mixed_weapon;
-
-  mixed_weapon.push_back(std::make_unique<WeaponShotgunTile>());
-  mixed_weapon.push_back(std::make_unique<WeaponRicochetTile>());
-
-  this->set_tile(empty_tiles[number_tile], std::move(mixed_weapon[weapon_number]));
+  const Vec2& tile_pos = empty_tiles[number_tile];
+  spawn_weapon_at(static_cast<int>(tile_pos.x), static_cast<int>(tile_pos.y), weapon_number);
+  return std::make_tuple(static_cast<int>(tile_pos.x), static_cast<int>(tile_pos.y), weapon_number);
 }
 void Map::update_remote_player(sf::Uint32 id, sf::Packet& packet) {
     for (auto& entity : entities_) {
@@ -199,5 +201,90 @@ void Map::update_player_hp(sf::Uint32 id, int hp) {
 }
 
 void Map::spawn_weapon_at(int x, int y, int type) {
-    // Временная заглушка для генерации
+    if (x < 0 || y < 0 || x >= width_ || y >= height_) return;
+    if (type == 0) {
+        set_tile(Vec2(x, y), std::make_unique<WeaponShotgunTile>());
+    } else if (type == 1) {
+        set_tile(Vec2(x, y), std::make_unique<WeaponRicochetTile>());
+    }
+}
+
+std::vector<Vec2> Map::consume_removed_weapon_tiles() {
+    std::vector<Vec2> removed;
+    removed.swap(removed_weapon_tiles_);
+    return removed;
+}
+
+void Map::serialize_game_state(sf::Packet& packet) const {
+    packet << static_cast<sf::Uint16>(entities_.size());
+    for (const auto& entity : entities_) {
+        packet << entity->network_id
+               << static_cast<float>(entity->position.x)
+               << static_cast<float>(entity->position.y)
+               << static_cast<float>(entity->cornrotate)
+               << static_cast<sf::Int32>(entity->hp);
+    }
+
+    packet << static_cast<sf::Uint16>(projectiles_.size());
+    for (const auto& projectile : projectiles_) {
+        Vec2 velocity = projectile->get_velocity();
+        sf::Uint32 owner_id = projectile->owner ? projectile->owner->network_id : 0;
+        packet << static_cast<float>(projectile->position.x)
+               << static_cast<float>(projectile->position.y)
+               << static_cast<float>(velocity.x)
+               << static_cast<float>(velocity.y)
+               << projectile->get_damage()
+               << projectile->size
+               << projectile->get_hp()
+               << owner_id;
+    }
+}
+
+void Map::apply_game_state(sf::Packet& packet) {
+    sf::Uint16 player_count = 0;
+    packet >> player_count;
+
+    for (sf::Uint16 i = 0; i < player_count; ++i) {
+        sf::Uint32 id;
+        float x = 0.0f;
+        float y = 0.0f;
+        float angle = 0.0f;
+        sf::Int32 hp = 0;
+        packet >> id >> x >> y >> angle >> hp;
+
+        for (auto& entity : entities_) {
+            if (entity->network_id != id) continue;
+            entity->position = Vec2(x, y);
+            entity->cornrotate = angle;
+            entity->hp = hp;
+            if (entity->hp <= 0) entity->kill();
+            break;
+        }
+    }
+
+    sf::Uint16 projectile_count = 0;
+    packet >> projectile_count;
+    projectiles_.clear();
+    projectiles_.reserve(projectile_count);
+
+    for (sf::Uint16 i = 0; i < projectile_count; ++i) {
+        float px = 0.0f;
+        float py = 0.0f;
+        float vx = 0.0f;
+        float vy = 0.0f;
+        int dmg = 0;
+        int sz = 0;
+        int hp = 0;
+        sf::Uint32 owner_id = 0;
+        packet >> px >> py >> vx >> vy >> dmg >> sz >> hp >> owner_id;
+
+        const Player* src = nullptr;
+        for (const auto& entity : entities_) {
+            if (entity->network_id == owner_id) {
+                src = entity.get();
+                break;
+            }
+        }
+        spawn_projectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
+    }
 }

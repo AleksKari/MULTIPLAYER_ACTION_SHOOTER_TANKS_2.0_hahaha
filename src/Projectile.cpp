@@ -12,6 +12,7 @@ void Projectile::update(float timediff) {
 }
 
 int Projectile::get_damage() const { return damage_; }
+int Projectile::get_hp() const { return hp_; }
 Vec2 Projectile::get_velocity() const { return velocity_; }
 
 bool Projectile::is_dead() const {

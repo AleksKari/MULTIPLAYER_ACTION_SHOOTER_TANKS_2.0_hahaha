@@ -9,8 +9,8 @@ Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
 
 void Player::move(float timediff) {
   Vec2 dir(
-    sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A),
-    sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+    static_cast<int>(input_d) - static_cast<int>(input_a),
+    static_cast<int>(input_s) - static_cast<int>(input_w)
   );
   position = position + dir.normalized() * speed_ * slow_coeff_ * timediff;
 }

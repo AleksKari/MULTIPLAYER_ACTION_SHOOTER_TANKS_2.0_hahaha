@@ -2,38 +2,11 @@
 #include "Player.hpp"
 #include "map/Map.hpp"
 #include "tile/EmptyTile.hpp"
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <signal.h>
 #include <iostream>
 
 NetworkManager::NetworkManager() {}
 
-NetworkManager::~NetworkManager() {
-    if (server_pid_ > 0) {
-        kill(server_pid_, SIGTERM);
-        waitpid(server_pid_, nullptr, 0);
-    }
-}
-
-std::optional<std::string> NetworkManager::host_lobby(unsigned short port) {
-    server_pid_ = fork();
-    
-    if (server_pid_ == 0) {
-        execl("./server", "./server", "0.0.0.0", std::to_string(port).c_str(), (char*)nullptr);
-        _exit(127);
-    }
-    
-    if (server_pid_ > 0) {
-        sf::sleep(sf::milliseconds(100));
-        if (try_join_lobby("LOCAL", port)) {
-            return LobbyUtils::ipToCode(sf::IpAddress::getLocalAddress());
-        }
-    }
-    
-    return std::nullopt;
-}
+NetworkManager::~NetworkManager() = default;
 
 bool NetworkManager::try_join_lobby(const std::string& code, unsigned short port) {
     sf::IpAddress ip = LobbyUtils::codeToIp(code);
@@ -44,6 +17,7 @@ bool NetworkManager::try_join_lobby(const std::string& code, unsigned short port
     
     socket_.disconnect();
     socket_.setBlocking(true);
+    opponent_joined_ = false;
     
     if (socket_.connect(ip, port, sf::seconds(5)) == sf::Socket::Done) {
         socket_.setBlocking(false);
@@ -53,18 +27,67 @@ bool NetworkManager::try_join_lobby(const std::string& code, unsigned short port
     return false;
 }
 
-void NetworkManager::update(Map& map) {
-    receive_packets(map);
+int NetworkManager::join_lobby(const std::string& lobby_code, bool host) {
+    if (!is_connected()) return 0;
+
+    sf::Packet join_packet;
+    join_packet << PacketType::JoinLobby << lobby_code << host;
+    if (socket_.send(join_packet) != sf::Socket::Done) return 0;
+
+    int result_id = 0;
+    sf::SocketSelector selector;
+    selector.add(socket_);
+    if (selector.wait(sf::seconds(2))) {
+        sf::Packet response;
+        if (socket_.receive(response) == sf::Socket::Done) {
+            PacketType response_type;
+            if ((response >> response_type) && response_type == PacketType::LobbyJoined) {
+                sf::Int32 assigned_id = 0;
+                response >> assigned_id;
+                result_id = assigned_id;
+            }
+        }
+    }
+    return result_id;
 }
 
-void NetworkManager::receive_packets(Map& map) {
+void NetworkManager::update(Map& map, Player* local_player, Player* remote_player, bool host_authority) {
+    receive_packets(map, local_player, remote_player, host_authority);
+}
+
+void NetworkManager::receive_packets(Map& map, Player* local_player, Player* remote_player, bool host_authority) {
     sf::Packet packet;
     
     while (socket_.receive(packet) == sf::Socket::Done) {
         PacketType type; 
-        packet >> type;
+        if (!(packet >> type)) {
+            packet.clear();
+            continue;
+        }
         
-        if (type == PacketType::UpdateState) {
+        if (type == PacketType::LobbyJoined) {
+            sf::Int32 joined_id = 0;
+            packet >> joined_id;
+            if (host_authority && joined_id == 2) {
+                opponent_joined_ = true;
+            }
+        } else if (type == PacketType::PlayerInput) {
+            if (host_authority && remote_player) {
+                bool w = false, a = false, s = false, d = false;
+                sf::Int32 mouse_x = 0, mouse_y = 0;
+                packet >> w >> a >> s >> d >> mouse_x >> mouse_y;
+                remote_player->set_input(w, a, s, d);
+                remote_player->set_mouse(sf::Vector2i(mouse_x, mouse_y));
+            }
+        } else if (type == PacketType::Shoot) {
+            if (host_authority && remote_player && !remote_player->is_dead()) {
+                remote_player->attack(map);
+            }
+        } else if (type == PacketType::GameState) {
+            if (!host_authority) {
+                map.apply_game_state(packet);
+            }
+        } else if (type == PacketType::UpdateState) {
             sf::Uint32 id; 
             packet >> id;
             map.update_remote_player(id, packet);
@@ -97,19 +120,14 @@ void NetworkManager::send_to_all(sf::Packet& packet) {
     }
 }
 
-bool NetworkManager::is_host() const {
-    return server_pid_ > 0;
+bool NetworkManager::is_connected() const {
+    return socket_.getRemoteAddress() != sf::IpAddress::None;
 }
 
-int NetworkManager::receive_response() {
-    socket_.setBlocking(true); // Переключаем в блокирующий режим для ожидания
-    sf::Packet responsePacket;
-    sf::Int32 result = 0;
-    
-    if (socket_.receive(responsePacket) == sf::Socket::Done) {
-        responsePacket >> result;
-    }
-    
-    socket_.setBlocking(false); // Возвращаем асинхронный режим назад
-    return result;
+bool NetworkManager::opponent_joined() const {
+    return opponent_joined_;
+}
+
+void NetworkManager::reset_opponent_joined() {
+    opponent_joined_ = false;
 }
