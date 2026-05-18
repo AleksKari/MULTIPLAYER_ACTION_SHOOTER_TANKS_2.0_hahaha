@@ -10,7 +10,7 @@ Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
       max_hp(hp),
       speed_(speed),
       weapon_(std::move(weapon)) {
-  if (position.x > 900.0) {
+  if (position.cord_x > 900.0) {
     facing_dir_ = Vec2(-1.0, 0.0);
   }
 }
@@ -68,7 +68,7 @@ void Player::update(float timediff) {
   slow_coeff_ = 1.0f;
   cornrotate = facing_dir_.angle();
 
-  sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
+  sprite_.setPosition(position.cord_x + size_ / 2.0f, position.cord_y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);
 }
 
@@ -86,28 +86,28 @@ void Player::loadSkin(const std::string& path) {
 }
 
 void Player::serialize(sf::Packet& packet) const {
-  packet << network_id << position.x << position.y << cornrotate
+  packet << network_id << position.cord_x << position.cord_y << cornrotate
          << static_cast<sf::Int32>(hp) << input_w << input_a << input_s
-         << input_d << mouse_pos_.x << mouse_pos_.y;
+         << input_d << mouse_pos_.cord_x << mouse_pos_.cord_y;
 }
 
 void Player::deserialize(sf::Packet& packet) {
   sf::Int32 remote_hp;
   float rx, ry, rrot;
-  
-  packet >> rx >> ry >> rrot >> remote_hp >> input_w >>
-      input_a >> input_s >> input_d >> mouse_pos_.x >> mouse_pos_.y;
-      
+
+  packet >> rx >> ry >> rrot >> remote_hp >> input_w >> input_a >> input_s >>
+      input_d >> mouse_pos_.cord_x >> mouse_pos_.cord_y;
+
   hp = remote_hp;
   if (hp <= 0) kill();
-  
+
   if (!is_local) {
-      position.x = rx;
-      position.y = ry;
-      cornrotate = rrot;
+    position.cord_x = rx;
+    position.cord_y = ry;
+    cornrotate = rrot;
   }
-  
-  sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
+
+  sprite_.setPosition(position.cord_x + size_ / 2.0f, position.cord_y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);
 }
 
@@ -116,7 +116,7 @@ void Player::set_input(bool w, bool a, bool s, bool d) {
   input_a = a;
   input_s = s;
   input_d = d;
-  
+
   Vec2 input_dir(static_cast<int>(input_d) - static_cast<int>(input_a),
                  static_cast<int>(input_s) - static_cast<int>(input_w));
   const Vec2 normalized = input_dir.normalized();

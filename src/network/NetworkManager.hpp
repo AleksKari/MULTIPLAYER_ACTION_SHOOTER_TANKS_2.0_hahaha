@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Protocol.hpp"
+#include <network/Protocol.hpp>
 
 class Map;
 class Player;

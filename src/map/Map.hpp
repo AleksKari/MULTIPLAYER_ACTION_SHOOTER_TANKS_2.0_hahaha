@@ -6,8 +6,8 @@
 #include <utility>
 #include <vector>
 
-#include "math/Vec2.h"
-#include "tile/ConceptTile.hpp"
+#include <math/Vec2.h>
+#include <tile/ConceptTile.hpp>
 
 class Player;
 class Projectile;
@@ -17,13 +17,13 @@ class Tile;
 class Map {
  public:
   Map(int width, int height);
-  void update(double dt);
+  void update(double difftime);
   void spawn_entity(Player* ent);
-  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1,
+  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int heatpoint = 1,
                         const Player* source = nullptr);
 
   template <is_tile T>
-  void set_tile(const Vec2& pos, std::unique_ptr<T> tl);
+  void set_tile(const Vec2& pos, std::unique_ptr<T> tile);
 
   bool is_bound(double pos_x, double pos_y) const;
   bool is_wall(double pos_x, double pos_y) const;
@@ -35,10 +35,10 @@ class Map {
   std::optional<std::tuple<int, int, int>> generate_weapon();
 
   // Сетевые методы для NetworkManager
-  void update_remote_player(sf::Uint32 id, sf::Packet& packet);
+  void update_remote_player(sf::Uint32 user_id, sf::Packet& packet); // поправил имя айди бог знает чье оно если что тыкните
   void spawn_remote_projectile(sf::Packet& packet);
-  void update_player_hp(sf::Uint32 id, int hp);
-  void spawn_weapon_at(int x, int y, int type);
+  void update_player_hp(sf::Uint32 user_id, int heatpoint);//тут тоже user_id
+  void spawn_weapon_at(int coord_x, int coord_y, int type);
   void serialize_game_state(sf::Packet& packet) const;
   void apply_game_state(sf::Packet& packet);
   std::vector<Vec2> consume_removed_weapon_tiles();
@@ -56,10 +56,10 @@ class Map {
 };
 
 template <is_tile T>
-void Map::set_tile(const Vec2& pos, std::unique_ptr<T> tl) {
-  if (tiles_[pos.x][pos.y] && tiles_[pos.x][pos.y]->is_weapon() &&
-      tl->is_empty()) {
+void Map::set_tile(const Vec2& pos, std::unique_ptr<T> tile) {
+  if (tiles_[pos.cord_x][pos.cord_y] && tiles_[pos.cord_x][pos.cord_y]->is_weapon() &&
+      tile->is_empty()) {
     removed_weapon_tiles_.push_back(pos);
   }
-  tiles_[pos.x][pos.y] = std::move(tl);
+  tiles_[pos.cord_x][pos.cord_y] = std::move(tile);
 }

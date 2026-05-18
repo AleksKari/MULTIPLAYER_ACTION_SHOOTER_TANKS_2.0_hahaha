@@ -143,10 +143,10 @@ int main() {
 
   auto valid_spawn = [&](int tx, int ty) {
     const Vec2 pos = tile_to_world(tx, ty);
-    const double x0 = pos.x + 2.0;
-    const double y0 = pos.y + 2.0;
-    const double x1 = pos.x + TILESIZE - 2.0;
-    const double y1 = pos.y + TILESIZE - 2.0;
+    const double x0 = pos.cord_x + 2.0;
+    const double y0 = pos.cord_y + 2.0;
+    const double x1 = pos.cord_x + TILESIZE - 2.0;
+    const double y1 = pos.cord_y + TILESIZE - 2.0;
     return map.is_empty(x0, y0) && map.is_empty(x1, y1) &&
            !map.is_slow(x0, y0) && !map.is_damage(x0, y0);
   };
@@ -398,8 +398,8 @@ int main() {
           map.set_tile(tile, std::make_unique<EmptyTile>());
 
           sf::Packet removePacket;
-          removePacket << PacketType::RemoveTile << static_cast<int>(tile.x)
-                       << static_cast<int>(tile.y);
+          removePacket << PacketType::RemoveTile << static_cast<int>(tile.cord_x)
+                       << static_cast<int>(tile.cord_y);
           net.send_to_all(removePacket);
         }
 

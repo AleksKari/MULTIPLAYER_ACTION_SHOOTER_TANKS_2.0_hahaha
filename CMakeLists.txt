@@ -32,6 +32,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 add_executable(server ${SRC_DIR}/server.cpp)
+target_include_directories(server PRIVATE ${SRC_DIR} ${LIB_DIR})
 target_link_libraries(server sfml-system sfml-network)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

@@ -4,7 +4,7 @@
 #include <string>
 #include <weapon/Weapon.hpp>
 
-#include "Entity.hpp"
+#include <Entity.hpp>
 
 class Weapon;
 class Map;
@@ -15,8 +15,8 @@ class Player : public Entity {
   Vec2 prev_position_;
   Vec2 facing_dir_{1.0, 0.0};
   float speed_;
-  float slow_coeff_ = 1.0f;
-  float tile_damage_cooldown_ = 0.0f;
+  float slow_coeff_ = 1.0F;
+  float tile_damage_cooldown_ = 0.0F;
   int size_ = TILESIZE;
   std::unique_ptr<Weapon> weapon_;
   sf::Texture texture_;
@@ -32,7 +32,7 @@ class Player : public Entity {
   sf::Sprite& getSprite() { return sprite_; }
   const sf::Sprite& getSprite() const { return sprite_; }
 
-  Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon);
+  Player(Vec2 pos, int heatpoint, float speed, std::unique_ptr<Weapon> weapon);
   Vec2 dir() const;
   void move(float timediff);
   void attack(Map& map);
@@ -49,5 +49,5 @@ class Player : public Entity {
 
   void serialize(sf::Packet& packet) const;
   void deserialize(sf::Packet& packet);
-  void set_input(bool w, bool a, bool s, bool d);
+  void set_input(bool button_w, bool button_a, bool button_s, bool button_d);
 };

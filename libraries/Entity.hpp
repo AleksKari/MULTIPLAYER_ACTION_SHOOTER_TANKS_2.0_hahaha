@@ -1,6 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+
 #include <math/Vec2.h>
+
+#include <SFML/Graphics.hpp>
 #include <concepts>
 
 const int TILESIZE = 32;
@@ -15,10 +17,11 @@ class Entity {
   int damage = 0;
   int size;
 
-  Entity() : position(Vec2()), size(TILESIZE)  {}
-  Entity(Vec2 pos, int dmg, int sz = TILESIZE) : position(pos), damage(dmg), size(sz) {}
+  Entity() : size(TILESIZE) {}
+  Entity(Vec2 pos, int dmg, int siz = TILESIZE)
+      : position(pos), damage(dmg), size(siz) {}
   ~Entity() = default;
 };
 
-template<typename T>
+template <typename T>
 concept is_entity = std::derived_from<T, Entity>;

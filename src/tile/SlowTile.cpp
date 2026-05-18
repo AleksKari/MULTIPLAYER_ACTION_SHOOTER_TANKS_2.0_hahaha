@@ -1,12 +1,12 @@
-#include "SlowTile.hpp"
-#include <render/Render.hpp>
-#include <math/Vec2.h>
-#include <Player.hpp>
+#include <tile/SlowTile.hpp>
 
-SlowTile::SlowTile() {
-  texture_.loadFromFile("textures/slow.png");
-}
-bool SlowTile::is_slow() {return true;}
+#include <math/Vec2.h>
+
+#include <Player.hpp>
+#include <render/Render.hpp>
+
+SlowTile::SlowTile() { texture_.loadFromFile("textures/slow.png"); }
+bool SlowTile::is_slow() { return true; }
 void SlowTile::draw(Renderer& renderer, Vec2 pos) {
   renderer.draw_tile(*this, pos);
 }

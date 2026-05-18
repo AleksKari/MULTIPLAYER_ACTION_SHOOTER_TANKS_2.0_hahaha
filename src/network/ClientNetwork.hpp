@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Network.hpp>
-#include "Protocol.hpp"
+#include <network/Protocol.hpp>
 #include <string>
 #include <iostream>
 

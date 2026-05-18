@@ -3,7 +3,7 @@
 
 #include <chrono>
 
-#include "Entity.hpp"
+#include <Entity.hpp>
 
 class Player;
 

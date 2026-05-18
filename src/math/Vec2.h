@@ -4,38 +4,38 @@
 
 struct Vec2 {
  public:
-  Vec2() : x(0), y(0) {}
-  Vec2(double x, double y): x(x), y(y) {}
-  Vec2(double angle) {
-    x = std::cos(angle);
-    y = std::sin(angle);
+  Vec2() : cord_x(0), cord_y(0) {}
+  Vec2(double cord_x, double cord_y): cord_x(cord_x), cord_y(cord_y) {}
+  explicit Vec2(double angle) {
+    cord_x = std::cos(angle);
+    cord_y = std::sin(angle);
   }
 
   // Сложение
   Vec2 operator+(const Vec2& other) const {
-    return Vec2(x + other.x, y + other.y);
+    return Vec2(cord_x + other.cord_x, cord_y + other.cord_y);
   }
   // Вычитание
   Vec2 operator-(const Vec2& other) const {
-    return Vec2(x - other.x, y - other.y);
+    return Vec2(cord_x - other.cord_x, cord_y - other.cord_y);
   }
   Vec2 operator*(double scalar) const {
-    return Vec2(x * scalar, y * scalar);
+    return Vec2(cord_x * scalar, cord_y * scalar);
   }
   double length() const {
-    return std::sqrt(x * x + y * y);
+    return std::sqrt((cord_x * cord_x) + (cord_y * cord_y));
   }
   Vec2 normalized() const {
     double len = length();
-    if (len == 0) return Vec2(0, 0);
-    return Vec2(x / len, y / len);
+    if (len == 0) { return Vec2(0, 0); }
+    return Vec2(cord_x / len, cord_y / len);
   }
   double angle() const {
-    return std::atan2(y, x);
+    return std::atan2(cord_y, cord_x);
   }
   Vec2 rotate(double angle) const {
-    return Vec2(x * cos(angle) + y * sin(angle), y * cos(angle) - x * sin(angle));
+    return Vec2((cord_x * cos(angle)) + (cord_y * sin(angle)), (cord_y * cos(angle)) - (cord_x * sin(angle)));
   }
-  double x;
-  double y;
+  double cord_x;
+  double cord_y;
 };

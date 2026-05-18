@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FireMode.hpp"
+#include <weapon/Firemodes/FireMode.hpp>
 
 class ShotgunFire : public FireMode {
  public:

@@ -1,14 +1,16 @@
 #pragma once
-#include "Weapon.hpp"
-#include "Firemodes/ShotgunFire.hpp"
 #include <Entity.hpp>
 #include <map/Map.hpp>
+
+#include <weapon/Firemodes/ShotgunFire.hpp>
+#include <weapon/Weapon.hpp>
 
 class Shotgun : public Weapon {
  private:
   int damage_ = 0;
   double cooldown_ = 1;
   ShotgunFire fire_;
+
  public:
   Shotgun() {
     damage_ = 10;

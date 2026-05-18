@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "network/Protocol.hpp"
+#include <network/Protocol.hpp>
 
 struct Lobby {
   sf::TcpSocket* host = nullptr;

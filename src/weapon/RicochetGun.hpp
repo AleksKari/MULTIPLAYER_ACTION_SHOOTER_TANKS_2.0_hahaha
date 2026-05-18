@@ -1,13 +1,15 @@
 #pragma once
-#include "Weapon.hpp"
-#include "Firemodes/RicochetShot.hpp"
 #include <Entity.hpp>
 #include <map/Map.hpp>
+
+#include <weapon/Firemodes/RicochetShot.hpp>
+#include <weapon/Weapon.hpp>
 
 class RicochetGun : public Weapon {
  private:
   double cooldown_ = 1;
   RicochetShot fire_;
+
  public:
   RicochetGun() {
     damage_ = 10;

@@ -1,8 +1,9 @@
 #pragma once
 
 #include <math/Vec2.h>
-#include <map/Map.hpp>
+
 #include <Player.hpp>
+#include <map/Map.hpp>
 
 class FireMode {
  public:

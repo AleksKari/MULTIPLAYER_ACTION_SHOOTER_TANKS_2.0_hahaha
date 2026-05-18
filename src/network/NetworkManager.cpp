@@ -1,10 +1,10 @@
-#include "NetworkManager.hpp"
+#include <network/NetworkManager.hpp>
 
 #include <iostream>
 
-#include "Player.hpp"
-#include "map/Map.hpp"
-#include "tile/EmptyTile.hpp"
+#include <Player.hpp>
+#include <map/Map.hpp>
+#include <tile/EmptyTile.hpp>
 
 NetworkManager::NetworkManager() {}
 

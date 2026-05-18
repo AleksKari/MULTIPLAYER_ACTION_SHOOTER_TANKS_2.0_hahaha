@@ -1,5 +1,5 @@
 #pragma once
-#include "Tile.hpp"
+#include <tile/Tile.hpp>
 
 class EmptyTile : public Tile {
  public:

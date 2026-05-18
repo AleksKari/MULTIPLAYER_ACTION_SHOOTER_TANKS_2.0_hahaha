@@ -1,4 +1,4 @@
-#include "Map.hpp"
+#include <map/Map.hpp>
 
 #include <Player.hpp>
 #include <Projectile.hpp>
@@ -185,10 +185,10 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
   int weapon_number = mt() % WEAPON_CNT;
 
   const Vec2& tile_pos = empty_tiles[number_tile];
-  spawn_weapon_at(static_cast<int>(tile_pos.x), static_cast<int>(tile_pos.y),
+  spawn_weapon_at(static_cast<int>(tile_pos.cord_x), static_cast<int>(tile_pos.cord_y),
                   weapon_number);
-  return std::make_tuple(static_cast<int>(tile_pos.x),
-                         static_cast<int>(tile_pos.y), weapon_number);
+  return std::make_tuple(static_cast<int>(tile_pos.cord_x),
+                         static_cast<int>(tile_pos.cord_y), weapon_number);
 }
 void Map::update_remote_player(sf::Uint32 id, sf::Packet& packet) {
   for (auto& entity : entities_) {
@@ -243,8 +243,8 @@ std::vector<Vec2> Map::consume_removed_weapon_tiles() {
 void Map::serialize_game_state(sf::Packet& packet) const {
   packet << static_cast<sf::Uint16>(entities_.size());
   for (const auto& entity : entities_) {
-    packet << entity->network_id << static_cast<float>(entity->position.x)
-           << static_cast<float>(entity->position.y)
+    packet << entity->network_id << static_cast<float>(entity->position.cord_x)
+           << static_cast<float>(entity->position.cord_y)
            << static_cast<float>(entity->cornrotate)
            << static_cast<sf::Int32>(entity->hp);
   }
@@ -253,9 +253,9 @@ void Map::serialize_game_state(sf::Packet& packet) const {
   for (const auto& projectile : projectiles_) {
     Vec2 velocity = projectile->get_velocity();
     sf::Uint32 owner_id = projectile->owner ? projectile->owner->network_id : 0;
-    packet << static_cast<float>(projectile->position.x)
-           << static_cast<float>(projectile->position.y)
-           << static_cast<float>(velocity.x) << static_cast<float>(velocity.y)
+    packet << static_cast<float>(projectile->position.cord_x)
+           << static_cast<float>(projectile->position.cord_y)
+           << static_cast<float>(velocity.cord_x) << static_cast<float>(velocity.cord_y)
            << projectile->get_damage() << projectile->size
            << projectile->get_hp() << owner_id;
   }

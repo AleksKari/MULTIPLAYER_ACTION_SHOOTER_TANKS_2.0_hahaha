@@ -15,7 +15,7 @@ Projectile::~Projectile() = default;
 
 void Projectile::update(float timediff) {
   prev_position_ = position;
-  position = position + Vec2(velocity_.x * timediff, velocity_.y * timediff);
+  position = position + Vec2(velocity_.cord_x * timediff, velocity_.cord_y * timediff);
 }
 
 int Projectile::get_damage() const { return damage_; }
@@ -39,21 +39,21 @@ void Projectile::take_damage(int dmg) { hp_ -= dmg; }
 bool Projectile::can_ricochet() const { return hp_ > 1; }
 
 bool Projectile::crossed_tile_x() const {
-  return (static_cast<int>(position.x) / TILESIZE !=
-          static_cast<int>(prev_position_.x) / TILESIZE) ||
-         (static_cast<int>(position.x + size) / TILESIZE !=
-          static_cast<int>(prev_position_.x + size) / TILESIZE);
+  return (static_cast<int>(position.cord_x) / TILESIZE !=
+          static_cast<int>(prev_position_.cord_x) / TILESIZE) ||
+         (static_cast<int>(position.cord_x + size) / TILESIZE !=
+          static_cast<int>(prev_position_.cord_x + size) / TILESIZE);
 }
 
 bool Projectile::crossed_tile_y() const {
-  return (static_cast<int>(position.y) / TILESIZE !=
-          static_cast<int>(prev_position_.y) / TILESIZE) ||
-         (static_cast<int>(position.y + size) / TILESIZE !=
-          static_cast<int>(prev_position_.y + size) / TILESIZE);
+  return (static_cast<int>(position.cord_y) / TILESIZE !=
+          static_cast<int>(prev_position_.cord_y) / TILESIZE) ||
+         (static_cast<int>(position.cord_y + size) / TILESIZE !=
+          static_cast<int>(prev_position_.cord_y + size) / TILESIZE);
 }
 
 void Projectile::reflect(bool coord_x, bool coord_y) {
-  if (coord_x) velocity_.x = -velocity_.x;
-  if (coord_y) velocity_.y = -velocity_.y;
+  if (coord_x) velocity_.cord_x = -velocity_.cord_x;
+  if (coord_y) velocity_.cord_y = -velocity_.cord_y;
   position = prev_position_;
 }
