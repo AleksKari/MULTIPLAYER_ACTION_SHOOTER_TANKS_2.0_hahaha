@@ -136,7 +136,8 @@ int main(int argc, char* argv[]) {
         }
       } else if (sender == lobby.guest) {
         if ((packet_type == PacketType::PlayerInput ||
-             packet_type == PacketType::Shoot) &&
+             packet_type == PacketType::Shoot ||
+             packet_type == PacketType::SkinSync) &&
             lobby.host) {
           lobby.host->send(outbound);
         }

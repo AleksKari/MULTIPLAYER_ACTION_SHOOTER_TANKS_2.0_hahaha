@@ -273,6 +273,11 @@ int main() {
             int assigned_id = net.join_lobby(inputCode, false);
             if (assigned_id == 2) {
               create_players(false);
+              
+              sf::Packet skin_packet;
+              skin_packet << PacketType::SkinSync << static_cast<sf::Int32>(selected);
+              net.send_to_all(skin_packet);
+              
               currentState = GameState::Gaming;
               clock.restart();
             } else {
@@ -322,6 +327,10 @@ int main() {
         currentState = GameState::GameOver;
       }
       if (net.opponent_joined()) {
+        sf::Packet skin_packet;
+        skin_packet << PacketType::SkinSync << static_cast<sf::Int32>(selected);
+        net.send_to_all(skin_packet);
+        
         currentState = GameState::Gaming;
         clock.restart();
       }
@@ -341,10 +350,7 @@ int main() {
       if (!host_authority) {
         sf::Packet inputPacket;
         inputPacket << PacketType::PlayerInput << w << a << s << d;
-        net.send_to_all(inputPacket);
-        // Client-side prediction: keeps local controls responsive between
-        // snapshots.
-        local_player->update(dt);
+        net.send_to_all(inputPacket);  
       }
 
       net.update(map, local_player, remote_player, host_authority);

@@ -97,6 +97,9 @@ void Player::deserialize(sf::Packet& packet) {
       input_a >> input_s >> input_d >> mouse_pos_.x >> mouse_pos_.y;
   hp = remote_hp;
   if (hp <= 0) kill();
+  
+  sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
+  sprite_.setRotation(cornrotate);
 }
 
 void Player::set_input(bool w, bool a, bool s, bool d) {
@@ -104,4 +107,12 @@ void Player::set_input(bool w, bool a, bool s, bool d) {
   input_a = a;
   input_s = s;
   input_d = d;
+  
+  Vec2 input_dir(static_cast<int>(input_d) - static_cast<int>(input_a),
+                 static_cast<int>(input_s) - static_cast<int>(input_w));
+  const Vec2 normalized = input_dir.normalized();
+  if (normalized.length() > 0.0) {
+    facing_dir_ = normalized;
+    cornrotate = facing_dir_.angle();
+  }
 }

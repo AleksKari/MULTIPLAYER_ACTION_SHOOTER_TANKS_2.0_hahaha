@@ -125,6 +125,12 @@ void NetworkManager::receive_packets(Map& map, Player* local_player,
       int y = 0;
       packet >> x >> y;
       map.set_tile(Vec2(x, y), std::make_unique<EmptyTile>());
+    } else if (type == PacketType::SkinSync) {
+      sf::Int32 skin_id;
+      packet >> skin_id;
+      if (remote_player) {
+        remote_player->loadSkin((skin_id == 1) ? "textures/player.png" : "textures/pink_player.png");
+      }
     }
   }
 }

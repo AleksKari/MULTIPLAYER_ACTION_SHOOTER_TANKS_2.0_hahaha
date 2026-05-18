@@ -12,7 +12,8 @@ enum class PacketType : uint8_t {
     Shoot,
     HealthUpdate,
     SpawnWeapon,
-    RemoveTile
+    RemoveTile,
+    SkinSync
 };
 
 inline sf::Packet& operator<<(sf::Packet& packet, const PacketType& type) {
