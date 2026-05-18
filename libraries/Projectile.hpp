@@ -1,7 +1,11 @@
 #pragma once
-#include "Entity.hpp"
 #include <math/Vec2.h>
+
 #include <chrono>
+
+#include "Entity.hpp"
+
+class Player;
 
 class Projectile : public Entity {
  private:
@@ -13,7 +17,10 @@ class Projectile : public Entity {
   std::chrono::steady_clock::time_point created_;
 
  public:
-  Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 6, int hp = 1);
+  const Player* owner;
+
+  Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 6, int hp = 1,
+             const Player* source = nullptr);
   ~Projectile();
   Vec2 get_velocity() const;
   void update(float timediff);
@@ -21,6 +28,7 @@ class Projectile : public Entity {
   void on_wall_collision();
   void take_damage(int damage);
   int get_damage() const;
+  int get_hp() const;
   bool is_dead() const;
   bool can_ricochet() const;
   double lifetime() const;

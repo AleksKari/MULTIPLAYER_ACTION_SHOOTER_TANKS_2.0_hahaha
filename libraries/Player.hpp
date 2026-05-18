@@ -1,8 +1,10 @@
 #pragma once
-#include "Entity.hpp"
-#include <weapon/Weapon.hpp>
+#include <SFML/Network.hpp>
 #include <memory>
 #include <string>
+#include <weapon/Weapon.hpp>
+
+#include "Entity.hpp"
 
 class Weapon;
 class Map;
@@ -11,6 +13,7 @@ class Player : public Entity {
  private:
   Vec2 mouse_pos_;
   Vec2 prev_position_;
+  Vec2 facing_dir_{1.0, 0.0};
   float speed_;
   float slow_coeff_ = 1.0f;
   float tile_damage_cooldown_ = 0.0f;
@@ -22,6 +25,10 @@ class Player : public Entity {
  public:
   int max_hp;
   int hp;
+  sf::Uint32 network_id = 0;
+  bool is_local = false;
+  bool input_w = false, input_a = false, input_s = false, input_d = false;
+
   sf::Sprite& getSprite() { return sprite_; }
   const sf::Sprite& getSprite() const { return sprite_; }
 
@@ -39,4 +46,8 @@ class Player : public Entity {
   bool is_dead() const;
   void slow_down();
   void take_tile_damage(int damage);
+
+  void serialize(sf::Packet& packet) const;
+  void deserialize(sf::Packet& packet);
+  void set_input(bool w, bool a, bool s, bool d);
 };
