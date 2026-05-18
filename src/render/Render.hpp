@@ -46,16 +46,13 @@ template<is_entity T>
 void Renderer::draw_entity(const T& e) {
   if (e.is_dead()) return;
 
-  // является ли сущность игроком
-  const Player* p = dynamic_cast<const Player*>(&e);
-  
-  if (p) {
-    sf::Sprite draw_sprite = p->getSprite();
-    draw_sprite.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
-    draw_sprite.setRotation(e.cornrotate * 180.0 / M_PI);
-    window_.draw(draw_sprite);
+  if constexpr (requires { e.getSprite(); }) {
+    sf::Sprite draw_spr = e.getSprite();
+    draw_spr.setPosition(e.position.x + e.size / 2.0f, e.position.y + e.size / 2.0f);
+    draw_spr.setRotation(e.cornrotate * 180.0 / M_PI);
+    window_.draw(draw_spr);
   } else {
-    entity_sprite_.setPosition(e.position.x + e.size / 2.0, e.position.y + e.size / 2.0);
+    entity_sprite_.setPosition(e.position.x + e.size / 2.0f, e.position.y + e.size / 2.0f);
     entity_sprite_.setRotation(e.cornrotate * 180.0 / M_PI);
     window_.draw(entity_sprite_);
   }
