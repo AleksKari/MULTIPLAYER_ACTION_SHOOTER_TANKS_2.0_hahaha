@@ -370,6 +370,7 @@ int main() {
 
       local_player->set_input(w, a, s, d);
 
+      float dt = clock.restart().asSeconds();
       if (!host_authority) {
         sf::Packet inputPacket;
         inputPacket << PacketType::PlayerInput << w << a << s << d;
