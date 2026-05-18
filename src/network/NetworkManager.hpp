@@ -17,6 +17,9 @@ public:
     void update(Map& map);
     void send_to_all(sf::Packet& packet);
     bool is_host() const;
+    
+    // Новый метод для безопасного получения ответа авторизации комнаты
+    int receive_response();
 
 private:
     void receive_packets(Map& map);

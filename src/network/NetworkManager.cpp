@@ -100,3 +100,16 @@ void NetworkManager::send_to_all(sf::Packet& packet) {
 bool NetworkManager::is_host() const {
     return server_pid_ > 0;
 }
+
+int NetworkManager::receive_response() {
+    socket_.setBlocking(true); // Переключаем в блокирующий режим для ожидания
+    sf::Packet responsePacket;
+    sf::Int32 result = 0;
+    
+    if (socket_.receive(responsePacket) == sf::Socket::Done) {
+        responsePacket >> result;
+    }
+    
+    socket_.setBlocking(false); // Возвращаем асинхронный режим назад
+    return result;
+}
