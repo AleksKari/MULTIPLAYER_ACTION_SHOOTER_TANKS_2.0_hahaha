@@ -1,3 +1,4 @@
+#include <SFML/Audio.hpp>
 #include <Player.hpp>
 #include <Projectile.hpp>
 #include <algorithm>
@@ -121,6 +122,21 @@ int main() {
 
   NetworkManager net;
 
+  sf::Music menu_music;
+  menu_music.openFromFile("sounds/menu_pcm.wav");
+  menu_music.setLoop(true);
+
+  sf::Music engine_music;
+  engine_music.openFromFile("sounds/engine.wav");
+  engine_music.setLoop(true);
+
+  sf::SoundBuffer shot_buf, win_buf;
+  shot_buf.loadFromFile("sounds/shot_sound.wav");
+  win_buf.loadFromFile("sounds/win_sound.mp3");
+  sf::Sound shot_sound(shot_buf), win_sound(win_buf);
+
+  menu_music.play();
+
   auto tile_to_world = [](int tx, int ty) {
     return Vec2(tx * TILESIZE, ty * TILESIZE);
   };
@@ -196,6 +212,9 @@ int main() {
     myRoomCode.clear();
     game_over_text.clear();
     net.disconnect();
+    engine_music.stop();
+    win_sound.stop();
+    menu_music.play();
     currentState = GameState::Menu;
     clock.restart();
   };
@@ -277,7 +296,8 @@ int main() {
               sf::Packet skin_packet;
               skin_packet << PacketType::SkinSync << static_cast<sf::Int32>(selected);
               net.send_to_all(skin_packet);
-              
+              menu_music.stop();
+              engine_music.play();
               currentState = GameState::Gaming;
               clock.restart();
             } else {
@@ -301,11 +321,14 @@ int main() {
              event.key.code == sf::Keyboard::Space)) {
           if (!local_player->is_dead()) {
             if (host_authority) {
+              const size_t before = map.projectiles_.size();
               local_player->attack(map);
+              if (map.projectiles_.size() > before) shot_sound.play();
             } else {
               sf::Packet shootPacket;
               shootPacket << PacketType::Shoot;
               net.send_to_all(shootPacket);
+              shot_sound.play();
             }
           }
         }
@@ -330,7 +353,8 @@ int main() {
         sf::Packet skin_packet;
         skin_packet << PacketType::SkinSync << static_cast<sf::Int32>(selected);
         net.send_to_all(skin_packet);
-        
+        menu_music.stop();
+        engine_music.play();
         currentState = GameState::Gaming;
         clock.restart();
       }
@@ -396,6 +420,8 @@ int main() {
         } else {
           game_over_text = "You win!\nPress Enter/Esc to return menu.";
         }
+        engine_music.stop();
+        if (game_over_text.find("win") != std::string::npos) win_sound.play();
         currentState = GameState::GameOver;
       }
     } else {
