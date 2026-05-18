@@ -346,11 +346,11 @@ int main() {
 
       local_player->set_input(w, a, s, d);
 
-      float dt = clock.restart().asSeconds();
       if (!host_authority) {
         sf::Packet inputPacket;
         inputPacket << PacketType::PlayerInput << w << a << s << d;
-        net.send_to_all(inputPacket);  
+        net.send_to_all(inputPacket);
+        local_player->update(dt);
       }
 
       net.update(map, local_player, remote_player, host_authority);
@@ -370,6 +370,8 @@ int main() {
 
         std::vector<Vec2> removed_tiles = map.consume_removed_weapon_tiles();
         for (const Vec2& tile : removed_tiles) {
+          map.set_tile(tile, std::make_unique<EmptyTile>());
+
           sf::Packet removePacket;
           removePacket << PacketType::RemoveTile << static_cast<int>(tile.x)
                        << static_cast<int>(tile.y);

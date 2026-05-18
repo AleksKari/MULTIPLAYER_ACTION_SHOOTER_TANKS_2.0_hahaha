@@ -93,10 +93,19 @@ void Player::serialize(sf::Packet& packet) const {
 
 void Player::deserialize(sf::Packet& packet) {
   sf::Int32 remote_hp;
-  packet >> position.x >> position.y >> cornrotate >> remote_hp >> input_w >>
+  float rx, ry, rrot;
+  
+  packet >> rx >> ry >> rrot >> remote_hp >> input_w >>
       input_a >> input_s >> input_d >> mouse_pos_.x >> mouse_pos_.y;
+      
   hp = remote_hp;
   if (hp <= 0) kill();
+  
+  if (!is_local) {
+      position.x = rx;
+      position.y = ry;
+      cornrotate = rrot;
+  }
   
   sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);
