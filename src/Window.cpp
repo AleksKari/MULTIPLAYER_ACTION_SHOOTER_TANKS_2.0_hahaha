@@ -45,6 +45,12 @@ sf::FloatRect makeLetterboxViewport(float window_width, float window_height,
   return sf::FloatRect(0.0f, (1.0f - height) * 0.5f, 1.0f, height);
 }
 
+void centerTextOrigin(sf::Text& text) {
+  sf::FloatRect bounds = text.getLocalBounds();
+  text.setOrigin(bounds.left + bounds.width / 2.0f,
+                 bounds.top + bounds.height / 2.0f);
+}
+
 int main() {
   srand(time(NULL));
 
@@ -79,11 +85,12 @@ int main() {
 
   sf::Font font;
   if (!font.loadFromFile("textures/font.ttf")) {
-    std::cerr << "Failed to load font.ttf!" << std::endl;
+    std::cerr << "Failed to load font.ttf!\n";
   }
   sf::Text uiText("", font, window_height / 20);
-  uiText.setFillColor(sf::Color::White);
-  uiText.setPosition(window_width * 0.14f, window_height * 0.62f);
+  uiText.setFillColor(sf::Color(87, 161, 105));
+  uiText.setOutlineColor(sf::Color::Black);
+  uiText.setOutlineThickness(2.5f);
 
   sf::View game_view(sf::FloatRect(0.0f, 0.0f, map_width_px, map_height_px));
   game_view.setViewport(makeLetterboxViewport(static_cast<float>(window_width),
@@ -103,8 +110,8 @@ int main() {
                     static_cast<float>(size.y) / menuBgTex.getSize().y);
     preview1.setPosition(size.x * 0.30f, size.y * 0.34f);
     preview2.setPosition(size.x * 0.58f, size.y * 0.34f);
-    uiText.setCharacterSize(std::max(28u, size.y / 28u));
-    uiText.setPosition(size.x * 0.10f, size.y * 0.62f);
+    uiText.setCharacterSize(std::max(24u, size.y / 24u));
+    uiText.setPosition(size.x * 0.35f, size.y * 0.50f);
   };
   relayout_ui();
 
