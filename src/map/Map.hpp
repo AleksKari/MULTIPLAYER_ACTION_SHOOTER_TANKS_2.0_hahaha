@@ -1,12 +1,13 @@
 #pragma once
-#include <memory>
-#include <vector>
-#include "math/Vec2.h"
-#include "tile/ConceptTile.hpp"
 #include <SFML/Network.hpp>
+#include <memory>
 #include <optional>
 #include <tuple>
 #include <utility>
+#include <vector>
+
+#include "math/Vec2.h"
+#include "tile/ConceptTile.hpp"
 
 class Player;
 class Projectile;
@@ -18,11 +19,12 @@ class Map {
   Map(int width, int height);
   void update(double dt);
   void spawn_entity(Player* ent);
-  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1, const Player* source = nullptr);
-  
-  template<is_tile T>
+  void spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size, int hp = 1,
+                        const Player* source = nullptr);
+
+  template <is_tile T>
   void set_tile(const Vec2& pos, std::unique_ptr<T> tl);
-  
+
   bool is_bound(double pos_x, double pos_y) const;
   bool is_wall(double pos_x, double pos_y) const;
   bool is_empty(double pos_x, double pos_y) const;
@@ -46,6 +48,7 @@ class Map {
   std::vector<std::unique_ptr<Player>> entities_;
   std::vector<std::unique_ptr<Projectile>> projectiles_;
   std::vector<Vec2> removed_weapon_tiles_;
+
  private:
   sf::Texture background_texture_;
   mutable sf::Sprite background_sprite_;
@@ -53,8 +56,9 @@ class Map {
 
 template <is_tile T>
 void Map::set_tile(const Vec2& pos, std::unique_ptr<T> tl) {
-  if (tiles_[pos.x][pos.y] && tiles_[pos.x][pos.y]->is_weapon() && tl->is_empty()) {
+  if (tiles_[pos.x][pos.y] && tiles_[pos.x][pos.y]->is_weapon() &&
+      tl->is_empty()) {
     removed_weapon_tiles_.push_back(pos);
   }
-  tiles_[pos.x][pos.y] = std::move(tl); 
+  tiles_[pos.x][pos.y] = std::move(tl);
 }
