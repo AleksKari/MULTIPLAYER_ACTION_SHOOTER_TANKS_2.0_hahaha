@@ -146,3 +146,9 @@ void NetworkManager::reset_opponent_joined() { opponent_joined_ = false; }
 bool NetworkManager::connection_lost() const { return connection_lost_; }
 
 void NetworkManager::reset_connection_lost() { connection_lost_ = false; }
+
+void NetworkManager::disconnect() {
+  socket_.disconnect();
+  opponent_joined_ = false;
+  connection_lost_ = false;
+}

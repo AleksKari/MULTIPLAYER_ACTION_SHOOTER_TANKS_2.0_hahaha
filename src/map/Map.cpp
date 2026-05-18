@@ -59,22 +59,34 @@ static bool is_swamp(int i, int j) {
          (i >= 48 && i <= 52 && j >= 18 && j <= 22);
 }
 
-// конструктор карты
-Map::Map(int width, int height) : width_(width), height_(height) {
-  tiles_.resize(width_);
-  for (auto& column : tiles_) column.resize(height_);
-  for (int i = 0; i < width_; ++i) {
-    for (int j = 0; j < height_; ++j) {
+void build_tiles(Map& map) {
+  map.tiles_.clear();
+  map.tiles_.resize(map.width_);
+  for (auto& column : map.tiles_) column.resize(map.height_);
+  for (int i = 0; i < map.width_; ++i) {
+    for (int j = 0; j < map.height_; ++j) {
       if (is_wall_tile(i, j))
-        tiles_[i][j] = std::make_unique<WallTile>();
+        map.tiles_[i][j] = std::make_unique<WallTile>();
       else if (is_damage_sheep(i, j))
-        tiles_[i][j] = std::make_unique<DamageTile>();
+        map.tiles_[i][j] = std::make_unique<DamageTile>();
       else if (is_swamp(i, j))
-        tiles_[i][j] = std::make_unique<SlowTile>();
+        map.tiles_[i][j] = std::make_unique<SlowTile>();
       else
-        tiles_[i][j] = std::make_unique<EmptyTile>();
+        map.tiles_[i][j] = std::make_unique<EmptyTile>();
     }
   }
+}
+
+// конструктор карты
+Map::Map(int width, int height) : width_(width), height_(height) {
+  build_tiles(*this);
+}
+
+void Map::reset_world() {
+  entities_.clear();
+  projectiles_.clear();
+  removed_weapon_tiles_.clear();
+  build_tiles(*this);
 }
 
 // обновление карты

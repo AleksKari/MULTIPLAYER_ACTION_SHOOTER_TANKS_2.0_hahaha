@@ -187,6 +187,19 @@ int main() {
     }
   };
 
+  auto return_to_menu = [&]() {
+    map.reset_world();
+    local_player = nullptr;
+    remote_player = nullptr;
+    host_authority = false;
+    inputCode.clear();
+    myRoomCode.clear();
+    game_over_text.clear();
+    net.disconnect();
+    currentState = GameState::Menu;
+    clock.restart();
+  };
+
   while (renderer.window().isOpen()) {
     sf::Event event;
     while (renderer.window().pollEvent(event)) {
@@ -295,7 +308,7 @@ int main() {
         if (event.type == sf::Event::KeyPressed &&
             (event.key.code == sf::Keyboard::Enter ||
              event.key.code == sf::Keyboard::Escape)) {
-          renderer.window().close();
+          return_to_menu();
         }
       }
     }
@@ -305,7 +318,7 @@ int main() {
       uiText.setString("LOBBY CODE: " + myRoomCode +
                        "\n\nWaiting for second player...");
       if (net.connection_lost()) {
-        game_over_text = "Connection lost.\nPress Enter/Esc to exit.";
+        game_over_text = "Connection lost.\nPress Enter/Esc to return menu.";
         currentState = GameState::GameOver;
       }
       if (net.opponent_joined()) {
@@ -364,15 +377,16 @@ int main() {
       }
 
       if (net.connection_lost()) {
-        game_over_text = "Opponent disconnected.\nPress Enter/Esc to exit.";
+        game_over_text =
+            "Opponent disconnected.\nPress Enter/Esc to return menu.";
         currentState = GameState::GameOver;
       } else if (local_player->is_dead() || remote_player->is_dead()) {
         if (local_player->is_dead() && remote_player->is_dead()) {
-          game_over_text = "Draw.\nPress Enter/Esc to exit.";
+          game_over_text = "Draw.\nPress Enter/Esc to return menu.";
         } else if (local_player->is_dead()) {
-          game_over_text = "You lose.\nPress Enter/Esc to exit.";
+          game_over_text = "You lose.\nPress Enter/Esc to return menu.";
         } else {
-          game_over_text = "You win!\nPress Enter/Esc to exit.";
+          game_over_text = "You win!\nPress Enter/Esc to return menu.";
         }
         currentState = GameState::GameOver;
       }

@@ -24,6 +24,7 @@ class NetworkManager {
   void reset_opponent_joined();
   bool connection_lost() const;
   void reset_connection_lost();
+  void disconnect();
 
  private:
   void receive_packets(Map& map, Player* local_player, Player* remote_player,

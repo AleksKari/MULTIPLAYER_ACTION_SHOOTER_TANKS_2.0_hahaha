@@ -30,6 +30,7 @@ class Map {
   bool is_empty(double pos_x, double pos_y) const;
   bool is_slow(double pos_x, double pos_y) const;
   bool is_damage(double pos_x, double pos_y) const;
+  void reset_world();
   void render(Renderer& renderer) const;
   std::optional<std::tuple<int, int, int>> generate_weapon();
 
