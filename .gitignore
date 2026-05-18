@@ -14,3 +14,5 @@ CMakeCache.txt
 *.dylib
 *.dll.a
 *.log
+*.clang-format
+*.clang-tidy
