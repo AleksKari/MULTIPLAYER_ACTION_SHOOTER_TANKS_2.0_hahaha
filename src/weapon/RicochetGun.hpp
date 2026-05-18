@@ -17,6 +17,6 @@ class RicochetGun : public Weapon {
     if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) return;
     shot_clock_.restart();
     fire_.shoot(map, owner, damage);
-    shots_left_--;
+    --shots_left_;
   }
 };
