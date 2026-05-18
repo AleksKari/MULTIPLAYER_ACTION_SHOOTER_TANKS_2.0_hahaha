@@ -4,8 +4,6 @@
 #include <Player.hpp>
 #include <Projectile.hpp>
 
-class Map;
-
 class Collision {
  public:
   static bool entity_projectile(const Vec2& pos_projectile, const int size_projectile, const Vec2& pos_entity, const int size_entity);
