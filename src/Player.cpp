@@ -5,14 +5,22 @@
 #include <iostream>
 
 Player::Player(Vec2 pos, int hp, float speed, std::unique_ptr<Weapon> weapon)
-    : Entity(pos, 0, TILESIZE), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {}
+    : Entity(pos, 0, TILESIZE), hp(hp), max_hp(hp), speed_(speed), weapon_(std::move(weapon)) {
+  if (position.x > 900.0) {
+    facing_dir_ = Vec2(-1.0, 0.0);
+  }
+}
 
 void Player::move(float timediff) {
-  Vec2 dir(
+  Vec2 input_dir(
     static_cast<int>(input_d) - static_cast<int>(input_a),
     static_cast<int>(input_s) - static_cast<int>(input_w)
   );
-  position = position + dir.normalized() * speed_ * slow_coeff_ * timediff;
+  const Vec2 normalized = input_dir.normalized();
+  if (normalized.length() > 0.0) {
+    facing_dir_ = normalized;
+  }
+  position = position + normalized * speed_ * slow_coeff_ * timediff;
 }
 
 void Player::set_mouse(sf::Vector2i mouse) {
@@ -20,8 +28,7 @@ void Player::set_mouse(sf::Vector2i mouse) {
 }
 
 Vec2 Player::dir() const {
-  Vec2 center(position.x + 16, position.y + 16);
-  return Vec2(mouse_pos_.x - center.x, mouse_pos_.y - center.y);
+  return facing_dir_;
 }
 
 void Player::attack(Map& map) {
@@ -67,7 +74,7 @@ void Player::update(float timediff) {
   prev_position_ = position;
   move(timediff);
   slow_coeff_ = 1.0f;
-  cornrotate = dir().angle();
+  cornrotate = facing_dir_.angle();
 
   sprite_.setPosition(position.x + size_ / 2.0f, position.y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);

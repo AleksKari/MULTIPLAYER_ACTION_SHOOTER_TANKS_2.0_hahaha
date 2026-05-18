@@ -56,6 +56,7 @@ void NetworkManager::update(Map& map, Player* local_player, Player* remote_playe
 }
 
 void NetworkManager::receive_packets(Map& map, Player* local_player, Player* remote_player, bool host_authority) {
+    (void)local_player;
     sf::Packet packet;
     
     while (socket_.receive(packet) == sf::Socket::Done) {
@@ -74,10 +75,8 @@ void NetworkManager::receive_packets(Map& map, Player* local_player, Player* rem
         } else if (type == PacketType::PlayerInput) {
             if (host_authority && remote_player) {
                 bool w = false, a = false, s = false, d = false;
-                sf::Int32 mouse_x = 0, mouse_y = 0;
-                packet >> w >> a >> s >> d >> mouse_x >> mouse_y;
+                packet >> w >> a >> s >> d;
                 remote_player->set_input(w, a, s, d);
-                remote_player->set_mouse(sf::Vector2i(mouse_x, mouse_y));
             }
         } else if (type == PacketType::Shoot) {
             if (host_authority && remote_player && !remote_player->is_dead()) {
@@ -91,8 +90,6 @@ void NetworkManager::receive_packets(Map& map, Player* local_player, Player* rem
             sf::Uint32 id; 
             packet >> id;
             map.update_remote_player(id, packet);
-        } else if (type == PacketType::Shoot) {
-            map.spawn_remote_projectile(packet);
         } else if (type == PacketType::HealthUpdate) {
             sf::Uint32 id; 
             int hp; 

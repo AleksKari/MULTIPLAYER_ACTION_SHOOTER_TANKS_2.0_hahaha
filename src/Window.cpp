@@ -13,6 +13,8 @@
 #include <ctime>
 #include <cctype>
 #include <tuple>
+#include <vector>
+#include <utility>
 
 enum class GameState { Menu, NetworkMode, JoinInput, WaitingForOpponent, Gaming };
 
@@ -22,17 +24,35 @@ std::string generateLobbyCode() {
     return code;
 }
 
+sf::FloatRect makeLetterboxViewport(float window_width, float window_height, float view_width, float view_height) {
+    const float window_ratio = window_width / window_height;
+    const float view_ratio = view_width / view_height;
+
+    if (window_ratio > view_ratio) {
+        const float width = view_ratio / window_ratio;
+        return sf::FloatRect((1.0f - width) * 0.5f, 0.0f, width, 1.0f);
+    }
+
+    const float height = window_ratio / view_ratio;
+    return sf::FloatRect(0.0f, (1.0f - height) * 0.5f, 1.0f, height);
+}
+
 int main() {
     srand(time(NULL));
 
     const std::string SERVER_IP = "185.79.139.24";
     const unsigned short SERVER_PORT = 35678;
+    const int map_width_tiles = 59;
+    const int map_height_tiles = 33;
+    const float map_width_px = static_cast<float>(map_width_tiles * TILESIZE);
+    const float map_height_px = static_cast<float>(map_height_tiles * TILESIZE);
 
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    unsigned int window_width = std::min(desktop.width, 1920u);
-    unsigned int window_height = std::min(desktop.height, 1080u);
+    unsigned int window_width = std::min(desktop.width, static_cast<unsigned int>(map_width_px));
+    unsigned int window_height = std::min(desktop.height, static_cast<unsigned int>(map_height_px));
 
     Renderer renderer(window_width, window_height, 32);
+    renderer.window().setFramerateLimit(120);
     sf::Clock clock;
 
     sf::Texture menuBgTex, skin1Tex, skin2Tex;
@@ -41,17 +61,11 @@ int main() {
     skin2Tex.loadFromFile("textures/pink_player.png");
 
     sf::Sprite menuBg(menuBgTex);
-    menuBg.setScale(
-      static_cast<float>(renderer.window().getSize().x) / menuBgTex.getSize().x,
-      static_cast<float>(renderer.window().getSize().y) / menuBgTex.getSize().y
-    );
 
     sf::Sprite preview1(skin1Tex);
     sf::Sprite preview2(skin2Tex);
-    preview1.setScale(5.0f, 5.0f);
-    preview1.setPosition(window_width * 0.3f, window_height * 0.4f);
-    preview2.setScale(5.0f, 5.0f);
-    preview2.setPosition(window_width * 0.6f, window_height * 0.4f);
+    preview1.setScale(4.5f, 4.5f);
+    preview2.setScale(4.5f, 4.5f);
 
     sf::Font font;
     if (!font.loadFromFile("textures/font.ttf")) {
@@ -59,7 +73,36 @@ int main() {
     }
     sf::Text uiText("", font, window_height / 20);
     uiText.setFillColor(sf::Color::White);
-    uiText.setPosition(window_width * 0.25f, window_height * 0.7f);
+    uiText.setPosition(window_width * 0.14f, window_height * 0.62f);
+
+    sf::View game_view(sf::FloatRect(0.0f, 0.0f, map_width_px, map_height_px));
+    game_view.setViewport(makeLetterboxViewport(
+        static_cast<float>(window_width),
+        static_cast<float>(window_height),
+        map_width_px,
+        map_height_px
+    ));
+    sf::View ui_view(sf::FloatRect(0.0f, 0.0f, static_cast<float>(window_width), static_cast<float>(window_height)));
+
+    auto relayout_ui = [&]() {
+        const sf::Vector2u size = renderer.window().getSize();
+        ui_view = sf::View(sf::FloatRect(0.0f, 0.0f, static_cast<float>(size.x), static_cast<float>(size.y)));
+        game_view.setViewport(makeLetterboxViewport(
+            static_cast<float>(size.x),
+            static_cast<float>(size.y),
+            map_width_px,
+            map_height_px
+        ));
+        menuBg.setScale(
+          static_cast<float>(size.x) / menuBgTex.getSize().x,
+          static_cast<float>(size.y) / menuBgTex.getSize().y
+        );
+        preview1.setPosition(size.x * 0.30f, size.y * 0.34f);
+        preview2.setPosition(size.x * 0.58f, size.y * 0.34f);
+        uiText.setCharacterSize(std::max(28u, size.y / 28u));
+        uiText.setPosition(size.x * 0.10f, size.y * 0.62f);
+    };
+    relayout_ui();
 
     int selected = 1;
     bool host_authority = false;
@@ -67,34 +110,62 @@ int main() {
     std::string inputCode = "";
     std::string myRoomCode = "";
 
-    Map map(59, 33);
+    Map map(map_width_tiles, map_height_tiles);
     Player* local_player = nullptr;
     Player* remote_player = nullptr;
 
     NetworkManager net;
 
+    auto tile_to_world = [](int tx, int ty) {
+        return Vec2(tx * TILESIZE, ty * TILESIZE);
+    };
+
+    auto valid_spawn = [&](int tx, int ty) {
+        const Vec2 pos = tile_to_world(tx, ty);
+        const double x0 = pos.x + 2.0;
+        const double y0 = pos.y + 2.0;
+        const double x1 = pos.x + TILESIZE - 2.0;
+        const double y1 = pos.y + TILESIZE - 2.0;
+        return map.is_empty(x0, y0) &&
+               map.is_empty(x1, y1) &&
+               !map.is_slow(x0, y0) &&
+               !map.is_damage(x0, y0);
+    };
+
+    auto pick_spawn = [&](const std::vector<std::pair<int, int>>& candidates, const Vec2& fallback) {
+        for (const auto& [x, y] : candidates) {
+            if (valid_spawn(x, y)) return tile_to_world(x, y);
+        }
+        return fallback;
+    };
+
     auto create_players = [&](bool host_role) {
+        const std::vector<std::pair<int, int>> host_spawns = {{2, 2}, {2, 30}, {8, 16}, {12, 16}};
+        const std::vector<std::pair<int, int>> guest_spawns = {{56, 30}, {56, 2}, {50, 16}, {46, 16}};
+        const Vec2 host_spawn = pick_spawn(host_spawns, Vec2(200, 540));
+        const Vec2 guest_spawn = pick_spawn(guest_spawns, Vec2(1700, 540));
+
         host_authority = host_role;
         if (host_role) {
-            local_player = new Player(Vec2(200, 540), 100, 300.0f, std::make_unique<Gun>());
+            local_player = new Player(host_spawn, 100, 300.0f, std::make_unique<Gun>());
             local_player->network_id = 1;
             local_player->is_local = true;
             local_player->loadSkin((selected == 1) ? "textures/player.png" : "textures/pink_player.png");
             map.spawn_entity(local_player);
 
-            remote_player = new Player(Vec2(1700, 540), 100, 300.0f, std::make_unique<Gun>());
+            remote_player = new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
             remote_player->network_id = 2;
             remote_player->is_local = false;
             remote_player->loadSkin((selected == 1) ? "textures/pink_player.png" : "textures/player.png");
             map.spawn_entity(remote_player);
         } else {
-            local_player = new Player(Vec2(1700, 540), 100, 300.0f, std::make_unique<Gun>());
+            local_player = new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
             local_player->network_id = 2;
             local_player->is_local = true;
             local_player->loadSkin((selected == 1) ? "textures/player.png" : "textures/pink_player.png");
             map.spawn_entity(local_player);
 
-            remote_player = new Player(Vec2(200, 540), 100, 300.0f, std::make_unique<Gun>());
+            remote_player = new Player(host_spawn, 100, 300.0f, std::make_unique<Gun>());
             remote_player->network_id = 1;
             remote_player->is_local = false;
             remote_player->loadSkin((selected == 1) ? "textures/pink_player.png" : "textures/player.png");
@@ -107,20 +178,30 @@ int main() {
         while (renderer.window().pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 renderer.window().close();
+            if (event.type == sf::Event::Resized) {
+                relayout_ui();
+            }
 
             if (currentState == GameState::Menu) {
                 if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::Left)  selected = 1;
-                    if (event.key.code == sf::Keyboard::Right) selected = 2;
-                    if (event.key.code == sf::Keyboard::Enter) {
+                    if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::A)  selected = 1;
+                    if (event.key.code == sf::Keyboard::Right || event.key.code == sf::Keyboard::D) selected = 2;
+                    if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space) {
                         currentState = GameState::NetworkMode;
-                        uiText.setString("Press [H] to Create Lobby\nPress [J] to Join Lobby");
+                        uiText.setString("Choose mode:\n[1] Create lobby\n[2] Join lobby");
                     }
                 }
             }
             else if (currentState == GameState::NetworkMode) {
                 if (event.type == sf::Event::KeyPressed) {
-                    if (event.key.code == sf::Keyboard::H) {
+                    const bool create_pressed = event.key.code == sf::Keyboard::H ||
+                                                event.key.code == sf::Keyboard::Num1 ||
+                                                event.key.code == sf::Keyboard::Numpad1;
+                    const bool join_pressed = event.key.code == sf::Keyboard::J ||
+                                              event.key.code == sf::Keyboard::Num2 ||
+                                              event.key.code == sf::Keyboard::Numpad2;
+
+                    if (create_pressed) {
                         if (net.try_join_lobby(SERVER_IP, SERVER_PORT)) {
                             myRoomCode = generateLobbyCode();
                             int assigned_id = net.join_lobby(myRoomCode, true);
@@ -135,9 +216,12 @@ int main() {
                             uiText.setString("Server Offline! Could not connect.");
                         }
                     }
-                    if (event.key.code == sf::Keyboard::J) {
+                    if (join_pressed) {
                         currentState = GameState::JoinInput;
                         uiText.setString("Enter 4-letter Room Code: ");
+                    }
+                    if (event.key.code == sf::Keyboard::Escape) {
+                        currentState = GameState::Menu;
                     }
                 }
             }
@@ -165,6 +249,11 @@ int main() {
                         inputCode.clear();
                         uiText.setString("Connection Failed! Try again: ");
                     }
+                }
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                    inputCode.clear();
+                    currentState = GameState::NetworkMode;
+                    uiText.setString("Choose mode:\n[1] Create lobby\n[2] Join lobby");
                 }
             }
             else if (currentState == GameState::Gaming) {
@@ -196,17 +285,13 @@ int main() {
             const bool a = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
             const bool s = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
             const bool d = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-            const sf::Vector2i mouse = sf::Mouse::getPosition(renderer.window());
 
             local_player->set_input(w, a, s, d);
-            local_player->set_mouse(mouse);
 
             float dt = clock.restart().asSeconds();
             if (!host_authority) {
                 sf::Packet inputPacket;
-                inputPacket << PacketType::PlayerInput << w << a << s << d
-                            << static_cast<sf::Int32>(mouse.x)
-                            << static_cast<sf::Int32>(mouse.y);
+                inputPacket << PacketType::PlayerInput << w << a << s << d;
                 net.send_to_all(inputPacket);
             }
 
@@ -243,15 +328,20 @@ int main() {
 
         renderer.beginframe();
         if (currentState == GameState::Menu) {
+            renderer.window().setView(ui_view);
             preview1.setColor(selected == 1 ? sf::Color::White : sf::Color(100, 100, 100));
             preview2.setColor(selected == 2 ? sf::Color::White : sf::Color(100, 100, 100));
+            uiText.setString("Choose tank skin: arrows/A-D\nPress Enter to continue");
             renderer.window().draw(menuBg);
             renderer.window().draw(preview1);
             renderer.window().draw(preview2);
+            renderer.window().draw(uiText);
         } else if (currentState == GameState::NetworkMode || currentState == GameState::JoinInput || currentState == GameState::WaitingForOpponent) {
+            renderer.window().setView(ui_view);
             renderer.window().draw(menuBg);
             renderer.window().draw(uiText);
         } else if (currentState == GameState::Gaming) {
+            renderer.window().setView(game_view);
             map.render(renderer);
         }
         renderer.endframe();

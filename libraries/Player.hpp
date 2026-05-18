@@ -12,6 +12,7 @@ class Player : public Entity {
  private:
   Vec2 mouse_pos_;
   Vec2 prev_position_;
+  Vec2 facing_dir_{1.0, 0.0};
   float speed_;
   float slow_coeff_ = 1.0f;
   float tile_damage_cooldown_ = 0.0f;
