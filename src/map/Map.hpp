@@ -40,7 +40,7 @@ class Map {
                                                   // чье оно если что тыкните
   void spawn_remote_projectile(sf::Packet& packet);
   void update_player_hp(sf::Uint32 user_id, int heatpoint);  // тут тоже user_id
-  void spawn_weapon_at(int coord_x, int coord_y, int type);
+  void spawn_weapon_at(int cord_x, int cord_y, int type);
   void serialize_game_state(sf::Packet& packet) const;
   void apply_game_state(sf::Packet& packet);
   std::vector<Vec2> consume_removed_weapon_tiles();
