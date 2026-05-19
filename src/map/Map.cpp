@@ -7,6 +7,7 @@
 #include <collision/Collision.hpp>
 #include <concepts>
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <render/Render.hpp>
 #include <tile/DamageTile.hpp>
@@ -20,59 +21,36 @@
 #include <weapon/Gun.hpp>
 #include <weapon/Shotgun.hpp>
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
 const int RANDOM_GENERATE_INDEX = 5000;
 const int WEAPON_CNT = 2;
-
-static bool is_wall_tile(int i, int j) {
-  return ((i == 26 || i == 27 || i == 31 || i == 32) &&
-          (j == 13 || j == 14 || j == 18 || j == 19)) ||
-         (i >= 3 && i <= 8 && j >= 3 && j <= 4) ||
-         (i >= 3 && i <= 4 && j >= 3 && j <= 8) ||
-         (i >= 50 && i <= 55 && j >= 3 && j <= 4) ||
-         (i >= 54 && i <= 55 && j >= 3 && j <= 8) ||
-         (i >= 3 && i <= 8 && j >= 28 && j <= 29) ||
-         (i >= 3 && i <= 4 && j >= 24 && j <= 29) ||
-         (i >= 50 && i <= 55 && j >= 28 && j <= 29) ||
-         (i >= 54 && i <= 55 && j >= 24 && j <= 29) ||
-         (i >= 12 && i <= 20 && (j == 8 || j == 9)) ||
-         (i >= 38 && i <= 46 && (j == 8 || j == 9)) ||
-         (i >= 12 && i <= 20 && (j == 23 || j == 24)) ||
-         (i >= 38 && i <= 46 && (j == 23 || j == 24)) ||
-         (i == 22 && j >= 6 && j <= 12) || (i >= 22 && i <= 25 && j == 12) ||
-         (i == 36 && j >= 6 && j <= 12) || (i >= 33 && i <= 36 && j == 12) ||
-         (i == 22 && j >= 20 && j <= 26) || (i >= 22 && i <= 25 && j == 20) ||
-         (i == 36 && j >= 20 && j <= 26) || (i >= 33 && i <= 36 && j == 20);
-}
-
-static bool is_damage_sheep(int i, int j) {
-  return (i >= 28 && i <= 30 && j >= 15 && j <= 17) ||
-         (i >= 14 && i <= 18 && (j == 2 || j == 3)) ||
-         (i >= 40 && i <= 44 && (j == 2 || j == 3)) ||
-         (i >= 14 && i <= 18 && (j == 29 || j == 30)) ||
-         (i >= 40 && i <= 44 && (j == 29 || j == 30));
-}
-
-static bool is_swamp(int i, int j) {
-  return (i >= 6 && i <= 10 && j >= 12 && j <= 16) ||
-         (i >= 48 && i <= 52 && j >= 12 && j <= 16) ||
-         (i >= 6 && i <= 10 && j >= 18 && j <= 22) ||
-         (i >= 48 && i <= 52 && j >= 18 && j <= 22);
-}
 
 void build_tiles(Map& map) {
   map.tiles_.clear();
   map.tiles_.resize(map.width_);
+
+  json jsn;
+  std::ifstream file("../textures/map.json");
+  file >> jsn;
+
+  const auto& layer = jsn["layers"][0];
+  const auto& data = layer["data"]; // массив ID тайлов
+
   for (auto& column : map.tiles_) column.resize(map.height_);
+
   for (int i = 0; i < map.width_; ++i) {
     for (int j = 0; j < map.height_; ++j) {
-      if (is_wall_tile(i, j))
-        map.tiles_[i][j] = std::make_unique<WallTile>();
-      else if (is_damage_sheep(i, j))
-        map.tiles_[i][j] = std::make_unique<DamageTile>();
-      else if (is_swamp(i, j))
-        map.tiles_[i][j] = std::make_unique<SlowTile>();
-      else
-        map.tiles_[i][j] = std::make_unique<EmptyTile>();
+      int id = data[j * map.width_ + i];
+        switch (id) {
+            case 1: map.tiles_[i][j] = std::make_unique<EmptyTile>(); break;
+            case 2: map.tiles_[i][j] = std::make_unique<WallTile>(); break;
+            case 3: map.tiles_[i][j] = std::make_unique<DamageTile>(); break;
+            case 4: map.tiles_[i][j] = std::make_unique<SlowTile>(); break;
+            default: map.tiles_[i][j] = std::make_unique<EmptyTile>(); break;
+        }
     }
   }
 }
