@@ -2,8 +2,6 @@
 #include <iostream>
 #include <map/Map.hpp>
 
-const float NUMBER_TO_DIV = NUMBER_TO_DIV;
-
 static constexpr double MAX_RICOCHET_LIFETIME = 7.0;
 static constexpr double MIN_PROJECTILE_LIFETIME = 0.1;
 

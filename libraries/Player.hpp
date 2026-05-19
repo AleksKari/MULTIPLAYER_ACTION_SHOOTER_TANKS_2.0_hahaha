@@ -23,7 +23,7 @@ class Player : public Entity {
 
  public:
   int max_hp;
-  int hp;
+  int heatpoint;
   sf::Uint32 network_id = 0;
   bool is_local = false;
   bool input_w = false, input_a = false, input_s = false, input_d = false;
