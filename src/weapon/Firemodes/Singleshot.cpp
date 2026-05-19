@@ -1,7 +1,6 @@
-#include <weapon/Firemodes/Singleshot.hpp>
-
 #include <Projectile.hpp>
 #include <map/Map.hpp>
+#include <weapon/Firemodes/Singleshot.hpp>
 
 void SingleShot::shoot(Map& map, Player& owner, int damage) {
   Vec2 vel = owner.dir().normalized() * 800.0f;

@@ -68,7 +68,8 @@ void Player::update(float timediff) {
   slow_coeff_ = 1.0f;
   cornrotate = facing_dir_.angle();
 
-  sprite_.setPosition(position.cord_x + size_ / 2.0f, position.cord_y + size_ / 2.0f);
+  sprite_.setPosition(position.cord_x + size_ / 2.0f,
+                      position.cord_y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);
 }
 
@@ -107,7 +108,8 @@ void Player::deserialize(sf::Packet& packet) {
     cornrotate = rrot;
   }
 
-  sprite_.setPosition(position.cord_x + size_ / 2.0f, position.cord_y + size_ / 2.0f);
+  sprite_.setPosition(position.cord_x + size_ / 2.0f,
+                      position.cord_y + size_ / 2.0f);
   sprite_.setRotation(cornrotate);
 }
 

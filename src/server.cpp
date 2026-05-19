@@ -1,11 +1,10 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <memory>
+#include <network/Protocol.hpp>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include <network/Protocol.hpp>
 
 struct Lobby {
   sf::TcpSocket* host = nullptr;

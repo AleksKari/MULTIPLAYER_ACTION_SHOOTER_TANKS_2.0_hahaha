@@ -2,9 +2,8 @@
 #include <math/Vec2.h>
 
 #include <render/Render.hpp>
-#include <weapon/Shotgun.hpp>
-
 #include <tile/WeaponTile.hpp>
+#include <weapon/Shotgun.hpp>
 
 class WeaponShotgunTile : public WeaponTile {
  public:

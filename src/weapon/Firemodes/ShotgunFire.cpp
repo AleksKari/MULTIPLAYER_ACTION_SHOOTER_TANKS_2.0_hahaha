@@ -1,7 +1,6 @@
-#include <weapon/Firemodes/ShotgunFire.hpp>
-
 #include <Player.hpp>
 #include <numbers>
+#include <weapon/Firemodes/ShotgunFire.hpp>
 
 static double rad(double degrees) { return degrees * std::numbers::pi / 180.0; }
 

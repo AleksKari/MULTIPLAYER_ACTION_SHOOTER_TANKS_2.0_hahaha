@@ -1,7 +1,6 @@
 #pragma once
 #include <Entity.hpp>
 #include <map/Map.hpp>
-
 #include <weapon/Firemodes/ShotgunFire.hpp>
 #include <weapon/Weapon.hpp>
 

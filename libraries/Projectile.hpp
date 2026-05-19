@@ -1,11 +1,12 @@
 #pragma once
 #include <math/Vec2.h>
 
+#include <Entity.hpp>
 #include <chrono>
 
-#include <Entity.hpp>
-
 class Player;
+
+const int PROJECTILE_SIZE = 6;
 
 class Projectile : public Entity {
  private:
@@ -19,8 +20,8 @@ class Projectile : public Entity {
  public:
   const Player* owner;
 
-  Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = 6, int hp = 1,
-             const Player* source = nullptr);
+  Projectile(Vec2 pos, Vec2 velocity, int damage_, int size = PROJECTILE_SIZE,
+             int heatpoint = 1, const Player* source = nullptr);
   ~Projectile();
   Vec2 get_velocity() const;
   void update(float timediff);
@@ -34,5 +35,5 @@ class Projectile : public Entity {
   double lifetime() const;
   bool crossed_tile_x() const;
   bool crossed_tile_y() const;
-  void reflect(bool x, bool y);
+  void reflect(bool by_x, bool by_y);
 };

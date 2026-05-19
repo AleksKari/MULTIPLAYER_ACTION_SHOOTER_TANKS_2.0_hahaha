@@ -2,9 +2,8 @@
 #include <math/Vec2.h>
 
 #include <render/Render.hpp>
-#include <weapon/RicochetGun.hpp>
-
 #include <tile/WeaponTile.hpp>
+#include <weapon/RicochetGun.hpp>
 
 class WeaponRicochetTile : public WeaponTile {
  public:

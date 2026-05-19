@@ -15,7 +15,8 @@ Projectile::~Projectile() = default;
 
 void Projectile::update(float timediff) {
   prev_position_ = position;
-  position = position + Vec2(velocity_.cord_x * timediff, velocity_.cord_y * timediff);
+  position =
+      position + Vec2(velocity_.cord_x * timediff, velocity_.cord_y * timediff);
 }
 
 int Projectile::get_damage() const { return damage_; }

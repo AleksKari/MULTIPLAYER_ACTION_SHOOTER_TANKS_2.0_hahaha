@@ -1,11 +1,10 @@
 // класс отрисовки
 
-#include <render/Render.hpp>
-
 #include <Player.hpp>
 #include <Projectile.hpp>
 #include <cmath>
 #include <iostream>
+#include <render/Render.hpp>
 
 Renderer::Renderer(int screen_width, int screen_height, int tile_size)
     : window_(sf::VideoMode(screen_width, screen_height), "Soul Knife Tanks"),

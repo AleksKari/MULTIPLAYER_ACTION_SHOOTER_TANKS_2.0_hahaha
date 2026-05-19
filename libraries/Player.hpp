@@ -1,10 +1,9 @@
 #pragma once
+#include <Entity.hpp>
 #include <SFML/Network.hpp>
 #include <memory>
 #include <string>
 #include <weapon/Weapon.hpp>
-
-#include <Entity.hpp>
 
 class Weapon;
 class Map;

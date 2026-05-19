@@ -1,7 +1,6 @@
-#include <weapon/Firemodes/RicochetShot.hpp>
-
 #include <Projectile.hpp>
 #include <map/Map.hpp>
+#include <weapon/Firemodes/RicochetShot.hpp>
 
 void RicochetShot::shoot(Map& map, Player& owner, int damage) {
   Vec2 vel = owner.dir().normalized() * 800.0f;

@@ -2,7 +2,6 @@
 #include <math/Vec2.h>
 
 #include <render/Render.hpp>
-
 #include <tile/WeaponTile.hpp>
 
 class WeaponGunTile : public WeaponTile {

@@ -1,5 +1,3 @@
-#include <map/Map.hpp>
-
 #include <Player.hpp>
 #include <Projectile.hpp>
 #include <algorithm>
@@ -7,6 +5,7 @@
 #include <collision/Collision.hpp>
 #include <concepts>
 #include <iostream>
+#include <map/Map.hpp>
 #include <random>
 #include <render/Render.hpp>
 #include <tile/DamageTile.hpp>
@@ -185,8 +184,8 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
   int weapon_number = mt() % WEAPON_CNT;
 
   const Vec2& tile_pos = empty_tiles[number_tile];
-  spawn_weapon_at(static_cast<int>(tile_pos.cord_x), static_cast<int>(tile_pos.cord_y),
-                  weapon_number);
+  spawn_weapon_at(static_cast<int>(tile_pos.cord_x),
+                  static_cast<int>(tile_pos.cord_y), weapon_number);
   return std::make_tuple(static_cast<int>(tile_pos.cord_x),
                          static_cast<int>(tile_pos.cord_y), weapon_number);
 }
@@ -255,9 +254,9 @@ void Map::serialize_game_state(sf::Packet& packet) const {
     sf::Uint32 owner_id = projectile->owner ? projectile->owner->network_id : 0;
     packet << static_cast<float>(projectile->position.cord_x)
            << static_cast<float>(projectile->position.cord_y)
-           << static_cast<float>(velocity.cord_x) << static_cast<float>(velocity.cord_y)
-           << projectile->get_damage() << projectile->size
-           << projectile->get_hp() << owner_id;
+           << static_cast<float>(velocity.cord_x)
+           << static_cast<float>(velocity.cord_y) << projectile->get_damage()
+           << projectile->size << projectile->get_hp() << owner_id;
   }
 }
 
