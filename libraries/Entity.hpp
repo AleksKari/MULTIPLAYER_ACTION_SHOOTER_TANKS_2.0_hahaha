@@ -7,6 +7,7 @@
 
 const int TILESIZE = 32;
 const float NUMBER_TO_DIV = 2.0F;
+const float FULL_ANGLE = 180.0F;
 
 class Entity {
  private:

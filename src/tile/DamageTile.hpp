@@ -1,10 +1,12 @@
 #pragma once
 #include <tile/Tile.hpp>
 
+const int DAMAGE_FROM_TILE = 5;
+
 class DamageTile : public Tile {
  public:
   sf::Texture texture_;
-  int damage_ = 5;
+  int damage_ = DAMAGE_FROM_TILE;
 
   DamageTile();
   bool is_damage() override;

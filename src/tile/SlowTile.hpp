@@ -4,8 +4,6 @@
 class SlowTile : public Tile {
  public:
   sf::Texture texture_;
-  int slowdown = 5;
-  int timedown = 5;
 
   SlowTile();
   bool is_slow() override;

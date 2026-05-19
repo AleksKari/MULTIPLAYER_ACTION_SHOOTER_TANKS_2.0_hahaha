@@ -217,7 +217,7 @@ void Map::spawn_remote_projectile(sf::Packet& packet) {
 void Map::update_player_hp(sf::Uint32 id, int hp) {
   for (auto& entity : entities_) {
     if (entity->network_id == id) {
-      entity->hp = hp;
+      entity->heatpoint = hp;
       if (hp <= 0) entity->kill();
       return;
     }
@@ -245,7 +245,7 @@ void Map::serialize_game_state(sf::Packet& packet) const {
     packet << entity->network_id << static_cast<float>(entity->position.cord_x)
            << static_cast<float>(entity->position.cord_y)
            << static_cast<float>(entity->cornrotate)
-           << static_cast<sf::Int32>(entity->hp);
+           << static_cast<sf::Int32>(entity->heatpoint);
   }
 
   packet << static_cast<sf::Uint16>(projectiles_.size());
@@ -276,8 +276,8 @@ void Map::apply_game_state(sf::Packet& packet) {
       if (entity->network_id != id) continue;
       entity->position = Vec2(x, y);
       entity->cornrotate = angle;
-      entity->hp = hp;
-      if (entity->hp <= 0) entity->kill();
+      entity->heatpoint = hp;
+      if (entity->heatpoint <= 0) entity->kill();
       break;
     }
   }

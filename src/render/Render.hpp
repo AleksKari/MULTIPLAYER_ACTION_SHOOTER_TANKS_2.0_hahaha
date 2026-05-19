@@ -8,8 +8,6 @@
 #include <concepts>
 #include <tile/ConceptTile.hpp>
 
-const float FULL_ANGLE = 180.0F;
-
 class Tile;
 class Projectile;
 class Renderer {

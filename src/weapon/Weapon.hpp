@@ -5,6 +5,7 @@
 class Map;
 class Player;
 
+const int NUMBER_OF_PROJECTILES = 5;
 const double DEFAULT_COOLDOWN = 0.8;
 
 class Weapon {

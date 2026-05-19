@@ -1,12 +1,12 @@
 #include <Projectile.hpp>
 
-Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size, int hp,
-                       const Player* source)
+Projectile::Projectile(Vec2 pos, Vec2 velocity, int damage, int size,
+                       int heatpoint, const Player* source)
     : Entity(pos, damage, size),
       velocity_(velocity),
       damage_(damage),
       size_(size),
-      hp_(hp),
+      hp_(heatpoint),
       prev_position_(pos),
       created_(std::chrono::steady_clock::now()),
       owner(source) {}
@@ -29,13 +29,15 @@ void Projectile::kill() { hp_ = 0; }
 void Projectile::on_wall_collision() { hp_ = 0; }
 
 double Projectile::lifetime() const {
-  if (hp_ <= 0) return 0;
+  if (hp_ <= 0) {
+    return 0;
+  }
   return std::chrono::duration<double>(std::chrono::steady_clock::now() -
                                        created_)
       .count();
 }
 
-void Projectile::take_damage(int dmg) { hp_ -= dmg; }
+void Projectile::take_damage(int damage) { hp_ -= damage; }
 
 bool Projectile::can_ricochet() const { return hp_ > 1; }
 
@@ -53,8 +55,12 @@ bool Projectile::crossed_tile_y() const {
           static_cast<int>(prev_position_.cord_y + size) / TILESIZE);
 }
 
-void Projectile::reflect(bool coord_x, bool coord_y) {
-  if (coord_x) velocity_.cord_x = -velocity_.cord_x;
-  if (coord_y) velocity_.cord_y = -velocity_.cord_y;
+void Projectile::reflect(bool by_x, bool by_y) {
+  if (by_x) {
+    velocity_.cord_x = -velocity_.cord_x;
+  }
+  if (by_y) {
+    velocity_.cord_y = -velocity_.cord_y;
+  }
   position = prev_position_;
 }

@@ -8,6 +8,8 @@
 class Weapon;
 class Map;
 
+const int DAMAGE_FROM_SHOOT = 10;
+
 class Player : public Entity {
  private:
   Vec2 mouse_pos_;
