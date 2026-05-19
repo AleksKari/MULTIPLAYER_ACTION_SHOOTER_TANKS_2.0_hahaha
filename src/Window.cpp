@@ -173,7 +173,7 @@ int main() {
           new Player(host_spawn, 100, 300.0f, std::make_unique<Gun>());
       local_player->network_id = 1;
       local_player->is_local = true;
-      local_player->loadSkin((selected == 1) ? "textures/player.png"
+      local_player->LoadSkin((selected == 1) ? "textures/player.png"
                                              : "textures/pink_player.png");
       map.spawn_entity(local_player);
 
@@ -181,7 +181,7 @@ int main() {
           new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
       remote_player->network_id = 2;
       remote_player->is_local = false;
-      remote_player->loadSkin((selected == 1) ? "textures/pink_player.png"
+      remote_player->LoadSkin((selected == 1) ? "textures/pink_player.png"
                                               : "textures/player.png");
       map.spawn_entity(remote_player);
     } else {
@@ -189,7 +189,7 @@ int main() {
           new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
       local_player->network_id = 2;
       local_player->is_local = true;
-      local_player->loadSkin((selected == 1) ? "textures/player.png"
+      local_player->LoadSkin((selected == 1) ? "textures/player.png"
                                              : "textures/pink_player.png");
       map.spawn_entity(local_player);
 
@@ -197,7 +197,7 @@ int main() {
           new Player(host_spawn, 100, 300.0f, std::make_unique<Gun>());
       remote_player->network_id = 1;
       remote_player->is_local = false;
-      remote_player->loadSkin((selected == 1) ? "textures/pink_player.png"
+      remote_player->LoadSkin((selected == 1) ? "textures/pink_player.png"
                                               : "textures/player.png");
       map.spawn_entity(remote_player);
     }
@@ -319,10 +319,10 @@ int main() {
         if (event.type == sf::Event::MouseButtonPressed ||
             (event.type == sf::Event::KeyPressed &&
              event.key.code == sf::Keyboard::Space)) {
-          if (!local_player->is_dead()) {
+          if (!local_player->IsDead()) {
             if (host_authority) {
               const size_t before = map.projectiles_.size();
-              local_player->attack(map);
+              local_player->Attack(map);
               if (map.projectiles_.size() > before) shot_sound.play();
             } else {
               sf::Packet shootPacket;
@@ -368,14 +368,14 @@ int main() {
       const bool d = sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
                      sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
 
-      local_player->set_input(w, a, s, d);
+      local_player->SetInput(w, a, s, d);
 
       float dt = clock.restart().asSeconds();
       if (!host_authority) {
         sf::Packet inputPacket;
         inputPacket << PacketType::PlayerInput << w << a << s << d;
         net.send_to_all(inputPacket);
-        local_player->update(dt);
+        local_player->Update(dt);
       }
 
       net.update(map, local_player, remote_player, host_authority);
@@ -413,10 +413,10 @@ int main() {
         game_over_text =
             "Opponent disconnected.\nPress Enter/Esc to return menu.";
         currentState = GameState::GameOver;
-      } else if (local_player->is_dead() || remote_player->is_dead()) {
-        if (local_player->is_dead() && remote_player->is_dead()) {
+      } else if (local_player->IsDead() || remote_player->IsDead()) {
+        if (local_player->IsDead() && remote_player->IsDead()) {
           game_over_text = "Draw.\nPress Enter/Esc to return menu.";
-        } else if (local_player->is_dead()) {
+        } else if (local_player->IsDead()) {
           game_over_text = "You lose.\nPress Enter/Esc to return menu.";
         } else {
           game_over_text = "You win!\nPress Enter/Esc to return menu.";

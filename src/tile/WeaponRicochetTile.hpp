@@ -18,7 +18,7 @@ class WeaponRicochetTile : public WeaponTile {
     render.draw_tile(*this, pos);
   }
   void interact(Player& player, Map& map, const Vec2& pos) override {
-    player.set_weapon(std::make_unique<RicochetGun>());
+    player.SetWeapon(std::make_unique<RicochetGun>());
     map.set_tile(pos, std::make_unique<EmptyTile>());
   }
 };

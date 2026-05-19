@@ -12,5 +12,5 @@ void WallTile::draw(Renderer& renderer, Vec2 pos) {
 WallTile::~WallTile() = default;
 
 void WallTile::interact(Player& player, Map& map, const Vec2& pos) {
-  player.on_wall_collision();
+  player.OnWallCollision();
 }

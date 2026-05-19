@@ -30,25 +30,25 @@ class Player : public Entity {
   bool is_local = false;
   bool input_w = false, input_a = false, input_s = false, input_d = false;
 
-  sf::Sprite& getSprite() { return sprite_; }
-  const sf::Sprite& getSprite() const { return sprite_; }
+  sf::Sprite& GetSprite() { return sprite_; }
+  const sf::Sprite& GetSprite() const { return sprite_; }
 
   Player(Vec2 pos, int heatpoint, float speed, std::unique_ptr<Weapon> weapon);
-  Vec2 dir() const;
-  void move(float timediff);
-  void attack(Map& map);
-  void kill();
-  void on_wall_collision();
-  void take_damage(int damage);
-  void update(float timediff);
-  void set_mouse(sf::Vector2i mouse);
-  void loadSkin(const std::string& path);
-  void set_weapon(std::unique_ptr<Weapon> weapon);
-  bool is_dead() const;
-  void slow_down();
-  void take_tile_damage(int damage);
+  Vec2 Dir() const;
+  void Move(float timediff);
+  void Attack(Map& map);
+  void Kill();
+  void OnWallCollision();
+  void TakeDamage(int damage);
+  void Update(float timediff);
+  void SetMouse(sf::Vector2i mouse);
+  void LoadSkin(const std::string& path);
+  void SetWeapon(std::unique_ptr<Weapon> weapon);
+  bool IsDead() const;
+  void SlowDown();
+  void TakeTileDamage(int damage);
 
-  void serialize(sf::Packet& packet) const;
-  void deserialize(sf::Packet& packet);
-  void set_input(bool button_w, bool button_a, bool button_s, bool button_d);
+  void Serialize(sf::Packet& packet) const;
+  void Deserialize(sf::Packet& packet);
+  void SetInput(bool button_w, bool button_a, bool button_s, bool button_d);
 };

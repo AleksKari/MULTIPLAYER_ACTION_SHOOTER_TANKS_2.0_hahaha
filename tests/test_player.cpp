@@ -9,33 +9,33 @@ static Player make_player(Vec2 pos = Vec2(100, 100), int heatpoint = 100) {
 
 TEST(Player, AliveOnCreation) {
   auto player = make_player();
-  EXPECT_FALSE(player.is_dead());
+  EXPECT_FALSE(player.IsDead());
   EXPECT_EQ(player.heatpoint, 100);
 }
 
 TEST(Player, TakeDamageReducesHp) {
   auto player = make_player();
-  player.take_damage(30);
+  player.TakeDamage(30);
   EXPECT_EQ(player.heatpoint, 70);
 }
 
 TEST(Player, TakeDamageLethal) {
   auto player = make_player();
-  player.take_damage(100);
-  EXPECT_TRUE(player.is_dead());
+  player.TakeDamage(100);
+  EXPECT_TRUE(player.IsDead());
 }
 
 TEST(Player, TakeDamageOverkillStopsAtZero) {
   auto player = make_player();
-  player.take_damage(200);
+  player.TakeDamage(200);
   EXPECT_LE(player.heatpoint, 0);
-  EXPECT_TRUE(player.is_dead());
+  EXPECT_TRUE(player.IsDead());
 }
 
 TEST(Player, KillSetsDeadAndHpZero) {
   auto player = make_player();
-  player.kill();
-  EXPECT_TRUE(player.is_dead());
+  player.Kill();
+  EXPECT_TRUE(player.IsDead());
   EXPECT_EQ(player.heatpoint, 0);
 }
 
@@ -46,28 +46,28 @@ TEST(Player, MaxHpStoredCorrectly) {
 
 TEST(Player, OnWallCollisionRestoresPosition) {
   auto player = make_player(Vec2(100, 200));
-  player.update(0.016f);  // prev_position_ = (100, 200) после update
+  player.Update(0.016f);  // prev_position_ = (100, 200) после update
   player.position = Vec2(999, 999);
-  player.on_wall_collision();
+  player.OnWallCollision();
   EXPECT_NEAR(player.position.cord_x, 100.0, 1.0);
   EXPECT_NEAR(player.position.cord_y, 200.0, 1.0);
 }
 
 TEST(Player, TakeTileDamageCooldown) {
   auto player = make_player();
-  player.take_tile_damage(10);
+  player.TakeTileDamage(10);
   EXPECT_EQ(player.heatpoint, 90);
   // повторный урон в ту же frame — не проходит из-за cooldown
-  player.take_tile_damage(10);
+  player.TakeTileDamage(10);
   EXPECT_EQ(player.heatpoint, 90);
 }
 
 TEST(Player, TakeTileDamageAfterCooldown) {
   auto player = make_player();
-  player.take_tile_damage(10);
+  player.TakeTileDamage(10);
   EXPECT_EQ(player.heatpoint, 90);
   // тикаем cooldown достаточно времени (cooldown = 0.5s)
-  player.update(0.6f);
-  player.take_tile_damage(10);
+  player.Update(0.6f);
+  player.TakeTileDamage(10);
   EXPECT_EQ(player.heatpoint, 80);
 }

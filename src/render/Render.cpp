@@ -31,7 +31,7 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
 }
 
 void Renderer::draw_projectile(const Projectile& projectile) {
-  if (projectile.is_dead()) {
+  if (projectile.IsDead()) {
     return;
   }
   projectile_sprite_.setPosition(
@@ -41,7 +41,7 @@ void Renderer::draw_projectile(const Projectile& projectile) {
 }
 
 void Renderer::draw_hp_bar(const Player& player) {
-  if (player.is_dead()) {
+  if (player.IsDead()) {
     return;
   }
   float perct = static_cast<float>(player.heatpoint) / player.max_hp;

@@ -20,7 +20,7 @@ Player::Player(Vec2 pos, int heatpoint, float speed,
   }
 }
 
-void Player::move(float timediff) {
+void Player::Move(float timediff) {
   Vec2 input_dir(static_cast<int>(input_d) - static_cast<int>(input_a),
                  static_cast<int>(input_s) - static_cast<int>(input_w));
   const Vec2 normalized = input_dir.normalized();
@@ -30,13 +30,13 @@ void Player::move(float timediff) {
   position = position + normalized * speed_ * slow_coeff_ * timediff;
 }
 
-void Player::set_mouse(sf::Vector2i mouse) {
+void Player::SetMouse(sf::Vector2i mouse) {
   mouse_pos_ = Vec2(mouse.x, mouse.y);
 }
 
-Vec2 Player::dir() const { return facing_dir_; }
+Vec2 Player::Dir() const { return facing_dir_; }
 
-void Player::attack(Map& map) {
+void Player::Attack(Map& map) {
   if (!weapon_) {
     return;
   }
@@ -46,38 +46,38 @@ void Player::attack(Map& map) {
   }
 }
 
-void Player::set_weapon(std::unique_ptr<Weapon> weapon) {
+void Player::SetWeapon(std::unique_ptr<Weapon> weapon) {
   weapon_ = std::move(weapon);
 }
 
-bool Player::is_dead() const { return heatpoint <= 0; }
+bool Player::IsDead() const { return heatpoint <= 0; }
 
-void Player::kill() { heatpoint = 0; }
+void Player::Kill() { heatpoint = 0; }
 
-void Player::on_wall_collision() { position = prev_position_; }
+void Player::OnWallCollision() { position = prev_position_; }
 
-void Player::take_damage(int damage) {
+void Player::TakeDamage(int damage) {
   if (heatpoint > 0) {
     heatpoint -= damage;
   }
 }
 
-void Player::slow_down() { slow_coeff_ = SLOW_COEFF; }
+void Player::SlowDown() { slow_coeff_ = SLOW_COEFF; }
 
-void Player::take_tile_damage(int damage) {
+void Player::TakeTileDamage(int damage) {
   if (tile_damage_cooldown_ > 0.0F) {
     return;
   }
-  take_damage(damage);
+  TakeDamage(damage);
   tile_damage_cooldown_ = TILE_DMG_COOLDDOWN;
 }
 
-void Player::update(float timediff) {
+void Player::Update(float timediff) {
   if (tile_damage_cooldown_ > 0.0F) {
     tile_damage_cooldown_ -= timediff;
   }
   prev_position_ = position;
-  move(timediff);
+  Move(timediff);
   slow_coeff_ = 1.0F;
   cornrotate = facing_dir_.angle();
 
@@ -86,7 +86,7 @@ void Player::update(float timediff) {
   sprite_.setRotation(cornrotate);
 }
 
-void Player::loadSkin(const std::string& path) {
+void Player::LoadSkin(const std::string& path) {
   if (!texture_.loadFromFile(path)) {
     std::cerr << "Error loading skin: " << path << "\n";
     return;
@@ -100,13 +100,13 @@ void Player::loadSkin(const std::string& path) {
                    static_cast<float>(size_) / bounds.height);
 }
 
-void Player::serialize(sf::Packet& packet) const {
+void Player::Serialize(sf::Packet& packet) const {
   packet << network_id << position.cord_x << position.cord_y << cornrotate
          << static_cast<sf::Int32>(heatpoint) << input_w << input_a << input_s
          << input_d << mouse_pos_.cord_x << mouse_pos_.cord_y;
 }
 
-void Player::deserialize(sf::Packet& packet) {
+void Player::Deserialize(sf::Packet& packet) {
   sf::Int32 remote_hp;
   float remote_x;
   float remote_y;
@@ -117,7 +117,7 @@ void Player::deserialize(sf::Packet& packet) {
 
   heatpoint = remote_hp;
   if (heatpoint <= 0) {
-    kill();
+    Kill();
   }
 
   if (!is_local) {
@@ -131,8 +131,8 @@ void Player::deserialize(sf::Packet& packet) {
   sprite_.setRotation(cornrotate);
 }
 
-void Player::set_input(bool button_w, bool button_a, bool button_s,
-                       bool button_d) {
+void Player::SetInput(bool button_w, bool button_a, bool button_s,
+                      bool button_d) {
   input_w = button_w;
   input_a = button_a;
   input_s = button_s;

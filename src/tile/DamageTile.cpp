@@ -11,5 +11,5 @@ void DamageTile::draw(Renderer& renderer, Vec2 pos) {
 }
 DamageTile::~DamageTile() = default;
 void DamageTile::interact(Player& player, Map& map, const Vec2& pos) {
-  player.take_tile_damage(damage_);
+  player.TakeTileDamage(damage_);
 }

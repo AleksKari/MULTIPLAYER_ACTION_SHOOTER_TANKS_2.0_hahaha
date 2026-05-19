@@ -81,14 +81,14 @@ void Map::reset_world() {
 // обновление карты
 void Map::update(double diff) {
   for (auto& ent : entities_) {
-    ent->update(diff);
+    ent->Update(diff);
   }
   for (auto& projectile : projectiles_) {
-    projectile->update(diff);
+    projectile->Update(diff);
   }
   projectiles_.erase(std::remove_if(projectiles_.begin(), projectiles_.end(),
                                     [](const auto& projectile) {
-                                      return projectile->is_dead();
+                                      return projectile->IsDead();
                                     }),
                      projectiles_.end());
 }
@@ -207,7 +207,7 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
 void Map::update_remote_player(sf::Uint32 user_id, sf::Packet& packet) {
   for (auto& entity : entities_) {
     if (entity->network_id == user_id) {
-      entity->deserialize(packet);
+      entity->Deserialize(packet);
       return;
     }
   }
@@ -234,7 +234,7 @@ void Map::update_player_hp(sf::Uint32 user_id, int heatpoint) {
     if (entity->network_id == user_id) {
       entity->heatpoint = heatpoint;
       if (heatpoint <= 0) {
-        entity->kill();
+        entity->Kill();
       }
       return;
     }
@@ -258,14 +258,14 @@ void Map::serialize_game_state(sf::Packet& packet) const {
 
   packet << static_cast<sf::Uint16>(projectiles_.size());
   for (const auto& projectile : projectiles_) {
-    Vec2 velocity = projectile->get_velocity();
+    Vec2 velocity = projectile->GetVelocity();
     sf::Uint32 owner_id =
         (projectile->owner != nullptr) ? projectile->owner->network_id : 0;
     packet << static_cast<float>(projectile->position.cord_x)
            << static_cast<float>(projectile->position.cord_y)
            << static_cast<float>(velocity.cord_x)
-           << static_cast<float>(velocity.cord_y) << projectile->get_damage()
-           << projectile->size << projectile->get_hp() << owner_id;
+           << static_cast<float>(velocity.cord_y) << projectile->GetDamage()
+           << projectile->size << projectile->GetHp() << owner_id;
   }
 }
 
@@ -289,7 +289,7 @@ void Map::apply_game_state(sf::Packet& packet) {
       entity->cornrotate = angle;
       entity->heatpoint = hp;
       if (entity->heatpoint <= 0) {
-        entity->kill();
+        entity->Kill();
       }
       break;
     }

@@ -39,7 +39,7 @@ void Collision::entity_tile(Player& entity, Map& map) {
   if (entity.position.cord_x < 0 || entity.position.cord_y < 0 ||
       ((entity.position.cord_x + entity.size - 1) / TILESIZE) >= map.width_ ||
       ((entity.position.cord_y + entity.size - 1) / TILESIZE) >= map.height_) {
-    entity.on_wall_collision();
+    entity.OnWallCollision();
     return;
   }
   int tile_cord_x0 = static_cast<int>(entity.position.cord_x) / TILESIZE;
@@ -90,8 +90,8 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
 }
 
 void Collision::ricochet(Projectile& projectile, const Map& map) {
-  if (projectile.lifetime() > MAX_RICOCHET_LIFETIME) {
-    projectile.kill();
+  if (projectile.Lifetime() > MAX_RICOCHET_LIFETIME) {
+    projectile.Kill();
     return;
   }
 
@@ -108,11 +108,11 @@ void Collision::ricochet(Projectile& projectile, const Map& map) {
     reflect_x = not_on_map_x;
     reflect_y = not_on_map_y;
   } else {
-    reflect_x = projectile.crossed_tile_x();
-    reflect_y = projectile.crossed_tile_y();
+    reflect_x = projectile.CrossedTileX();
+    reflect_y = projectile.CrossedTileY();
   }
-  projectile.reflect(reflect_x, reflect_y);
-  projectile.take_damage(1);
+  projectile.Reflect(reflect_x, reflect_y);
+  projectile.TakeDamage(1);
 }
 
 void Collision::resolve(Map& map) {
@@ -120,29 +120,29 @@ void Collision::resolve(Map& map) {
     if (!projectile_tile(*projectile, map)) {
       continue;
     }
-    if (projectile->can_ricochet()) {
+    if (projectile->CanRicochet()) {
       ricochet(*projectile, map);
     } else {
-      projectile->kill();
+      projectile->Kill();
     }
   }
 
   for (auto& projectile : map.projectiles_) {
-    if (projectile->is_dead()) {
+    if (projectile->IsDead()) {
       continue;
     }
-    if (projectile->lifetime() < MIN_PROJECTILE_LIFETIME) {
+    if (projectile->Lifetime() < MIN_PROJECTILE_LIFETIME) {
       continue;
     }
 
     for (auto& entity : map.entities_) {
-      if (entity->is_dead()) {
+      if (entity->IsDead()) {
         continue;
       }
       if (entity_projectile(projectile->position, projectile->size,
                             entity->position, entity->size)) {
-        entity->take_damage(projectile->damage);
-        projectile->kill();
+        entity->TakeDamage(projectile->damage);
+        projectile->Kill();
         break;
       }
     }

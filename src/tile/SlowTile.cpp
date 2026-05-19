@@ -10,5 +10,5 @@ void SlowTile::draw(Renderer& renderer, Vec2 pos) {
   renderer.draw_tile(*this, pos);
 }
 void SlowTile::interact(Player& player, Map& map, const Vec2& pos) {
-  player.slow_down();
+  player.SlowDown();
 }

@@ -45,12 +45,12 @@ void Renderer::draw_tile(const T& tile, Vec2 pos) {
 
 template <is_entity T>
 void Renderer::draw_entity(const T& entity) {
-  if (entity.is_dead()) {
+  if (entity.IsDead()) {
     return;
   }
 
-  if constexpr (requires { entity.getSprite(); }) {
-    sf::Sprite draw_spr = entity.getSprite();
+  if constexpr (requires { entity.GetSprite(); }) {
+    sf::Sprite draw_spr = entity.GetSprite();
     draw_spr.setPosition(
         entity.position.cord_x + (entity.size / NUMBER_TO_DIV),
         entity.position.cord_y + (entity.size / NUMBER_TO_DIV));

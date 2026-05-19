@@ -95,11 +95,11 @@ void NetworkManager::receive_packets(Map& map, Player* local_player,
         bool s = false;
         bool d = false;
         packet >> w >> a >> s >> d;
-        remote_player->set_input(w, a, s, d);
+        remote_player->SetInput(w, a, s, d);
       }
     } else if (type == PacketType::Shoot) {
-      if (host_authority && remote_player && !remote_player->is_dead()) {
-        remote_player->attack(map);
+      if (host_authority && remote_player && !remote_player->IsDead()) {
+        remote_player->Attack(map);
       }
     } else if (type == PacketType::GameState) {
       if (!host_authority) {
@@ -129,7 +129,7 @@ void NetworkManager::receive_packets(Map& map, Player* local_player,
       sf::Int32 skin_id;
       packet >> skin_id;
       if (remote_player) {
-        remote_player->loadSkin((skin_id == 1) ? "textures/player.png" : "textures/pink_player.png");
+        remote_player->LoadSkin((skin_id == 1) ? "textures/player.png" : "textures/pink_player.png");
       }
     }
   }

@@ -11,7 +11,7 @@ static double rad(double degrees) {
 void ShotgunFire::shoot(Map& map, Player& owner, int damage) {
   // 5 пуль веером
   for (int i = -2; i <= 2; ++i) {
-    Vec2 dir = owner.dir().rotate(rad(BASE_ANGEL) * i);
+    Vec2 dir = owner.Dir().rotate(rad(BASE_ANGEL) * i);
     Vec2 vel = dir.normalized() * VELOCITY_OF_PROJECTILE;
     map.spawn_projectile(
         owner.position + Vec2(CENTER_OF_PLAYER, CENTER_OF_PLAYER), vel, damage,
