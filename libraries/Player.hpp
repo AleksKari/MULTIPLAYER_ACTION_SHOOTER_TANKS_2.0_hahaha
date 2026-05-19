@@ -1,13 +1,14 @@
 #pragma once
+#include <Entity.hpp>
 #include <SFML/Network.hpp>
 #include <memory>
 #include <string>
 #include <weapon/Weapon.hpp>
 
-#include <Entity.hpp>
-
 class Weapon;
 class Map;
+
+const int DAMAGE_FROM_SHOOT = 10;
 
 class Player : public Entity {
  private:
@@ -24,7 +25,7 @@ class Player : public Entity {
 
  public:
   int max_hp;
-  int hp;
+  int heatpoint;
   sf::Uint32 network_id = 0;
   bool is_local = false;
   bool input_w = false, input_a = false, input_s = false, input_d = false;

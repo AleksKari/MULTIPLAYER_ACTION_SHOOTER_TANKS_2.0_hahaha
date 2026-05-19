@@ -1,11 +1,15 @@
 // класс отрисовки
 
-#include <render/Render.hpp>
-
 #include <Player.hpp>
 #include <Projectile.hpp>
 #include <cmath>
 #include <iostream>
+#include <render/Render.hpp>
+
+const sf::Color GREEN = sf::Color(50, 200, 50);
+const sf::Color GREY = sf::Color(80, 80, 80);
+const float WIDTH_HP_BAR = 4.F;
+const float WIDTH_BETWEEN_PLAYER_AND_HP = 7.F;
 
 Renderer::Renderer(int screen_width, int screen_height, int tile_size)
     : window_(sf::VideoMode(screen_width, screen_height), "Soul Knife Tanks"),
@@ -26,26 +30,34 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   projectile_sprite_.setOrigin(TILESIZE / 2, TILESIZE / 2);
 }
 
-void Renderer::draw_projectile(const Projectile& p) {
-  if (p.is_dead()) return;
-  projectile_sprite_.setPosition(p.position.cord_x + p.size / 2.0,
-                                 p.position.cord_y + p.size / 2.0);
+void Renderer::draw_projectile(const Projectile& projectile) {
+  if (projectile.is_dead()) {
+    return;
+  }
+  projectile_sprite_.setPosition(
+      projectile.position.cord_x + (projectile.size / NUMBER_TO_DIV),
+      projectile.position.cord_y + (projectile.size / NUMBER_TO_DIV));
   window_.draw(projectile_sprite_);
 }
 
-void Renderer::draw_hp_bar(const Player& p) {
-  if (p.is_dead()) return;
-  float perct = (float)p.hp / p.max_hp;
-  //  std::cout << "hp=" << p.hp << " max=" << p.max_hp << " pct=" <<
-  //  (float)p.hp/p.max_hp << "\n";
-  sf::RectangleShape backgr_for_hp({(float)TILESIZE, 4.f});
-  backgr_for_hp.setFillColor(sf::Color(80, 80, 80));
-  backgr_for_hp.setPosition(p.position.cord_x,
-                            p.position.cord_y - 7.f);  // выше танка 7 px
+void Renderer::draw_hp_bar(const Player& player) {
+  if (player.is_dead()) {
+    return;
+  }
+  float perct = static_cast<float>(player.heatpoint) / player.max_hp;
+
+  sf::RectangleShape backgr_for_hp(
+      {static_cast<float>(TILESIZE), WIDTH_HP_BAR});
+  backgr_for_hp.setFillColor(GREY);
+  backgr_for_hp.setPosition(
+      player.position.cord_x,
+      player.position.cord_y - WIDTH_BETWEEN_PLAYER_AND_HP);
   window_.draw(backgr_for_hp);
-  sf::RectangleShape green_hp({(float)TILESIZE * perct, 4.f});
-  green_hp.setFillColor(sf::Color(50, 200, 50));
-  green_hp.setPosition(p.position.cord_x, p.position.cord_y - 7.f);
+  sf::RectangleShape green_hp(
+      {static_cast<float>(TILESIZE) * perct, WIDTH_HP_BAR});
+  green_hp.setFillColor(GREEN);
+  green_hp.setPosition(player.position.cord_x,
+                       player.position.cord_y - WIDTH_BETWEEN_PLAYER_AND_HP);
   window_.draw(green_hp);
 }
 

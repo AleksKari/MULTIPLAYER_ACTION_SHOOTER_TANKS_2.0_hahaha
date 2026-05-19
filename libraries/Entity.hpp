@@ -6,6 +6,8 @@
 #include <concepts>
 
 const int TILESIZE = 32;
+const float NUMBER_TO_DIV = 2.0F;
+const float FULL_ANGLE = 180.0F;
 
 class Entity {
  private:
@@ -13,7 +15,7 @@ class Entity {
 
  public:
   Vec2 position;
-  double cornrotate = 0.0;  // угол в рад
+  double cornrotate = 0.0;  // угол в градусах
   int damage = 0;
   int size;
 

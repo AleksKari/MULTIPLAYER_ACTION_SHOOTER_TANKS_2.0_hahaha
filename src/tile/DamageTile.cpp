@@ -1,9 +1,8 @@
-#include <tile/DamageTile.hpp>
-
 #include <math/Vec2.h>
 
 #include <Player.hpp>
 #include <render/Render.hpp>
+#include <tile/DamageTile.hpp>
 
 DamageTile::DamageTile() { texture_.loadFromFile("textures/damage.png"); }
 bool DamageTile::is_damage() { return true; }

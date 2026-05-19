@@ -1,9 +1,8 @@
-#include <tile/SlowTile.hpp>
-
 #include <math/Vec2.h>
 
 #include <Player.hpp>
 #include <render/Render.hpp>
+#include <tile/SlowTile.hpp>
 
 SlowTile::SlowTile() { texture_.loadFromFile("textures/slow.png"); }
 bool SlowTile::is_slow() { return true; }

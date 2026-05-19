@@ -1,13 +1,12 @@
-#include <map/Map.hpp>
-
 #include <Player.hpp>
 #include <Projectile.hpp>
 #include <algorithm>
 #include <chrono>
 #include <collision/Collision.hpp>
 #include <concepts>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <map/Map.hpp>
 #include <random>
 #include <render/Render.hpp>
 #include <tile/DamageTile.hpp>
@@ -37,20 +36,30 @@ void build_tiles(Map& map) {
   file >> jsn;
 
   const auto& layer = jsn["layers"][0];
-  const auto& data = layer["data"]; // массив ID тайлов
+  const auto& data = layer["data"];  // массив ID тайлов
 
   for (auto& column : map.tiles_) column.resize(map.height_);
 
   for (int i = 0; i < map.width_; ++i) {
     for (int j = 0; j < map.height_; ++j) {
       int id = data[j * map.width_ + i];
-        switch (id) {
-            case 1: map.tiles_[i][j] = std::make_unique<EmptyTile>(); break;
-            case 2: map.tiles_[i][j] = std::make_unique<WallTile>(); break;
-            case 3: map.tiles_[i][j] = std::make_unique<DamageTile>(); break;
-            case 4: map.tiles_[i][j] = std::make_unique<SlowTile>(); break;
-            default: map.tiles_[i][j] = std::make_unique<EmptyTile>(); break;
-        }
+      switch (id) {
+        case 1:
+          map.tiles_[i][j] = std::make_unique<EmptyTile>();
+          break;
+        case 2:
+          map.tiles_[i][j] = std::make_unique<WallTile>();
+          break;
+        case 3:
+          map.tiles_[i][j] = std::make_unique<DamageTile>();
+          break;
+        case 4:
+          map.tiles_[i][j] = std::make_unique<SlowTile>();
+          break;
+        default:
+          map.tiles_[i][j] = std::make_unique<EmptyTile>();
+          break;
+      }
     }
   }
 }
@@ -163,8 +172,8 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
   int weapon_number = mt() % WEAPON_CNT;
 
   const Vec2& tile_pos = empty_tiles[number_tile];
-  spawn_weapon_at(static_cast<int>(tile_pos.cord_x), static_cast<int>(tile_pos.cord_y),
-                  weapon_number);
+  spawn_weapon_at(static_cast<int>(tile_pos.cord_x),
+                  static_cast<int>(tile_pos.cord_y), weapon_number);
   return std::make_tuple(static_cast<int>(tile_pos.cord_x),
                          static_cast<int>(tile_pos.cord_y), weapon_number);
 }
@@ -196,7 +205,7 @@ void Map::spawn_remote_projectile(sf::Packet& packet) {
 void Map::update_player_hp(sf::Uint32 id, int hp) {
   for (auto& entity : entities_) {
     if (entity->network_id == id) {
-      entity->hp = hp;
+      entity->heatpoint = hp;
       if (hp <= 0) entity->kill();
       return;
     }
@@ -224,7 +233,7 @@ void Map::serialize_game_state(sf::Packet& packet) const {
     packet << entity->network_id << static_cast<float>(entity->position.cord_x)
            << static_cast<float>(entity->position.cord_y)
            << static_cast<float>(entity->cornrotate)
-           << static_cast<sf::Int32>(entity->hp);
+           << static_cast<sf::Int32>(entity->heatpoint);
   }
 
   packet << static_cast<sf::Uint16>(projectiles_.size());
@@ -233,9 +242,9 @@ void Map::serialize_game_state(sf::Packet& packet) const {
     sf::Uint32 owner_id = projectile->owner ? projectile->owner->network_id : 0;
     packet << static_cast<float>(projectile->position.cord_x)
            << static_cast<float>(projectile->position.cord_y)
-           << static_cast<float>(velocity.cord_x) << static_cast<float>(velocity.cord_y)
-           << projectile->get_damage() << projectile->size
-           << projectile->get_hp() << owner_id;
+           << static_cast<float>(velocity.cord_x)
+           << static_cast<float>(velocity.cord_y) << projectile->get_damage()
+           << projectile->size << projectile->get_hp() << owner_id;
   }
 }
 
@@ -255,8 +264,8 @@ void Map::apply_game_state(sf::Packet& packet) {
       if (entity->network_id != id) continue;
       entity->position = Vec2(x, y);
       entity->cornrotate = angle;
-      entity->hp = hp;
-      if (entity->hp <= 0) entity->kill();
+      entity->heatpoint = hp;
+      if (entity->heatpoint <= 0) entity->kill();
       break;
     }
   }
