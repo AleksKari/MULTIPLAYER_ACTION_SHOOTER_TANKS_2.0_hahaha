@@ -12,5 +12,5 @@ const int SIZE_OF_PROJECTILE = 6;
 class FireMode {
  public:
   virtual ~FireMode() = default;
-  virtual void shoot(Map& map, Player& owner, int damage) = 0;
+  virtual void Shoot(Map& map, Player& owner, int damage) = 0;
 };

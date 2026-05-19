@@ -7,10 +7,10 @@
 
 class Collision {
  public:
-  static bool entity_projectile(const Vec2& pos_projectile, int size_projectile,
-                                const Vec2& pos_entity, int size_entity);
-  static void entity_tile(Player& entity, Map& map);
-  static bool projectile_tile(const Projectile& proj, const Map& map);
-  static void ricochet(Projectile& projectile, const Map& map);
-  static void resolve(Map& map);
+  static bool EntityProjectile(const Vec2& pos_projectile, int size_projectile,
+                               const Vec2& pos_entity, int size_entity);
+  static void EntityTile(Player& entity, Map& map);
+  static bool ProjectileTile(const Projectile& proj, const Map& map);
+  static void Ricochet(Projectile& projectile, const Map& map);
+  static void Resolve(Map& map);
 };

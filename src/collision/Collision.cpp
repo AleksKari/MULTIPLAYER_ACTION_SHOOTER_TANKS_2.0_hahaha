@@ -5,7 +5,7 @@
 static constexpr double MAX_RICOCHET_LIFETIME = 7.0;
 static constexpr double MIN_PROJECTILE_LIFETIME = 0.1;
 
-bool Collision::entity_projectile(const Vec2& pos_projectile,
+bool Collision::EntityProjectile(const Vec2& pos_projectile,
                                   const int size_projectile,
                                   const Vec2& pos_entity,
                                   const int size_entity = TILESIZE) {
@@ -34,7 +34,7 @@ bool Collision::entity_projectile(const Vec2& pos_projectile,
 }
 // tile_cord_x0 tile_cord_x1 tile_cord_y0 tile_cord_y1 координаты в тайлах где
 // находится плеер
-void Collision::entity_tile(Player& entity, Map& map) {
+void Collision::EntityTile(Player& entity, Map& map) {
   // для проезда в зазор 1 блок уменьшаем счиатемый размер на 1
   if (entity.position.cord_x < 0 || entity.position.cord_y < 0 ||
       ((entity.position.cord_x + entity.size - 1) / TILESIZE) >= map.width_ ||
@@ -50,25 +50,25 @@ void Collision::entity_tile(Player& entity, Map& map) {
   int tile_cord_y1 =
       static_cast<int>(entity.position.cord_y + entity.size - 1) / TILESIZE;
 
-  map.tiles_[tile_cord_x0][tile_cord_y0]->interact(
+  map.tiles_[tile_cord_x0][tile_cord_y0]->Interact(
       entity, map, Vec2(tile_cord_x0, tile_cord_y0));
 
   if (tile_cord_x1 != tile_cord_x0) {
-    map.tiles_[tile_cord_x1][tile_cord_y0]->interact(
+    map.tiles_[tile_cord_x1][tile_cord_y0]->Interact(
         entity, map, Vec2(tile_cord_x1, tile_cord_y0));
   }
   if (tile_cord_y1 != tile_cord_y0) {
-    map.tiles_[tile_cord_x0][tile_cord_y1]->interact(
+    map.tiles_[tile_cord_x0][tile_cord_y1]->Interact(
         entity, map, Vec2(tile_cord_x0, tile_cord_y1));
   }
 
   if (tile_cord_x1 != tile_cord_x0 && tile_cord_y1 != tile_cord_y0) {
-    map.tiles_[tile_cord_x1][tile_cord_y1]->interact(
+    map.tiles_[tile_cord_x1][tile_cord_y1]->Interact(
         entity, map, Vec2(tile_cord_x1, tile_cord_y1));
   }
 }
 // tile_cord_x0 tile_cord_x1 tile_cord_y0 tile_cord_y1 также для пули
-bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
+bool Collision::ProjectileTile(const Projectile& proj, const Map& map) {
   if (proj.position.cord_x < 0 || proj.position.cord_y < 0 ||
       proj.position.cord_x + proj.size > map.width_ * TILESIZE ||
       proj.position.cord_y + proj.size > map.height_ * TILESIZE) {
@@ -83,13 +83,13 @@ bool Collision::projectile_tile(const Projectile& proj, const Map& map) {
   int tile_cord_y1 =
       static_cast<int>(proj.position.cord_y + proj.size) / TILESIZE;
 
-  return (map.tiles_[tile_cord_x0][tile_cord_y0]->is_wall()) ||
-         (map.tiles_[tile_cord_x1][tile_cord_y0]->is_wall()) ||
-         (map.tiles_[tile_cord_x0][tile_cord_y1]->is_wall()) ||
-         (map.tiles_[tile_cord_x1][tile_cord_y1]->is_wall());
+  return (map.tiles_[tile_cord_x0][tile_cord_y0]->IsWall()) ||
+         (map.tiles_[tile_cord_x1][tile_cord_y0]->IsWall()) ||
+         (map.tiles_[tile_cord_x0][tile_cord_y1]->IsWall()) ||
+         (map.tiles_[tile_cord_x1][tile_cord_y1]->IsWall());
 }
 
-void Collision::ricochet(Projectile& projectile, const Map& map) {
+void Collision::Ricochet(Projectile& projectile, const Map& map) {
   if (projectile.Lifetime() > MAX_RICOCHET_LIFETIME) {
     projectile.Kill();
     return;
@@ -115,13 +115,13 @@ void Collision::ricochet(Projectile& projectile, const Map& map) {
   projectile.TakeDamage(1);
 }
 
-void Collision::resolve(Map& map) {
+void Collision::Resolve(Map& map) {
   for (auto& projectile : map.projectiles_) {
-    if (!projectile_tile(*projectile, map)) {
+    if (!ProjectileTile(*projectile, map)) {
       continue;
     }
     if (projectile->CanRicochet()) {
-      ricochet(*projectile, map);
+      Ricochet(*projectile, map);
     } else {
       projectile->Kill();
     }
@@ -139,7 +139,7 @@ void Collision::resolve(Map& map) {
       if (entity->IsDead()) {
         continue;
       }
-      if (entity_projectile(projectile->position, projectile->size,
+      if (EntityProjectile(projectile->position, projectile->size,
                             entity->position, entity->size)) {
         entity->TakeDamage(projectile->damage);
         projectile->Kill();
@@ -149,6 +149,6 @@ void Collision::resolve(Map& map) {
   }
 
   for (auto& entity : map.entities_) {
-    entity_tile(*entity, map);
+    EntityTile(*entity, map);
   }
 }

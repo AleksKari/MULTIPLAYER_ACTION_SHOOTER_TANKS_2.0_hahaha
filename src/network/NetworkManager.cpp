@@ -103,28 +103,28 @@ void NetworkManager::receive_packets(Map& map, Player* local_player,
       }
     } else if (type == PacketType::GameState) {
       if (!host_authority) {
-        map.apply_game_state(packet);
+        map.ApplyGameState(packet);
       }
     } else if (type == PacketType::UpdateState) {
       sf::Uint32 id;
       packet >> id;
-      map.update_remote_player(id, packet);
+      map.UpdateRemotePlayer(id, packet);
     } else if (type == PacketType::HealthUpdate) {
       sf::Uint32 id;
       int hp = 0;
       packet >> id >> hp;
-      map.update_player_hp(id, hp);
+      map.UpdatePlayerHp(id, hp);
     } else if (type == PacketType::SpawnWeapon) {
       int x = 0;
       int y = 0;
       int w_type = 0;
       packet >> x >> y >> w_type;
-      map.spawn_weapon_at(x, y, w_type);
+      map.SpawnWeaponAt(x, y, w_type);
     } else if (type == PacketType::RemoveTile) {
       int x = 0;
       int y = 0;
       packet >> x >> y;
-      map.set_tile(Vec2(x, y), std::make_unique<EmptyTile>());
+      map.SetTile(Vec2(x, y), std::make_unique<EmptyTile>());
     } else if (type == PacketType::SkinSync) {
       sf::Int32 skin_id;
       packet >> skin_id;

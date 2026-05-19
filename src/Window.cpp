@@ -63,7 +63,7 @@ int main() {
       std::min(desktop.height, static_cast<unsigned int>(map_height_px));
 
   Renderer renderer(window_width, window_height, 32);
-  renderer.window().setFramerateLimit(120);
+  renderer.Window().setFramerateLimit(120);
   sf::Clock clock;
 
   sf::Texture menuBgTex, skin1Tex, skin2Tex;
@@ -94,7 +94,7 @@ int main() {
                                  static_cast<float>(window_height)));
 
   auto relayout_ui = [&]() {
-    const sf::Vector2u size = renderer.window().getSize();
+    const sf::Vector2u size = renderer.Window().getSize();
     ui_view = sf::View(sf::FloatRect(0.0f, 0.0f, static_cast<float>(size.x),
                                      static_cast<float>(size.y)));
     game_view.setViewport(makeLetterboxViewport(static_cast<float>(size.x),
@@ -147,8 +147,8 @@ int main() {
     const double y0 = pos.cord_y + 2.0;
     const double x1 = pos.cord_x + TILESIZE - 2.0;
     const double y1 = pos.cord_y + TILESIZE - 2.0;
-    return map.is_empty(x0, y0) && map.is_empty(x1, y1) &&
-           !map.is_slow(x0, y0) && !map.is_damage(x0, y0);
+    return map.IsEmpty(x0, y0) && map.IsEmpty(x1, y1) &&
+           !map.IsSlow(x0, y0) && !map.IsDamage(x0, y0);
   };
 
   auto pick_spawn = [&](const std::vector<std::pair<int, int>>& candidates,
@@ -175,7 +175,7 @@ int main() {
       local_player->is_local = true;
       local_player->LoadSkin((selected == 1) ? "textures/player.png"
                                              : "textures/pink_player.png");
-      map.spawn_entity(local_player);
+      map.SpawnEntity(local_player);
 
       remote_player =
           new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
@@ -183,7 +183,7 @@ int main() {
       remote_player->is_local = false;
       remote_player->LoadSkin((selected == 1) ? "textures/pink_player.png"
                                               : "textures/player.png");
-      map.spawn_entity(remote_player);
+      map.SpawnEntity(remote_player);
     } else {
       local_player =
           new Player(guest_spawn, 100, 300.0f, std::make_unique<Gun>());
@@ -191,7 +191,7 @@ int main() {
       local_player->is_local = true;
       local_player->LoadSkin((selected == 1) ? "textures/player.png"
                                              : "textures/pink_player.png");
-      map.spawn_entity(local_player);
+      map.SpawnEntity(local_player);
 
       remote_player =
           new Player(host_spawn, 100, 300.0f, std::make_unique<Gun>());
@@ -199,12 +199,12 @@ int main() {
       remote_player->is_local = false;
       remote_player->LoadSkin((selected == 1) ? "textures/pink_player.png"
                                               : "textures/player.png");
-      map.spawn_entity(remote_player);
+      map.SpawnEntity(remote_player);
     }
   };
 
   auto return_to_menu = [&]() {
-    map.reset_world();
+    map.ResetWorld();
     local_player = nullptr;
     remote_player = nullptr;
     host_authority = false;
@@ -219,10 +219,10 @@ int main() {
     clock.restart();
   };
 
-  while (renderer.window().isOpen()) {
+  while (renderer.Window().isOpen()) {
     sf::Event event;
-    while (renderer.window().pollEvent(event)) {
-      if (event.type == sf::Event::Closed) renderer.window().close();
+    while (renderer.Window().pollEvent(event)) {
+      if (event.type == sf::Event::Closed) renderer.Window().close();
       if (event.type == sf::Event::Resized) {
         relayout_ui();
       }
@@ -381,10 +381,10 @@ int main() {
       net.update(map, local_player, remote_player, host_authority);
 
       if (host_authority) {
-        map.update(dt);
-        Collision::resolve(map);
+        map.Update(dt);
+        Collision::Resolve(map);
 
-        auto generated_weapon = map.generate_weapon();
+        auto generated_weapon = map.GenerateWeapon();
         if (generated_weapon.has_value()) {
           int x = 0, y = 0, type = 0;
           std::tie(x, y, type) = generated_weapon.value();
@@ -393,9 +393,9 @@ int main() {
           net.send_to_all(spawnPacket);
         }
 
-        std::vector<Vec2> removed_tiles = map.consume_removed_weapon_tiles();
+        std::vector<Vec2> removed_tiles = map.ConsumeRemovedWeaponTiles();
         for (const Vec2& tile : removed_tiles) {
-          map.set_tile(tile, std::make_unique<EmptyTile>());
+          map.SetTile(tile, std::make_unique<EmptyTile>());
 
           sf::Packet removePacket;
           removePacket << PacketType::RemoveTile << static_cast<int>(tile.cord_x)
@@ -405,7 +405,7 @@ int main() {
 
         sf::Packet statePacket;
         statePacket << PacketType::GameState;
-        map.serialize_game_state(statePacket);
+        map.SerializeGameState(statePacket);
         net.send_to_all(statePacket);
       }
 
@@ -429,34 +429,34 @@ int main() {
       clock.restart();
     }
 
-    renderer.beginframe();
+    renderer.BeginFrame();
     if (currentState == GameState::Menu) {
-      renderer.window().setView(ui_view);
+      renderer.Window().setView(ui_view);
       preview1.setColor(selected == 1 ? sf::Color::White
                                       : sf::Color(100, 100, 100));
       preview2.setColor(selected == 2 ? sf::Color::White
                                       : sf::Color(100, 100, 100));
       uiText.setString("Choose tank skin: arrows/A-D\nPress Enter to continue");
-      renderer.window().draw(menuBg);
-      renderer.window().draw(preview1);
-      renderer.window().draw(preview2);
-      renderer.window().draw(uiText);
+      renderer.Window().draw(menuBg);
+      renderer.Window().draw(preview1);
+      renderer.Window().draw(preview2);
+      renderer.Window().draw(uiText);
     } else if (currentState == GameState::NetworkMode ||
                currentState == GameState::JoinInput ||
                currentState == GameState::WaitingForOpponent) {
-      renderer.window().setView(ui_view);
-      renderer.window().draw(menuBg);
-      renderer.window().draw(uiText);
+      renderer.Window().setView(ui_view);
+      renderer.Window().draw(menuBg);
+      renderer.Window().draw(uiText);
     } else if (currentState == GameState::Gaming) {
-      renderer.window().setView(game_view);
-      map.render(renderer);
+      renderer.Window().setView(game_view);
+      map.Render(renderer);
     } else if (currentState == GameState::GameOver) {
-      renderer.window().setView(ui_view);
+      renderer.Window().setView(ui_view);
       uiText.setString(game_over_text);
-      renderer.window().draw(menuBg);
-      renderer.window().draw(uiText);
+      renderer.Window().draw(menuBg);
+      renderer.Window().draw(uiText);
     }
-    renderer.endframe();
+    renderer.EndFrame();
   }
   return 0;
 }

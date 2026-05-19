@@ -6,8 +6,8 @@ class EmptyTile : public Tile {
   sf::Texture texture_;
 
   EmptyTile();
-  bool is_empty() override;
-  void draw(Renderer& renderer, Vec2 pos) override;
-  void interact(Player& player, Map& map, const Vec2& pos) override;
+  bool IsEmpty() override;
+  void Draw(Renderer& renderer, Vec2 pos) override;
+  void Interact(Player& player, Map& map, const Vec2& pos) override;
   ~EmptyTile();
 };

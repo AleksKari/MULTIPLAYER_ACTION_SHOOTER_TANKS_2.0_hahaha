@@ -15,12 +15,12 @@ class Shotgun : public Weapon {
     damage_ = DAMAGE_FROM_SHOOT;
     shots_left_ = NUMBER_OF_PROJECTILES;
   }
-  void shoot(Map& map, Player& owner, int damage) override {
+  void Shoot(Map& map, Player& owner, int damage) override {
     if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) {
       return;
     }
     shot_clock_.restart();
-    fire_.shoot(map, owner, damage);
+    fire_.Shoot(map, owner, damage);
     --shots_left_;
   }
 };

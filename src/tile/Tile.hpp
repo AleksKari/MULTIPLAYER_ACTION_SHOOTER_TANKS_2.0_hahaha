@@ -10,12 +10,12 @@ class Map;
 class Tile {
  public:
   virtual ~Tile() = default;
-  virtual bool is_empty() { return false; }
-  virtual bool is_wall() { return false; }
-  virtual bool is_breakable() { return false; }
-  virtual bool is_slow() { return false; }
-  virtual bool is_damage() { return false; }
-  virtual bool is_weapon() { return false; }
-  virtual void draw(Renderer& renderer, Vec2 pos) = 0;
-  virtual void interact(Player& player, Map& map, const Vec2& pos) = 0;
+  virtual bool IsEmpty() { return false; }
+  virtual bool IsWall() { return false; }
+  virtual bool IsBreakable() { return false; }
+  virtual bool IsSlow() { return false; }
+  virtual bool IsDamage() { return false; }
+  virtual bool IsWeapon() { return false; }
+  virtual void Draw(Renderer& renderer, Vec2 pos) = 0;
+  virtual void Interact(Player& player, Map& map, const Vec2& pos) = 0;
 };

@@ -23,8 +23,8 @@ Player::Player(Vec2 pos, int heatpoint, float speed,
 void Player::Move(float timediff) {
   Vec2 input_dir(static_cast<int>(input_d) - static_cast<int>(input_a),
                  static_cast<int>(input_s) - static_cast<int>(input_w));
-  const Vec2 normalized = input_dir.normalized();
-  if (normalized.length() > 0.0) {
+  const Vec2 normalized = input_dir.Normalized();
+  if (normalized.Length() > 0.0) {
     facing_dir_ = normalized;
   }
   position = position + normalized * speed_ * slow_coeff_ * timediff;
@@ -40,8 +40,8 @@ void Player::Attack(Map& map) {
   if (!weapon_) {
     return;
   }
-  weapon_->shoot(map, *this, DAMAGE_FROM_SHOOT);
-  if (weapon_->no_ammo()) {
+  weapon_->Shoot(map, *this, DAMAGE_FROM_SHOOT);
+  if (weapon_->NoAmmo()) {
     weapon_ = std::make_unique<Gun>();
   }
 }
@@ -79,7 +79,7 @@ void Player::Update(float timediff) {
   prev_position_ = position;
   Move(timediff);
   slow_coeff_ = 1.0F;
-  cornrotate = facing_dir_.angle();
+  cornrotate = facing_dir_.Angle();
 
   sprite_.setPosition(position.cord_x + (size_ / NUMBER_TO_DIV),
                       position.cord_y + (size_ / NUMBER_TO_DIV));
@@ -140,9 +140,9 @@ void Player::SetInput(bool button_w, bool button_a, bool button_s,
 
   Vec2 input_dir(static_cast<int>(input_d) - static_cast<int>(input_a),
                  static_cast<int>(input_s) - static_cast<int>(input_w));
-  const Vec2 normalized = input_dir.normalized();
-  if (normalized.length() > 0.0) {
+  const Vec2 normalized = input_dir.Normalized();
+  if (normalized.Length() > 0.0) {
     facing_dir_ = normalized;
-    cornrotate = facing_dir_.angle();
+    cornrotate = facing_dir_.Angle();
   }
 }

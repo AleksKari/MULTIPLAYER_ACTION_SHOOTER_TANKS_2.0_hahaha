@@ -13,15 +13,15 @@ class Projectile;
 class Renderer {
  public:
   Renderer(int screen_width, int screen_height, int tile_size);
-  void beginframe();
-  void endframe();
+  void BeginFrame();
+  void EndFrame();
   template <is_tile T>
-  void draw_tile(const T& tile, Vec2 pos);
+  void DrawTile(const T& tile, Vec2 pos);
   template <is_entity T>
-  void draw_entity(const T& entity);
-  void draw_projectile(const Projectile& proj);
-  void draw_hp_bar(const Player& player);
-  sf::RenderWindow& window();
+  void DrawEntity(const T& entity);
+  void DrawProjectile(const Projectile& proj);
+  void DrawHpBar(const Player& player);
+  sf::RenderWindow& Window();
 
  private:
   sf::RenderWindow window_;
@@ -35,7 +35,7 @@ class Renderer {
 };
 
 template <is_tile T>
-void Renderer::draw_tile(const T& tile, Vec2 pos) {
+void Renderer::DrawTile(const T& tile, Vec2 pos) {
   static_assert(!std::same_as<T, Tile>);
   tile_sprite_.setTexture(tile.texture_);
   tile_sprite_.setTextureRect({0, 0, TILESIZE, TILESIZE});
@@ -44,7 +44,7 @@ void Renderer::draw_tile(const T& tile, Vec2 pos) {
 }
 
 template <is_entity T>
-void Renderer::draw_entity(const T& entity) {
+void Renderer::DrawEntity(const T& entity) {
   if (entity.IsDead()) {
     return;
   }

@@ -12,11 +12,11 @@ class Gun : public Weapon {
 
  public:
   Gun() { damage_ = DAMAGE_FROM_SHOOT; }
-  void shoot(Map& map, Player& owner, int damage) override {
+  void Shoot(Map& map, Player& owner, int damage) override {
     if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) {
       return;
     }
     shot_clock_.restart();
-    fire_.shoot(map, owner, damage);
+    fire_.Shoot(map, owner, damage);
   }
 };

@@ -4,9 +4,9 @@
 #include <tile/EmptyTile.hpp>
 
 EmptyTile::EmptyTile() { texture_.loadFromFile("textures/grass.png"); }
-bool EmptyTile::is_empty() { return true; }
-void EmptyTile::draw(Renderer& renderer, Vec2 pos) {
-  renderer.draw_tile(*this, pos);
+bool EmptyTile::IsEmpty() { return true; }
+void EmptyTile::Draw(Renderer& renderer, Vec2 pos) {
+  renderer.DrawTile(*this, pos);
 }
 EmptyTile::~EmptyTile() = default;
-void EmptyTile::interact(Player& player, Map& map, const Vec2& pos) {}
+void EmptyTile::Interact(Player& player, Map& map, const Vec2& pos) {}

@@ -30,7 +30,7 @@ Renderer::Renderer(int screen_width, int screen_height, int tile_size)
   projectile_sprite_.setOrigin(TILESIZE / 2, TILESIZE / 2);
 }
 
-void Renderer::draw_projectile(const Projectile& projectile) {
+void Renderer::DrawProjectile(const Projectile& projectile) {
   if (projectile.IsDead()) {
     return;
   }
@@ -40,7 +40,7 @@ void Renderer::draw_projectile(const Projectile& projectile) {
   window_.draw(projectile_sprite_);
 }
 
-void Renderer::draw_hp_bar(const Player& player) {
+void Renderer::DrawHpBar(const Player& player) {
   if (player.IsDead()) {
     return;
   }
@@ -61,6 +61,6 @@ void Renderer::draw_hp_bar(const Player& player) {
   window_.draw(green_hp);
 }
 
-void Renderer::beginframe() { window_.clear(sf::Color::Black); }
-void Renderer::endframe() { window_.display(); }
-sf::RenderWindow& Renderer::window() { return window_; }
+void Renderer::BeginFrame() { window_.clear(sf::Color::Black); }
+void Renderer::EndFrame() { window_.display(); }
+sf::RenderWindow& Renderer::Window() { return window_; }

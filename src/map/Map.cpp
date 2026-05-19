@@ -71,7 +71,7 @@ Map::Map(int width, int height) : width_(width), height_(height) {
   build_tiles(*this);
 }
 
-void Map::reset_world() {
+void Map::ResetWorld() {
   entities_.clear();
   projectiles_.clear();
   removed_weapon_tiles_.clear();
@@ -79,7 +79,7 @@ void Map::reset_world() {
 }
 
 // обновление карты
-void Map::update(double diff) {
+void Map::Update(double diff) {
   for (auto& ent : entities_) {
     ent->Update(diff);
   }
@@ -94,85 +94,85 @@ void Map::update(double diff) {
 }
 
 // отслеживаем игроков
-void Map::spawn_entity(Player* ent) {
+void Map::SpawnEntity(Player* ent) {
   entities_.push_back(std::unique_ptr<Player>(std::move(ent)));
 }
 
 // отслеживаем снаряды
-void Map::spawn_projectile(Vec2 pos, Vec2 vel, int damage, int size,
-                           int heatpoint, const Player* source) {
+void Map::SpawnProjectile(Vec2 pos, Vec2 vel, int damage, int size,
+                          int heatpoint, const Player* source) {
   projectiles_.push_back(
       std::make_unique<Projectile>(pos, vel, damage, size, heatpoint, source));
 }
 
 // проверка границ карты
-bool Map::is_bound(double pos_x, double pos_y) const {
+bool Map::IsBound(double pos_x, double pos_y) const {
   return pos_x < 0 || pos_y < 0 || pos_x >= width_ || pos_y >= height_;
 }
 
 // не доходило до тайла добавил проверку
-bool Map::is_wall(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) {
+bool Map::IsWall(double pos_x, double pos_y) const {
+  if (IsBound(pos_x / TILESIZE, pos_y / TILESIZE)) {
     return true;
   }  // край карты = стена
-  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_wall();
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->IsWall();
 }
 
 // пустой
-bool Map::is_empty(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) {
+bool Map::IsEmpty(double pos_x, double pos_y) const {
+  if (IsBound(pos_x / TILESIZE, pos_y / TILESIZE)) {
     return false;
   }
-  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_empty();
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->IsEmpty();
 }
 
 // замедляющий
-bool Map::is_slow(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) {
+bool Map::IsSlow(double pos_x, double pos_y) const {
+  if (IsBound(pos_x / TILESIZE, pos_y / TILESIZE)) {
     return false;
   }
-  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_slow();
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->IsSlow();
 }
 
 // наносящий урон
-bool Map::is_damage(double pos_x, double pos_y) const {
-  if (is_bound(pos_x / TILESIZE, pos_y / TILESIZE)) {
+bool Map::IsDamage(double pos_x, double pos_y) const {
+  if (IsBound(pos_x / TILESIZE, pos_y / TILESIZE)) {
     return false;
   }
-  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->is_damage();
+  return tiles_[pos_x / TILESIZE][pos_y / TILESIZE]->IsDamage();
 }
 
 // отрисовка объектов
-void Map::render(Renderer& renderer) const {
+void Map::Render(Renderer& renderer) const {
   for (size_t cord_x = 0; cord_x < width_; ++cord_x) {  // 2. только стены
     for (size_t cord_y = 0; cord_y < height_; ++cord_y) {
-      tiles_[cord_x][cord_y]->draw(renderer, Vec2(cord_x, cord_y));
+      tiles_[cord_x][cord_y]->Draw(renderer, Vec2(cord_x, cord_y));
     }
   }
 
   for (const auto& entity : entities_) {
-    renderer.draw_entity(*entity);  // 3. танки
-    renderer.draw_hp_bar(*entity);
+    renderer.DrawEntity(*entity);  // 3. танки
+    renderer.DrawHpBar(*entity);
   }
 
   for (const auto& proj : projectiles_) {
-    renderer.draw_projectile(*proj);  // 4. пули
+    renderer.DrawProjectile(*proj);  // 4. пули
   }
 }
 
-void Map::spawn_weapon_at(int cord_x, int cord_y, int type) {
+void Map::SpawnWeaponAt(int cord_x, int cord_y, int type) {
   if (cord_x < 0 || cord_y < 0 || cord_x >= width_ || cord_y >= height_) {
     return;
   }
   if (type == 0) {
-    set_tile(Vec2(cord_x, cord_y), std::make_unique<WeaponShotgunTile>());
+    SetTile(Vec2(cord_x, cord_y), std::make_unique<WeaponShotgunTile>());
   } else if (type == 1) {
-    set_tile(Vec2(cord_x, cord_y), std::make_unique<WeaponRicochetTile>());
+    SetTile(Vec2(cord_x, cord_y), std::make_unique<WeaponRicochetTile>());
   }
 }
 
 // генерация оружия
-std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
+std::optional<std::tuple<int, int, int>> Map::GenerateWeapon() {
   std::mt19937 random_generate(
       std::chrono::steady_clock::now().time_since_epoch().count());
   int64_t random_number = random_generate();
@@ -185,7 +185,7 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
 
   for (size_t i = 0; i < tiles_.size(); ++i) {
     for (size_t j = 0; j < tiles_[i].size(); ++j) {
-      if (tiles_[i][j]->is_empty()) {
+      if (tiles_[i][j]->IsEmpty()) {
         empty_tiles.push_back(Vec2(i, j));
       }
     }
@@ -199,12 +199,12 @@ std::optional<std::tuple<int, int, int>> Map::generate_weapon() {
   int weapon_number = random_generate() % WEAPON_CNT;
 
   const Vec2& tile_pos = empty_tiles[number_tile];
-  spawn_weapon_at(static_cast<int>(tile_pos.cord_x),
-                  static_cast<int>(tile_pos.cord_y), weapon_number);
+  SpawnWeaponAt(static_cast<int>(tile_pos.cord_x),
+                static_cast<int>(tile_pos.cord_y), weapon_number);
   return std::make_tuple(static_cast<int>(tile_pos.cord_x),
                          static_cast<int>(tile_pos.cord_y), weapon_number);
 }
-void Map::update_remote_player(sf::Uint32 user_id, sf::Packet& packet) {
+void Map::UpdateRemotePlayer(sf::Uint32 user_id, sf::Packet& packet) {
   for (auto& entity : entities_) {
     if (entity->network_id == user_id) {
       entity->Deserialize(packet);
@@ -213,7 +213,7 @@ void Map::update_remote_player(sf::Uint32 user_id, sf::Packet& packet) {
   }
 }
 
-void Map::spawn_remote_projectile(sf::Packet& packet) {
+void Map::SpawnRemoteProjectile(sf::Packet& packet) {
   float px, py, vx, vy;
   int dmg, sz, hp;
   sf::Uint32 owner_id;
@@ -226,10 +226,10 @@ void Map::spawn_remote_projectile(sf::Packet& packet) {
       break;
     }
   }
-  spawn_projectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
+  SpawnProjectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
 }
 
-void Map::update_player_hp(sf::Uint32 user_id, int heatpoint) {
+void Map::UpdatePlayerHp(sf::Uint32 user_id, int heatpoint) {
   for (auto& entity : entities_) {
     if (entity->network_id == user_id) {
       entity->heatpoint = heatpoint;
@@ -241,13 +241,13 @@ void Map::update_player_hp(sf::Uint32 user_id, int heatpoint) {
   }
 }
 
-std::vector<Vec2> Map::consume_removed_weapon_tiles() {
+std::vector<Vec2> Map::ConsumeRemovedWeaponTiles() {
   std::vector<Vec2> removed;
   removed.swap(removed_weapon_tiles_);
   return removed;
 }
 
-void Map::serialize_game_state(sf::Packet& packet) const {
+void Map::SerializeGameState(sf::Packet& packet) const {
   packet << static_cast<sf::Uint16>(entities_.size());
   for (const auto& entity : entities_) {
     packet << entity->network_id << static_cast<float>(entity->position.cord_x)
@@ -269,7 +269,7 @@ void Map::serialize_game_state(sf::Packet& packet) const {
   }
 }
 
-void Map::apply_game_state(sf::Packet& packet) {
+void Map::ApplyGameState(sf::Packet& packet) {
   sf::Uint16 player_count = 0;
   packet >> player_count;
 
@@ -318,6 +318,6 @@ void Map::apply_game_state(sf::Packet& packet) {
         break;
       }
     }
-    spawn_projectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
+    SpawnProjectile(Vec2(px, py), Vec2(vx, vy), dmg, sz, hp, src);
   }
 }

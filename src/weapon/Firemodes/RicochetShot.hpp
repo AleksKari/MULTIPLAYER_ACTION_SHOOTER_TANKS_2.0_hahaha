@@ -4,5 +4,5 @@
 
 class RicochetShot : public FireMode {
  public:
-  void shoot(Map& map, Player& owner, int damage) override;
+  void Shoot(Map& map, Player& owner, int damage) override;
 };

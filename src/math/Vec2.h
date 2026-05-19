@@ -22,18 +22,18 @@ struct Vec2 {
   Vec2 operator*(double scalar) const {
     return Vec2(cord_x * scalar, cord_y * scalar);
   }
-  double length() const {
+  double Length() const {
     return std::sqrt((cord_x * cord_x) + (cord_y * cord_y));
   }
-  Vec2 normalized() const {
-    double len = length();
+  Vec2 Normalized() const {
+    double len = Length();
     if (len == 0) {
       return Vec2(0, 0);
     }
     return Vec2(cord_x / len, cord_y / len);
   }
-  double angle() const { return std::atan2(cord_y, cord_x); }
-  Vec2 rotate(double angle) const {
+  double Angle() const { return std::atan2(cord_y, cord_x); }
+  Vec2 Rotate(double angle) const {
     return Vec2((cord_x * cos(angle)) + (cord_y * sin(angle)),
                 (cord_y * cos(angle)) - (cord_x * sin(angle)));
   }

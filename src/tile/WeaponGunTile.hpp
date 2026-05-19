@@ -12,11 +12,11 @@ class WeaponGunTile : public WeaponTile {
   WeaponGunTile() {
     texture_.loadFromFile("textures/stone.png");  // должна быть своя текстура
   }
-  bool is_weapon() override { return true; }
-  void draw(Renderer& render, Vec2 pos) override {
-    render.draw_tile(*this, pos);
+  bool IsWeapon() override { return true; }
+  void Draw(Renderer& render, Vec2 pos) override {
+    render.DrawTile(*this, pos);
   }
-  void interact(Player& player, Map& map, const Vec2& pos) override {
-    map.set_tile(pos, std::make_unique<EmptyTile>());
+  void Interact(Player& player, Map& map, const Vec2& pos) override {
+    map.SetTile(pos, std::make_unique<EmptyTile>());
   }
 };

@@ -33,33 +33,33 @@ TEST(Vec2, ScalarMultiply) {
   EXPECT_DOUBLE_EQ(result.cord_y, 6.0);
 }
 
-TEST(Vec2, Length) { EXPECT_DOUBLE_EQ(Vec2(3.0, 4.0).length(), 5.0); }
+TEST(Vec2, Length) { EXPECT_DOUBLE_EQ(Vec2(3.0, 4.0).Length(), 5.0); }
 
-TEST(Vec2, LengthZeroVector) { EXPECT_DOUBLE_EQ(Vec2(0.0, 0.0).length(), 0.0); }
+TEST(Vec2, LengthZeroVector) { EXPECT_DOUBLE_EQ(Vec2(0.0, 0.0).Length(), 0.0); }
 
 TEST(Vec2, NormalizedLength) {
-  Vec2 n = Vec2(3.0, 4.0).normalized();
-  EXPECT_NEAR(n.length(), 1.0, 1e-9);
+  Vec2 n = Vec2(3.0, 4.0).Normalized();
+  EXPECT_NEAR(n.Length(), 1.0, 1e-9);
 }
 
 TEST(Vec2, NormalizedDirection) {
-  Vec2 n = Vec2(3.0, 4.0).normalized();
+  Vec2 n = Vec2(3.0, 4.0).Normalized();
   EXPECT_NEAR(n.cord_x, 0.6, 1e-9);
   EXPECT_NEAR(n.cord_y, 0.8, 1e-9);
 }
 
 TEST(Vec2, NormalizedZeroVectorReturnsZero) {
-  Vec2 n = Vec2(0.0, 0.0).normalized();
+  Vec2 n = Vec2(0.0, 0.0).Normalized();
   EXPECT_DOUBLE_EQ(n.cord_x, 0.0);
   EXPECT_DOUBLE_EQ(n.cord_y, 0.0);
 }
 
-TEST(Vec2, AngleRight) { EXPECT_NEAR(Vec2(1.0, 0.0).angle(), 0.0, 1e-9); }
+TEST(Vec2, AngleRight) { EXPECT_NEAR(Vec2(1.0, 0.0).Angle(), 0.0, 1e-9); }
 
-TEST(Vec2, AngleDown) { EXPECT_NEAR(Vec2(0.0, 1.0).angle(), M_PI / 2.0, 1e-9); }
+TEST(Vec2, AngleDown) { EXPECT_NEAR(Vec2(0.0, 1.0).Angle(), M_PI / 2.0, 1e-9); }
 
 TEST(Vec2, AngleLeft) {
-  EXPECT_NEAR(std::abs(Vec2(-1.0, 0.0).angle()), M_PI, 1e-9);
+  EXPECT_NEAR(std::abs(Vec2(-1.0, 0.0).Angle()), M_PI, 1e-9);
 }
 
 TEST(Vec2, AngleConstructor) {

@@ -5,10 +5,10 @@
 #include <tile/SlowTile.hpp>
 
 SlowTile::SlowTile() { texture_.loadFromFile("textures/slow.png"); }
-bool SlowTile::is_slow() { return true; }
-void SlowTile::draw(Renderer& renderer, Vec2 pos) {
-  renderer.draw_tile(*this, pos);
+bool SlowTile::IsSlow() { return true; }
+void SlowTile::Draw(Renderer& renderer, Vec2 pos) {
+  renderer.DrawTile(*this, pos);
 }
-void SlowTile::interact(Player& player, Map& map, const Vec2& pos) {
+void SlowTile::Interact(Player& player, Map& map, const Vec2& pos) {
   player.SlowDown();
 }

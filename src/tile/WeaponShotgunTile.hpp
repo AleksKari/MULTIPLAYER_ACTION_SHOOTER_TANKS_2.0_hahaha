@@ -13,11 +13,11 @@ class WeaponShotgunTile : public WeaponTile {
   WeaponShotgunTile() {
     texture_.loadFromFile("textures/shotgun.png");  // должна быть своя текстура
   }
-  void draw(Renderer& render, Vec2 pos) override {
-    render.draw_tile(*this, pos);
+  void Draw(Renderer& render, Vec2 pos) override {
+    render.DrawTile(*this, pos);
   }
-  void interact(Player& player, Map& map, const Vec2& pos) override {
+  void Interact(Player& player, Map& map, const Vec2& pos) override {
     player.SetWeapon(std::make_unique<Shotgun>());
-    map.set_tile(pos, std::make_unique<EmptyTile>());
+    map.SetTile(pos, std::make_unique<EmptyTile>());
   }
 };
