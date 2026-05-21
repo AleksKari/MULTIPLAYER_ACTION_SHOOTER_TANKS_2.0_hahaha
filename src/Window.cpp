@@ -11,20 +11,12 @@
 #include <network/NetworkManager.hpp>
 #include <network/Protocol.hpp>
 #include <render/Render.hpp>
+#include <render/MenuRender.hpp>
 #include <tile/EmptyTile.hpp>
 #include <tuple>
 #include <utility>
 #include <vector>
 #include <weapon/Gun.hpp>
-
-enum class GameState {
-  Menu,
-  NetworkMode,
-  JoinInput,
-  WaitingForOpponent,
-  Gaming,
-  GameOver
-};
 
 std::string generateLobbyCode() {
   std::string code = "";
@@ -80,7 +72,7 @@ int main() {
 
   sf::Font font;
   if (!font.loadFromFile("textures/font.ttf")) {
-    std::cerr << "Failed to load font.ttf!" << std::endl;
+    std::cerr << "Failed to load font.ttf!\n";
   }
   sf::Text uiText("", font, window_height / 20);
   uiText.setFillColor(sf::Color::White);
@@ -428,35 +420,11 @@ int main() {
     } else {
       clock.restart();
     }
+    
+    menurenderer::DrawCurrentState(renderer, currentState, ui_view, game_view, 
+                                   menuBg, preview1, preview2, uiText, 
+                                   selected, map, game_over_text);
 
-    renderer.BeginFrame();
-    if (currentState == GameState::Menu) {
-      renderer.Window().setView(ui_view);
-      preview1.setColor(selected == 1 ? sf::Color::White
-                                      : sf::Color(100, 100, 100));
-      preview2.setColor(selected == 2 ? sf::Color::White
-                                      : sf::Color(100, 100, 100));
-      uiText.setString("Choose tank skin: arrows/A-D\nPress Enter to continue");
-      renderer.Window().draw(menuBg);
-      renderer.Window().draw(preview1);
-      renderer.Window().draw(preview2);
-      renderer.Window().draw(uiText);
-    } else if (currentState == GameState::NetworkMode ||
-               currentState == GameState::JoinInput ||
-               currentState == GameState::WaitingForOpponent) {
-      renderer.Window().setView(ui_view);
-      renderer.Window().draw(menuBg);
-      renderer.Window().draw(uiText);
-    } else if (currentState == GameState::Gaming) {
-      renderer.Window().setView(game_view);
-      map.Render(renderer);
-    } else if (currentState == GameState::GameOver) {
-      renderer.Window().setView(ui_view);
-      uiText.setString(game_over_text);
-      renderer.Window().draw(menuBg);
-      renderer.Window().draw(uiText);
-    }
-    renderer.EndFrame();
   }
   return 0;
 }
