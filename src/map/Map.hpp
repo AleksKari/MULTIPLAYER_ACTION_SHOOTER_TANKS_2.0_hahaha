@@ -9,8 +9,9 @@
 #include <utility>
 #include <vector>
 
-class Player;
-class Projectile;
+#include <Player.hpp>
+#include <Projectile.hpp>
+
 class Renderer;
 class Tile;
 

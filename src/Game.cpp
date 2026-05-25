@@ -71,6 +71,7 @@ void Game::ReturnToMenu() {
 void Game::RelayoutUI() {
     const sf::Vector2u size = renderer_.Window().getSize();
     ui_view_ = sf::View(sf::FloatRect(0.0f, 0.0f, (float)size.x, (float)size.y));
+    game_view_ = sf::View(sf::FloatRect(0.0f, 0.0f, static_cast<float>(59 * TILESIZE), static_cast<float>(33 * TILESIZE)));
     menuBg_.setScale((float)size.x / menuBgTex_.getSize().x, (float)size.y / menuBgTex_.getSize().y);
     preview1_.setPosition(size.x * 0.30f, size.y * 0.34f);
     preview2_.setPosition(size.x * 0.58f, size.y * 0.34f);
@@ -94,9 +95,7 @@ void Game::HandleEvents(sf::Event& event) {
             bool join_pressed = event.key.code == sf::Keyboard::J || event.key.code == sf::Keyboard::Num2 || event.key.code == sf::Keyboard::Numpad2;
 
             if (create_pressed) {
-                const char* ip = std::getenv("SERVER_IP");
-                const char* port_str = std::getenv("SERVER_PORT");
-                if (net_.try_join_lobby(ip ? ip : "127.0.0.1", port_str ? std::stoi(port_str) : 5432)) {
+                if (net_.try_join_lobby("185.79.139.24", 35678)) {
                     myRoomCode_ = GenerateLobbyCode();
                     if (net_.join_lobby(myRoomCode_, true) == 1) {
                         CreatePlayers(true);
@@ -116,9 +115,7 @@ void Game::HandleEvents(sf::Event& event) {
             uiText_.setString("Enter 4-letter Room Code: " + inputCode_);
         }
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter && inputCode_.length() == 4) {
-            const char* ip = std::getenv("SERVER_IP");
-            const char* port_str = std::getenv("SERVER_PORT");
-            if (net_.try_join_lobby(ip ? ip : "127.0.0.1", port_str ? std::stoi(port_str) : 5432)) {
+            if (net_.try_join_lobby("185.79.139.24", 35678)) {
                 if (net_.join_lobby(inputCode_, false) == 2) {
                     CreatePlayers(false);
                     sf::Packet p; p << PacketType::SkinSync << (sf::Int32)selected_;
@@ -151,7 +148,7 @@ void Game::Update(float dt) {
         net_.update(map_, local_player_, remote_player_, true);
         uiText_.setString("LOBBY CODE: " + myRoomCode_ + "\n\nWaiting for second player...");
         if (net_.connection_lost()) { game_over_text_ = "Connection lost."; currentState_ = GameState::GameOver; }
-        if (net_.opponent_joined()) { currentState_ = GameState::Gaming; clock_.restart(); }
+        if (net_.opponent_joined()) { menu_music_.stop(); engine_music_.play(); currentState_ = GameState::Gaming; clock_.restart(); }
     } else if (currentState_ == GameState::Gaming) {
         bool w = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
         bool a = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
@@ -182,9 +179,17 @@ void Game::Update(float dt) {
         if (net_.connection_lost()) { game_over_text_ = "Opponent disconnected."; currentState_ = GameState::GameOver; }
         else if (local_player_->IsDead() || remote_player_->IsDead()) {
             game_over_text_ = (local_player_->IsDead() && remote_player_->IsDead()) ? "Draw." : (local_player_->IsDead() ? "You lose." : "You win!");
-            engine_music_.stop(); currentState_ = GameState::GameOver;
+            engine_music_.stop();
+            if (!local_player_->IsDead() && remote_player_->IsDead()) win_sound_.play();
+            currentState_ = GameState::GameOver;
         }
     }
 }
 
 void Game::SetRelayout() { RelayoutUI(); }
+
+void Game::Draw() {
+    menurenderer::DrawCurrentState(renderer_, currentState_, ui_view_, game_view_,
+                                   menuBg_, preview1_, preview2_, uiText_,
+                                   selected_, map_, game_over_text_);
+}
