@@ -1,0 +1,22 @@
+#pragma once
+#include <Entity.hpp>
+#include <map/Map.hpp>
+#include <weapon/Firemodes/Singleshot.hpp>
+#include <weapon/Weapon.hpp>
+
+class Gun : public Weapon {
+ private:
+  int damage_ = 0;
+  double cooldown_ = 1;
+  SingleShot fire_;
+
+ public:
+  Gun() { damage_ = DAMAGE_FROM_SHOOT; }
+  void Shoot(Map& map, Player& owner, int damage) override {
+    if (shot_clock_.getElapsedTime().asSeconds() < cooldown_) {
+      return;
+    }
+    shot_clock_.restart();
+    fire_.Shoot(map, owner, damage);
+  }
+};

@@ -1,0 +1,154 @@
+#include <collision/Collision.hpp>
+#include <iostream>
+#include <map/Map.hpp>
+
+static constexpr double MAX_RICOCHET_LIFETIME = 7.0;
+static constexpr double MIN_PROJECTILE_LIFETIME = 0.1;
+
+bool Collision::EntityProjectile(const Vec2& pos_projectile,
+                                  const int size_projectile,
+                                  const Vec2& pos_entity,
+                                  const int size_entity = TILESIZE) {
+  double center_projectile_x =
+      pos_projectile.cord_x + (size_projectile / NUMBER_TO_DIV);
+  double center_projectile_y =
+      pos_projectile.cord_y + (size_projectile / NUMBER_TO_DIV);
+
+  double center_entity_x = pos_entity.cord_x + (size_entity / NUMBER_TO_DIV);
+  double center_entity_y = pos_entity.cord_y + (size_entity / NUMBER_TO_DIV);
+
+  double dist_x = center_projectile_x - center_entity_x;
+  double dist_y = center_projectile_y - center_entity_y;
+
+  double radius_projectile = size_projectile / NUMBER_TO_DIV;
+  double radius_entity = size_entity / NUMBER_TO_DIV;
+
+  double distance_between_projectile_and_entity =
+      (dist_x * dist_x) + (dist_y * dist_y);
+
+  double minimum_distance_between_projectile_and_entity =
+      (radius_projectile + radius_entity) * (radius_projectile + radius_entity);
+
+  return distance_between_projectile_and_entity <
+         minimum_distance_between_projectile_and_entity;
+}
+// tile_cord_x0 tile_cord_x1 tile_cord_y0 tile_cord_y1 координаты в тайлах где
+// находится плеер
+void Collision::EntityTile(Player& entity, Map& map) {
+  // для проезда в зазор 1 блок уменьшаем счиатемый размер на 1
+  if (entity.position.cord_x < 0 || entity.position.cord_y < 0 ||
+      ((entity.position.cord_x + entity.size - 1) / TILESIZE) >= map.width_ ||
+      ((entity.position.cord_y + entity.size - 1) / TILESIZE) >= map.height_) {
+    entity.OnWallCollision();
+    return;
+  }
+  int tile_cord_x0 = static_cast<int>(entity.position.cord_x) / TILESIZE;
+  int tile_cord_y0 = static_cast<int>(entity.position.cord_y) / TILESIZE;
+
+  int tile_cord_x1 =
+      static_cast<int>(entity.position.cord_x + entity.size - 1) / TILESIZE;
+  int tile_cord_y1 =
+      static_cast<int>(entity.position.cord_y + entity.size - 1) / TILESIZE;
+
+  map.tiles_[tile_cord_x0][tile_cord_y0]->Interact(
+      entity, map, Vec2(tile_cord_x0, tile_cord_y0));
+
+  if (tile_cord_x1 != tile_cord_x0) {
+    map.tiles_[tile_cord_x1][tile_cord_y0]->Interact(
+        entity, map, Vec2(tile_cord_x1, tile_cord_y0));
+  }
+  if (tile_cord_y1 != tile_cord_y0) {
+    map.tiles_[tile_cord_x0][tile_cord_y1]->Interact(
+        entity, map, Vec2(tile_cord_x0, tile_cord_y1));
+  }
+
+  if (tile_cord_x1 != tile_cord_x0 && tile_cord_y1 != tile_cord_y0) {
+    map.tiles_[tile_cord_x1][tile_cord_y1]->Interact(
+        entity, map, Vec2(tile_cord_x1, tile_cord_y1));
+  }
+}
+// tile_cord_x0 tile_cord_x1 tile_cord_y0 tile_cord_y1 также для пули
+bool Collision::ProjectileTile(const Projectile& proj, const Map& map) {
+  if (proj.position.cord_x < 0 || proj.position.cord_y < 0 ||
+      proj.position.cord_x + proj.size > map.width_ * TILESIZE ||
+      proj.position.cord_y + proj.size > map.height_ * TILESIZE) {
+    return true;
+  }
+
+  int tile_cord_x0 = static_cast<int>(proj.position.cord_x) / TILESIZE;
+  int tile_cord_y0 = static_cast<int>(proj.position.cord_y) / TILESIZE;
+
+  int tile_cord_x1 =
+      static_cast<int>(proj.position.cord_x + proj.size) / TILESIZE;
+  int tile_cord_y1 =
+      static_cast<int>(proj.position.cord_y + proj.size) / TILESIZE;
+
+  return (map.tiles_[tile_cord_x0][tile_cord_y0]->IsWall()) ||
+         (map.tiles_[tile_cord_x1][tile_cord_y0]->IsWall()) ||
+         (map.tiles_[tile_cord_x0][tile_cord_y1]->IsWall()) ||
+         (map.tiles_[tile_cord_x1][tile_cord_y1]->IsWall());
+}
+
+void Collision::Ricochet(Projectile& projectile, const Map& map) {
+  if (projectile.Lifetime() > MAX_RICOCHET_LIFETIME) {
+    projectile.Kill();
+    return;
+  }
+
+  bool not_on_map_x =
+      projectile.position.cord_x < 0 ||
+      projectile.position.cord_x + projectile.size > map.width_ * TILESIZE;
+  bool not_on_map_y =
+      projectile.position.cord_y < 0 ||
+      projectile.position.cord_y + projectile.size > map.height_ * TILESIZE;
+
+  bool reflect_x;
+  bool reflect_y;
+  if (not_on_map_x || not_on_map_y) {
+    reflect_x = not_on_map_x;
+    reflect_y = not_on_map_y;
+  } else {
+    reflect_x = projectile.CrossedTileX();
+    reflect_y = projectile.CrossedTileY();
+  }
+  projectile.Reflect(reflect_x, reflect_y);
+  projectile.TakeDamage(1);
+}
+
+void Collision::Resolve(Map& map) {
+  for (auto& projectile : map.projectiles_) {
+    if (!ProjectileTile(*projectile, map)) {
+      continue;
+    }
+    if (projectile->CanRicochet()) {
+      Ricochet(*projectile, map);
+    } else {
+      projectile->Kill();
+    }
+  }
+
+  for (auto& projectile : map.projectiles_) {
+    if (projectile->IsDead()) {
+      continue;
+    }
+    if (projectile->Lifetime() < MIN_PROJECTILE_LIFETIME) {
+      continue;
+    }
+
+    for (auto& entity : map.entities_) {
+      if (entity->IsDead()) {
+        continue;
+      }
+      if (EntityProjectile(projectile->position, projectile->size,
+                            entity->position, entity->size)) {
+        entity->TakeDamage(projectile->damage);
+        projectile->Kill();
+        break;
+      }
+    }
+  }
+
+  for (auto& entity : map.entities_) {
+    EntityTile(*entity, map);
+  }
+}

@@ -1,0 +1,358 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="wMHsZXCywi6YtZmMzPk0" name="Страница-1">
+    <mxGraphModel dx="2472" dy="1403" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="20" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Entity" vertex="1">
+          <mxGeometry height="106" width="185" x="60" y="155" as="geometry" />
+        </mxCell>
+        <mxCell id="21" parent="20" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• position : Vec2&#xa;• cornrotate : double&#xa;• damage : int&#xa;• size : int" vertex="1">
+          <mxGeometry height="80" width="185" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="30" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Player" vertex="1">
+          <mxGeometry height="300" width="185" x="20" y="418" as="geometry" />
+        </mxCell>
+        <mxCell id="31" parent="30" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• hp : int&#xa;• max_hp : int&#xa;• weapon_ : Weapon*" vertex="1">
+          <mxGeometry height="60" width="185" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="32" parent="30" style="line;strokeColor=#6c8ebf;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="185" y="86" as="geometry" />
+        </mxCell>
+        <mxCell id="33" parent="30" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– dir()&#xa;– move()&#xa;– attack()&#xa;– kill()&#xa;– on_wall_collision()&#xa;– take_damage()&#xa;– update()&#xa;– set_mouse()&#xa;– loadSkin()&#xa;– set_weapon()&#xa;– is_dead()&#xa;– slow_down()&#xa;– take_tile_damage()" vertex="1">
+          <mxGeometry height="212" width="185" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="40" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Projectile" vertex="1">
+          <mxGeometry height="260" width="185" x="220" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="41" parent="40" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• velocity_ : Vec2&#xa;• hp_ : int" vertex="1">
+          <mxGeometry height="40" width="185" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="42" parent="40" style="line;strokeColor=#6c8ebf;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="185" y="66" as="geometry" />
+        </mxCell>
+        <mxCell id="43" parent="40" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– get_velocity()&#xa;– update()&#xa;– kill()&#xa;– on_wall_collision()&#xa;– take_damage()&#xa;– get_damage()&#xa;– is_dead()&#xa;– can_ricochet()&#xa;– lifetime()&#xa;– crossed_tile_x()&#xa;– crossed_tile_y()&#xa;– reflect()" vertex="1">
+          <mxGeometry height="192" width="185" y="68" as="geometry" />
+        </mxCell>
+        <mxCell id="50" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="Map" vertex="1">
+          <mxGeometry height="310" width="215" x="475" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="51" parent="50" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• tiles_[][] : Tile*&#xa;• entities_[] : Player*&#xa;• projectiles_[] : Projectile*&#xa;• width_ : int&#xa;• height_ : int" vertex="1">
+          <mxGeometry height="100" width="215" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="52" parent="50" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="215" y="126" as="geometry" />
+        </mxCell>
+        <mxCell id="53" parent="50" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– update()&#xa;– render()&#xa;– spawn_entity()&#xa;– spawn_projectile()&#xa;– is_bound()&#xa;– is_wall()&#xa;– is_empty()&#xa;– is_slow()&#xa;– is_damage()&#xa;– generate_weapon()&#xa;– set_tile()" vertex="1">
+          <mxGeometry height="182" width="215" y="128" as="geometry" />
+        </mxCell>
+        <mxCell id="230" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#fff2cc;strokeColor=#d6b656;" value="Collision" vertex="1">
+          <mxGeometry height="108" width="215" x="719" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="231" parent="230" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="215" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="233" parent="230" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– entity_projectile()&#xa;– entity_tile()&#xa;– projectile_tile()&#xa;– ricochet()&#xa;– resolve()" vertex="1">
+          <mxGeometry height="80" width="215" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="240" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#fff2cc;strokeColor=#d6b656;" value="Renderer" vertex="1">
+          <mxGeometry height="142" width="200" x="475" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="241" parent="240" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="200" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="243" parent="240" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– beginframe()&#xa;– endframe()&#xa;– draw_tile()&#xa;– draw_entity()&#xa;– draw_projectile()&#xa;– draw_hp_bar()&#xa;– window()" vertex="1">
+          <mxGeometry height="114" width="200" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="60" parent="1" style="swimlane;fontStyle=3;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;i&gt;Tile&lt;/i&gt;" vertex="1">
+          <mxGeometry height="160" width="165" x="750" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="62" parent="60" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="165" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="63" parent="60" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_empty()&#xa;– is_wall()&#xa;– is_breakable()&#xa;– is_slow()&#xa;– is_damage()&#xa;– is_weapon()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="132" width="165" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="70" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="WallTile" vertex="1">
+          <mxGeometry height="80" width="125" x="827" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="701" parent="70" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="125" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="702" parent="70" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_wall()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="52" width="125" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="80" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="EmptyTile" vertex="1">
+          <mxGeometry height="80" width="125" x="970" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="801" parent="80" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="125" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="802" parent="80" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_empty()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="52" width="125" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="90" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="DamageTile" vertex="1">
+          <mxGeometry height="96" width="130" x="710" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="901" parent="90" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• damage_ : int" vertex="1">
+          <mxGeometry height="20" width="130" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="902" parent="90" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="130" y="46" as="geometry" />
+        </mxCell>
+        <mxCell id="903" parent="90" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_damage()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="48" width="130" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="100" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="SlowTile" vertex="1">
+          <mxGeometry height="114" width="125" x="995" y="533" as="geometry" />
+        </mxCell>
+        <mxCell id="1001" parent="100" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• slowdown : int&#xa;• timedown : int" vertex="1">
+          <mxGeometry height="40" width="125" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1002" parent="100" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="125" y="66" as="geometry" />
+        </mxCell>
+        <mxCell id="1003" parent="100" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_slow()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="46" width="125" y="68" as="geometry" />
+        </mxCell>
+        <mxCell id="110" parent="1" style="swimlane;fontStyle=3;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;i&gt;WeaponTile&lt;/i&gt;" vertex="1">
+          <mxGeometry height="64" width="155" x="1085" y="41" as="geometry" />
+        </mxCell>
+        <mxCell id="1101" parent="110" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="155" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1102" parent="110" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="36" width="155" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="120" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="WeaponShotgunTile" vertex="1">
+          <mxGeometry height="64" width="178" x="1030" y="418" as="geometry" />
+        </mxCell>
+        <mxCell id="1201" parent="120" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="178" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1202" parent="120" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="36" width="178" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="130" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="WeaponRicochetTile" vertex="1">
+          <mxGeometry height="64" width="182" x="1240" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="1301" parent="130" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="182" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1302" parent="130" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="36" width="182" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="140" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#d5e8d4;strokeColor=#82b366;" value="WeaponGunTile" vertex="1">
+          <mxGeometry height="80" width="160" x="1160" y="489" as="geometry" />
+        </mxCell>
+        <mxCell id="1401" parent="140" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• is_weapon : bool" vertex="1">
+          <mxGeometry height="20" width="160" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1402" parent="140" style="line;strokeColor=#82b366;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="160" y="46" as="geometry" />
+        </mxCell>
+        <mxCell id="1403" parent="140" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– is_weapon()&#xa;– draw()&#xa;– interact()" vertex="1">
+          <mxGeometry height="32" width="160" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="150" parent="1" style="swimlane;fontStyle=3;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="&lt;i&gt;Weapon&lt;/i&gt;" vertex="1">
+          <mxGeometry height="120" width="185" x="20" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="151" parent="150" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• shots_left_ : int&#xa;• cooldown_ : double&#xa;• damage_ : int" vertex="1">
+          <mxGeometry height="60" width="185" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="152" parent="150" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="185" y="86" as="geometry" />
+        </mxCell>
+        <mxCell id="153" parent="150" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()&#xa;– no_ammo()" vertex="1">
+          <mxGeometry height="32" width="185" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="160" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="Gun" vertex="1">
+          <mxGeometry height="48" width="90" x="405" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="1601" parent="160" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="90" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1602" parent="160" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="90" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="170" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="Shotgun" vertex="1">
+          <mxGeometry height="48" width="100" x="405" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="1701" parent="170" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="100" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1702" parent="170" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="100" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="180" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="RicochetGun" vertex="1">
+          <mxGeometry height="48" width="130" x="405" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="1801" parent="180" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="130" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="1802" parent="180" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="130" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="190" parent="1" style="swimlane;fontStyle=3;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="&lt;i&gt;FireMode&lt;/i&gt;" vertex="1">
+          <mxGeometry height="48" width="150" x="970" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="192" parent="190" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="150" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="193" parent="190" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="150" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="200" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="SingleShot" vertex="1">
+          <mxGeometry height="48" width="115" x="725" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="2001" parent="200" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="115" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="2002" parent="200" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="115" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="210" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="ShotgunFire" vertex="1">
+          <mxGeometry height="48" width="115" x="725" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="2101" parent="210" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="115" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="2102" parent="210" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="115" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="220" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#ffe6cc;strokeColor=#d6b656;" value="RicochetShot" vertex="1">
+          <mxGeometry height="48" width="130" x="710" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="2201" parent="220" style="line;strokeColor=#d6b656;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="130" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="2202" parent="220" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– shoot()" vertex="1">
+          <mxGeometry height="20" width="130" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="270" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Protocol" vertex="1">
+          <mxGeometry height="96" width="180" x="1500" y="357" as="geometry" />
+        </mxCell>
+        <mxCell id="271" parent="270" style="line;strokeColor=#9673a6;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="180" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="273" parent="270" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="«enum» PacketType:&#xa;  JoinLobby&#xa;  LobbyJoined&#xa;  PlayerInput&#xa;  GameState" vertex="1">
+          <mxGeometry height="68" width="180" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="250" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#e1d5e7;strokeColor=#9673a6;" value="ClientNetwork" vertex="1">
+          <mxGeometry height="92" width="180" x="1170" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="251" parent="250" style="line;strokeColor=#9673a6;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="180" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="253" parent="250" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– connectToLobby()&#xa;– sendInput()&#xa;– receiveUpdates()&#xa;– processPacket()" vertex="1">
+          <mxGeometry height="64" width="180" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="260" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#e1d5e7;strokeColor=#9673a6;" value="GameServer" vertex="1">
+          <mxGeometry height="108" width="195" x="1422" y="662" as="geometry" />
+        </mxCell>
+        <mxCell id="261" parent="260" style="line;strokeColor=#9673a6;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="195" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="263" parent="260" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– update()&#xa;– receiveNetworkData()&#xa;– handleJoin()&#xa;– handleInput()&#xa;– broadcastGameState()" vertex="1">
+          <mxGeometry height="80" width="195" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="300" edge="1" parent="1" source="30" style="endArrow=block;endFill=0;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" target="20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="301" edge="1" parent="1" source="40" style="endArrow=block;endFill=0;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" target="20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="302" edge="1" parent="1" source="20" style="endArrow=open;endSize=8;" target="10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="303" edge="1" parent="1" source="30" style="endArrow=open;endSize=8;" target="150">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="304" edge="1" parent="1" source="50" style="endArrow=open;endSize=8;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="305" edge="1" parent="1" source="50" style="endArrow=open;endSize=8;" target="30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="306" edge="1" parent="1" source="50" style="endArrow=open;endSize=8;" target="40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="307" edge="1" parent="1" source="70" style="endArrow=block;endFill=0;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="308" edge="1" parent="1" source="80" style="endArrow=block;endFill=0;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="309" edge="1" parent="1" source="90" style="endArrow=block;endFill=0;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="310" edge="1" parent="1" source="100" style="endArrow=block;endFill=0;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="311" edge="1" parent="1" source="110" style="endArrow=block;endFill=0;" target="60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="312" edge="1" parent="1" source="120" style="endArrow=block;endFill=0;" target="110">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="313" edge="1" parent="1" source="130" style="endArrow=block;endFill=0;" target="110">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="314" edge="1" parent="1" source="140" style="endArrow=block;endFill=0;" target="110">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="315" edge="1" parent="1" source="160" style="endArrow=block;endFill=0;" target="150">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="316" edge="1" parent="1" source="170" style="endArrow=block;endFill=0;" target="150">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="317" edge="1" parent="1" source="180" style="endArrow=block;endFill=0;" target="150">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="318" edge="1" parent="1" source="200" style="endArrow=block;endFill=0;" target="190">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="319" edge="1" parent="1" source="210" style="endArrow=block;endFill=0;" target="190">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="320" edge="1" parent="1" source="220" style="endArrow=block;endFill=0;" target="190">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="321" edge="1" parent="1" source="160" style="endArrow=open;endSize=8;" target="200">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="322" edge="1" parent="1" source="170" style="endArrow=open;endSize=8;" target="210">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="323" edge="1" parent="1" source="180" style="endArrow=open;endSize=8;" target="220">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="324" edge="1" parent="1" source="230" style="endArrow=open;endSize=8;" target="50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="325" edge="1" parent="1" source="240" style="endArrow=open;endSize=8;" target="50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="326" edge="1" parent="1" source="250" style="endArrow=open;endSize=8;" target="270">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="327" edge="1" parent="1" source="260" style="endArrow=open;endSize=8;" target="270">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="swimlane;fontStyle=1;align=center;startSize=26;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="Vec2" vertex="1">
+          <mxGeometry height="180" width="160" x="280" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="10" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="• x&#xa;• y" vertex="1">
+          <mxGeometry height="40" width="160" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="10" style="line;strokeColor=#666666;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="2" width="160" y="66" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="10" style="text;html=1;strokeColor=none;fillColor=none;align=left;spacingLeft=6;verticalAlign=top;" value="– operator+()&#xa;– operator-()&#xa;– operator*()&#xa;– length()&#xa;– normilized()&#xa;– angle()&#xa;– rotate()" vertex="1">
+          <mxGeometry height="112" width="160" y="68" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
